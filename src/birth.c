@@ -306,16 +306,16 @@ static void get_ahw(void)
 	p_ptr->age = rp_ptr->b_age + (s16b)randint(rp_ptr->m_age);
 
 	/* Calculate the height for males */
-	if (p_ptr->psex == SEX_MALE)
-	{
+	//if (p_ptr->psex == SEX_MALE)
+	//{
 		p_ptr->ht = Rand_normal(rp_ptr->m_b_ht, rp_ptr->m_m_ht);
-	}
+	//}
 
 	/* Calculate the height for females */
-	else if (p_ptr->psex == SEX_FEMALE)
+	/*else if (p_ptr->psex == SEX_FEMALE)
 	{
 		p_ptr->ht = Rand_normal(rp_ptr->f_b_ht, rp_ptr->f_m_ht);
-	}
+	}*/
 }
 
 
@@ -367,7 +367,7 @@ static void player_wipe(void)
 	if (character_quickstart)
 	{
 		/* Copy across the quickstart structure */
-		normal_quickstart.psex = p_ptr->psex;
+		//normal_quickstart.psex = p_ptr->psex;
 		normal_quickstart.prace = p_ptr->prace;
 		normal_quickstart.pclass = p_ptr->pclass;
 		normal_quickstart.pstyle = p_ptr->pstyle;
@@ -845,7 +845,7 @@ static void player_outfit(void)
 /* Locations of the tables on the screen */
 #define HEADER_ROW		1
 #define QUESTION_ROW	7
-#define TABLE_ROW		10
+#define TABLE_ROW		9
 
 #define QUESTION_COL	3
 #define KEYBOARD_COL	0
@@ -900,7 +900,8 @@ static int get_player_choice(birth_menu *choices, int num, int col, int wid,
 	if (num == 1) done = TRUE;
 
 	/* Clear */
-	for (i = TABLE_ROW; i < Term->hgt; i++)
+	//for (i = TABLE_ROW; i < Term->hgt; i++)
+	for (i = TABLE_ROW; i < (TABLE_ROW+num > Term->hgt ? Term->hgt : TABLE_ROW+num); i++)
 	{
 		/* Clear */
 		Term_erase(col, i, Term->wid - wid);
@@ -1859,6 +1860,10 @@ quickstart_type beginner_quickstart =
  */
 static bool get_player_sex(void)
 {
+	/* Gender neutrality, don't ask :) */
+	p_ptr->psex = 0;
+	return (TRUE);
+
 	int i;
 	birth_menu genders[2];
 
@@ -1894,7 +1899,7 @@ static bool get_player_sex(void)
 }
 
 
-#define MAX_DIFFICULTY_CHOICES	4
+#define MAX_DIFFICULTY_CHOICES	5
 
 /*
  * Player difficulty
@@ -1904,17 +1909,22 @@ static bool get_player_difficulty(void)
 	int     choice;
 	birth_menu difficulty[MAX_DIFFICULTY_CHOICES] =
 	{
-		{FALSE, "Beginner", 0},
+		/*{FALSE, "Beginner", 0},
 		{FALSE, "Played roguelikes before", 1 },
 		{FALSE, "Played Angband before", 2 },
-		{FALSE, "Played Unangband before", 3}
+		{FALSE, "Played Unangband before", 3}*/
+		{FALSE, "New Game", 0},
+		{FALSE, "Advanced Mode", 2 },
+		{FALSE, "Expert Mode", 3 },
+		{FALSE, "Single Dungeon Mode", 4},
+		{FALSE, "Quit Game", 5},
 	};
 
 	/*** Player roller choice ***/
 
 	/* Extra info */
-	Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
-		    "Describe your knowledge of playing Unangband and related games.");
+	//Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
+	//	    "Describe your knowledge of playing Unangband and related games.");
 
 	choice = get_player_choice(difficulty, MAX_DIFFICULTY_CHOICES, DIFFICULTY_COL, 80 - DIFFICULTY_COL - 1,
 				     "difficulty.txt", NULL);
@@ -1948,6 +1958,17 @@ static bool get_player_difficulty(void)
 /*			birth_small_levels = FALSE; */
 			birth_evil = TRUE;
 			birth_intermediate = FALSE;
+			break;
+		case 4:
+			birth_beginner = FALSE;
+/*			birth_small_levels = TRUE; */
+			birth_evil = FALSE;
+			birth_intermediate = TRUE;
+			birth_campaign = FALSE;
+			break;
+		case 5:
+			printf("Thank you for playing!\n");
+			exit(0);
 			break;
 	}
 
@@ -2092,7 +2113,75 @@ static void player_birth_quickstart(quickstart_type *q_ptr)
 	p_ptr->expfact = rp_ptr->r_exp + cp_ptr->c_exp + (p_ptr->pstyle ? 10 : 0);
 
 	/* Display the player */
-	display_player(0);
+	if (! birth_beginner) display_player(0);
+}
+
+/*
+ * Display menu header
+ */
+int display_menu_header(int i)
+{
+	FILE *fp;
+
+	char buf[1024];
+	
+	/* Build the filename */
+	path_build(buf, 1024, ANGBAND_DIR_FILE, "menu_header.txt");
+
+	/* Open the News file */
+	fp = my_fopen(buf, "r");
+
+	/* Dump */
+	if (fp)
+	{
+		//int i = 0;
+
+		/* Dump the file to the screen */
+		while (0 == my_fgets(fp, buf, sizeof(buf)))
+		{
+			/* Display and advance */
+			Term_putstr(0, i++, -1, TERM_WHITE, buf);
+		}
+
+		/* Close */
+		my_fclose(fp);
+	}
+	
+	return i;
+}
+
+/*
+ * Display menu footer
+ */
+int display_menu_footer(int i)
+{
+	FILE *fp;
+
+	char buf[1024];
+	
+	/* Build the filename */
+	path_build(buf, 1024, ANGBAND_DIR_FILE, "menu_footer.txt");
+
+	/* Open the News file */
+	fp = my_fopen(buf, "r");
+
+	/* Dump */
+	if (fp)
+	{
+		//int i = 0;
+
+		/* Dump the file to the screen */
+		while (0 == my_fgets(fp, buf, sizeof(buf)))
+		{
+			/* Display and advance */
+			Term_putstr(0, i++, -1, TERM_SLATE, buf);
+		}
+
+		/* Close */
+		my_fclose(fp);
+	}
+	
+	return i;
 }
 
 
@@ -2112,14 +2201,24 @@ static bool player_birth_aux_1(void)
 
 	/* Clear screen */
 	Term_clear();
+	
+	int header_row = HEADER_ROW;
+	
+	header_row = display_menu_header(header_row);
+	
+	display_menu_footer(header_row + 9);
+	
+	header_row++;
 
 	/* Display some helpful information */
-	Term_putstr(QUESTION_COL, HEADER_ROW + 2, -1, TERM_WHITE,
+	/*Term_putstr(QUESTION_COL, HEADER_ROW + 2, -1, TERM_WHITE,
 		    "Use the movement keys to scroll the menu, 'Enter' to select the current");
 	Term_putstr(QUESTION_COL, HEADER_ROW + 3, -1, TERM_WHITE,
 		    "menu item, '*' for a random menu item, 'ESC' to restart the character");
 	Term_putstr(QUESTION_COL, HEADER_ROW + 4, -1, TERM_WHITE,
-		    "selection, '=' for the birth options, '?' for help, or 'Ctrl-X' to quit.");
+		    "selection, '=' for the birth options, '?' for help, or 'Ctrl-X' to quit.");*/
+	Term_putstr(QUESTION_COL, header_row, -1, TERM_YELLOW,
+		    "Use the arrow keys to select an option and press 'Enter'.");
 
 	/* Level one */
 	p_ptr->max_lev = p_ptr->lev = 1;
@@ -2128,10 +2227,10 @@ static bool player_birth_aux_1(void)
 	if (birth_first_time)
 	{
 		/* Choose the player's keyboard layout */
-		if (!get_player_keyboard()) return (FALSE);
+		//if (!get_player_keyboard()) return (FALSE);
 
 		/* Clean up */
-		clear_question();
+		//clear_question();
 
 		/* Choose the players difficulty */
 		if (!get_player_difficulty()) return (FALSE);
@@ -2807,6 +2906,7 @@ static bool player_birth_aux_3(void)
 static bool player_birth_aux(void)
 {
 	int i;
+	char name[12];
 
 	key_event ke;
 
@@ -2845,23 +2945,41 @@ static bool player_birth_aux(void)
 		if (!player_birth_aux_3()) return (FALSE);
 	}
 
-	/* Get a name, prepare savefile */
-	get_name();
+	/* Don't bother normal players with questions */
+	if (birth_beginner) {
+		/* Save the player name */
+		my_strcpy(name, op_ptr->full_name, sizeof(name));
 
-	/* Display the player */
-	display_player(0);
+		/* Offer a random name */
+		if (!strlen(name))
+		{
+			my_strcpy(name, make_word(6, 10), sizeof(name));
+		}
 
-	/* Prompt for it */
-	prt("['Q' to suicide, 'S' to start over, or Enter to continue]", 23, 10);
+		/* Use the name */
+		my_strcpy(op_ptr->full_name, name, sizeof(op_ptr->full_name));
 
-	/* Get a key */
-	ke = anykey();
+		/* Process the player name */
+		process_player_name(FALSE);
+	} else {
+		/* Get a name, prepare savefile */
+		get_name();
+		
+		/* Display the player */
+		display_player(0);
 
-	/* Quit */
-	if (ke.key == 'Q') quit(NULL);
+		/* Prompt for it */
+		prt("['Q' to suicide, 'S' to start over, or Enter to continue]", 23, 10);
+	
+		/* Get a key */
+		ke = anykey();
 
-	/* Start over */
-	if ((ke.key == 'S')||(ke.key == ESCAPE)) return (FALSE);
+		/* Quit */
+		if (ke.key == 'Q') quit(NULL);
+
+		/* Start over */
+		if ((ke.key == 'S')||(ke.key == ESCAPE)) return (FALSE);
+	}
 
 	/* Accept */
 	return (TRUE);

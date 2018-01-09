@@ -151,7 +151,7 @@ typedef struct
 
 static option_entry options[OPT_MAX] =
 {
-{ "rogue_like_commands", "Rogue-like commands",                         FALSE }, /* 0 */
+{ "rogue_like_commands", "Rogue-like commands",                         TRUE }, /* 0 */
 { "quick_messages",      "Activate quick messages",                     TRUE },  /* 1 */
 { "use_sound",           "Use sound",                                   FALSE }, /* 2 */
 { "pickup_detail",       "Be verbose when picking things up",           TRUE },  /* 3 */
@@ -247,7 +247,7 @@ static option_entry options[OPT_MAX] =
 { "easy_autos",          "Automatically inscribe all objects",          FALSE }, /* 93 */
 { "easy_search",         "Start searching if not disturbed",            FALSE }, /* 94 */
 { "view_glowing_lite",   "Use special colours for glowing lite",        TRUE }, /* 95 */
-{ "show_sidebar",        "Display stats in main window",                TRUE }, /* 96 */
+{ "show_sidebar",        "Display stats in main window",                FALSE }, /* 96 */
 { "show_itemlist",       "Display all items on the bottom line",        FALSE }, /* 97 */
 { "depth_in_feet",       "Show dungeon level in feet",                  FALSE }, /* 98 */
 { "view_flavors",        "Show flavors in object graphics",             TRUE }, /* 99 */
@@ -259,9 +259,9 @@ static option_entry options[OPT_MAX] =
 { "autosave_backup",     "Create backup savefile before descending",   TRUE }, /* 105 */
 { "auto_monlist",        "Always show visible monsters/objects",		FALSE }, /* 106 */
 { "easy_monlist",        "Spacebar toggles visible monsters/objects",   FALSE }, /* 107 */
-{ "view_fogged_grids",   "Show fog of war for unexplored areas",        TRUE }, /* 108 */
+{ "view_fogged_grids",   "Show fog of war for unexplored areas",        FALSE }, /* 108 */
 { "ally_messages",       "Show detailed combat messages for allies",    FALSE }, /* 109 */
-{ "show_narrative",      "Single-window narrative mode",                FALSE }, /* 110 */
+{ "show_narrative",      "Single-window narrative mode",                TRUE }, /* 110 */
 { NULL,                  NULL,                                          FALSE }, /* 111 */
 { NULL,                  NULL,                                          FALSE }, /* 112 */
 { NULL,                  NULL,                                          FALSE }, /* 113 */
