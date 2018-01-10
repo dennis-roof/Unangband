@@ -247,6 +247,8 @@ static void prt_exp(void)
 	s32b exp_display;
 	byte attr;
 	int max_number;
+	
+	s32b xp_required = (player_exp[p_ptr->lev - 1] * p_ptr->expfact / 100L);
 
 	/*use different color if player's experience is drained*/
 	if (p_ptr->exp >= p_ptr->max_exp)
@@ -265,7 +267,8 @@ static void prt_exp(void)
 				* p_ptr->expfact / 100L) -
 			       p_ptr->exp);
 		/*Print experience label*/
-		put_str("NEXT ", ROW_EXP, COL_EXP);
+		//put_str("NEXT ", ROW_EXP, COL_EXP);
+		put_str("XP:", ROW_EXP, COL_EXP);
 
 		max_number = 99999;
 	}
@@ -274,7 +277,8 @@ static void prt_exp(void)
 		exp_display = p_ptr->exp;
 
 		/*Print experience label*/
-		put_str("EXP ", ROW_EXP, COL_EXP);
+		//put_str("EXP ", ROW_EXP, COL_EXP);
+		put_str("XP:", ROW_EXP, COL_EXP);
 
 		max_number = 999999;
 	}
@@ -288,11 +292,12 @@ static void prt_exp(void)
 	    sprintf(out_val, "%5ldK", exp_display);
 	  }
 	  else {
-	    sprintf(out_val, "%6ld", exp_display);
+	    //sprintf(out_val, "%6ld", exp_display);
+	    sprintf(out_val, "%6ld/%-6ld", p_ptr->exp, xp_required);
 	  }
 	}
 
-	c_put_str(attr, out_val, ROW_EXP, COL_EXP + 4);
+	c_put_str(attr, out_val, ROW_EXP, COL_EXP + 3);
 }
 
 
@@ -303,9 +308,9 @@ static void prt_gold(void)
 {
 	char tmp[32];
 
-	put_str("AU ", ROW_GOLD, COL_GOLD);
-	sprintf(tmp, "%9ld", (long)p_ptr->au);
-	c_put_str(TERM_L_GREEN, tmp, ROW_GOLD, COL_GOLD + 3);
+	put_str("Gold:", ROW_GOLD, COL_GOLD);
+	sprintf(tmp, "%-9ld", (long)p_ptr->au);
+	c_put_str(TERM_L_GREEN, tmp, ROW_GOLD, COL_GOLD + 5);
 }
 
 
@@ -670,12 +675,15 @@ int print_emergent_narrative(void)
 	int room = room_idx(p_ptr->py, p_ptr->px);
 	
 	char hungry_message[] = "You're hungry";
+	char you_message[18];
 	char name[62];
 	char text_visible[1024];
 	char text_always[1024];
 	char text_empty[] = "";
 	//empty[0] = '\0';
 	
+	sprintf(you_message, "@: You (L%2d)", p_ptr->lev);
+
 	bool is_long_description;
 	
 	/* Get the room description */
@@ -705,6 +713,13 @@ int print_emergent_narrative(void)
 			(bool) 0);
 		line_number++;
 	}
+	
+	line_number = print_text_in_sidebar(
+		line_number, 
+		TERM_L_WHITE, 
+		you_message, 
+		max_line_number, 
+		(bool) 0);
 	
 	line_number = print_monster_narrative(line_number, max_line_number);
 	line_number = print_object_narrative(line_number, max_line_number);
@@ -762,7 +777,8 @@ static void prt_hp(void)
 	c_put_str(color, tmp, ROW_MAXHP, COL_MAXHP + (show_sidebar ? 7 : 1));
 
 
-	put_str((show_sidebar ? "Cur HP " : "HP:    "), ROW_CURHP, COL_CURHP);
+	put_str((show_sidebar ? "Cur HP " : "Life:  "), ROW_CURHP, COL_CURHP);
+	//put_str((show_sidebar ? "Cur HP " : "HP:    "), ROW_CURHP, COL_CURHP);
 
 	sprintf(tmp, (show_sidebar ? "%5d" : "%d"), p_ptr->chp);
 
@@ -807,7 +823,8 @@ static void prt_sp(void)
 	c_put_str(color, tmp, ROW_MAXSP, COL_MAXSP + (show_sidebar ? 7 : 1));
 
 
-	put_str((show_sidebar ? "Cur SP " : "SP:    "), ROW_CURSP, COL_CURSP);
+	put_str((show_sidebar ? "Cur SP " : "Magic: "), ROW_CURSP, COL_CURSP);
+	//put_str((show_sidebar ? "Cur SP " : "SP:    "), ROW_CURSP, COL_CURSP);
 
 	sprintf(tmp, (show_sidebar ? "%5d" : "%d"), p_ptr->csp);
 
@@ -2047,7 +2064,7 @@ static void prt_frame_basic(void)
 	}
 
 	/* Level/Experience */
-	prt_level();
+	if (! show_narrative) prt_level();
 	prt_exp();
 
 	/* All Stats */
@@ -4742,7 +4759,7 @@ void update_stuff(void)
 	if (p_ptr->update & (PU_ROOM_INFO))
 	{
 		p_ptr->update &= ~(PU_ROOM_INFO);
-		describe_room();
+		//describe_room();
 	}
 }
 

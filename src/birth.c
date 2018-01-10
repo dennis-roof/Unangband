@@ -1899,7 +1899,7 @@ static bool get_player_sex(void)
 }
 
 
-#define MAX_DIFFICULTY_CHOICES	5
+#define MAX_DIFFICULTY_CHOICES	3
 
 /*
  * Player difficulty
@@ -1914,8 +1914,8 @@ static bool get_player_difficulty(void)
 		{FALSE, "Played Angband before", 2 },
 		{FALSE, "Played Unangband before", 3}*/
 		{FALSE, "New Game", 0},
-		{FALSE, "Advanced Mode", 2 },
-		{FALSE, "Expert Mode", 3 },
+		//{FALSE, "Advanced Mode", 2 },
+		//{FALSE, "Expert Mode", 3 },
 		{FALSE, "Single Dungeon Mode", 4},
 		{FALSE, "Quit Game", 5},
 	};
@@ -1960,10 +1960,10 @@ static bool get_player_difficulty(void)
 			birth_intermediate = FALSE;
 			break;
 		case 4:
-			birth_beginner = FALSE;
+			birth_beginner = TRUE;
 /*			birth_small_levels = TRUE; */
 			birth_evil = FALSE;
-			birth_intermediate = TRUE;
+			birth_intermediate = FALSE;
 			birth_campaign = FALSE;
 			break;
 		case 5:

@@ -241,8 +241,8 @@ static option_entry options[OPT_MAX] =
 { NULL,                  NULL,                                          FALSE }, /* 87 */
 { NULL,                  NULL,                                          FALSE }, /* 88 */
 { NULL,                  NULL,                                          FALSE }, /* 89 */
-{ "room_descriptions",   "Display room descriptions",                   TRUE }, /* 90 */
-{ "room_names",          "Display room names",                          TRUE }, /* 91 */
+{ "room_descriptions",   "Display room descriptions",                   FALSE }, /* 90 */
+{ "room_names",          "Display room names",                          FALSE }, /* 91 */
 { "verify_mana",         "Verify critical mana",                        FALSE }, /* 92 */
 { "easy_autos",          "Automatically inscribe all objects",          FALSE }, /* 93 */
 { "easy_search",         "Start searching if not disturbed",            FALSE }, /* 94 */
