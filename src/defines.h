@@ -1196,6 +1196,8 @@ enum
 #define FEAT_PERM_INNER	0x3D
 #define FEAT_PERM_OUTER	0x3E
 #define FEAT_PERM_SOLID	0x3F
+#define FEAT_PERM_ROOF	0x3E9
+#define FEAT_PERM_EDGE	0x3EA
 
 /* Extra features (need colour) */
 #define FEAT_UPPER_EXTRA 0x0040

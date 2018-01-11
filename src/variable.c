@@ -380,10 +380,10 @@ byte angband_color_table[256][4] =
 color_type color_table[256] =
 {							/* full mono vga blind lighter darker highlight metallic misc night */
 	{ 'd', "Dark",         {  0,  0,  0,  TERM_DARK,	TERM_L_DARK,	TERM_DARK,	TERM_DARK, 	TERM_L_DARK, 	TERM_DARK, 	TERM_DARK}},
-	{ 'w', "White",        {  1,  1,  1,  TERM_WHITE,	TERM_YELLOW,	TERM_SLATE,	TERM_WHITE,	TERM_YELLOW, 	TERM_WHITE,	TERM_NIGHT_DARK}},
+	{ 'w', "White",        {  1,  1,  1,  TERM_WHITE,	TERM_WHITE,	TERM_WHITE,	TERM_WHITE,	TERM_WHITE, 	TERM_WHITE,	TERM_NIGHT_DARK}},
 	{ 's', "Slate",        {  2,  1,  2,  TERM_SLATE,	TERM_L_WHITE,	TERM_L_DARK,	TERM_SLATE,	TERM_L_WHITE, 	TERM_SLATE,	TERM_NIGHT_DARK}},
 	{ 'o', "Orange",       {  3,  1,  3,  TERM_L_WHITE,	TERM_YELLOW,	TERM_DARK_RED,	TERM_ORANGE,	TERM_YELLOW, 	TERM_ORANGE,	TERM_NIGHT_RED}},
-	{ 'r', "Red",          {  4,  1,  4,  TERM_SLATE,	TERM_L_RED,	TERM_DARK_RED,	TERM_HIGH_RED,	TERM_L_RED, 	TERM_RED,	TERM_NIGHT_RED}},
+	{ 'r', "Red",          {  4,  1,  4,  TERM_SLATE,	TERM_RED,	TERM_RED,	TERM_RED,	TERM_RED, 	TERM_RED,	TERM_NIGHT_RED}},
 	{ 'g', "Green",        {  5,  1,  5,  TERM_SLATE,	TERM_L_GREEN,	TERM_DARK_GREEN,TERM_HIGH_GREEN,TERM_L_GREEN, 	TERM_GREEN,	TERM_NIGHT_GREEN}},
 	{ 'b', "Blue",         {  6,  1,  6,  TERM_SLATE,	TERM_L_BLUE,	TERM_DARK_BLUE,	TERM_HIGH_BLUE,	TERM_L_BLUE, 	TERM_BLUE,	TERM_NIGHT_BLUE}},
 	{ 'u', "Umber",        {  7,  1,  7,  TERM_L_DARK,	TERM_L_UMBER,	TERM_DARK_RED,	TERM_L_UMBER,	TERM_L_UMBER, 	TERM_UMBER,	TERM_NIGHT_DARK}},

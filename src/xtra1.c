@@ -675,14 +675,14 @@ int print_emergent_narrative(void)
 	int room = room_idx(p_ptr->py, p_ptr->px);
 	
 	char hungry_message[] = "You're hungry";
-	char you_message[18];
+	char character_level[7];
 	char name[62];
 	char text_visible[1024];
 	char text_always[1024];
 	char text_empty[] = "";
 	//empty[0] = '\0';
 	
-	sprintf(you_message, "@: You (L%2d)", p_ptr->lev);
+	sprintf(character_level, "(L%2d)", p_ptr->lev);
 
 	bool is_long_description;
 	
@@ -698,8 +698,8 @@ int print_emergent_narrative(void)
 	
 	/* Check if a description is long */
 	is_long_description = ((Term->hgt < 40 
-		&& strlen(text_always) > 85) 
-		|| strlen(text_always) > 125);
+		&& strlen(text_always) > 80) 
+		|| strlen(text_always) > 160);
 	
 	clear_sidebar(line_number, max_line_number);
 	
@@ -714,12 +714,10 @@ int print_emergent_narrative(void)
 		line_number++;
 	}
 	
-	line_number = print_text_in_sidebar(
-		line_number, 
-		TERM_L_WHITE, 
-		you_message, 
-		max_line_number, 
-		(bool) 0);
+	c_put_str(TERM_L_WHITE, "@: You", line_number, 0);
+	c_put_str(TERM_L_DARK, character_level, line_number, 7);
+	line_number++;
+	if (Term->hgt > 40) line_number++;
 	
 	line_number = print_monster_narrative(line_number, max_line_number);
 	line_number = print_object_narrative(line_number, max_line_number);
@@ -741,6 +739,11 @@ int print_emergent_narrative(void)
 		text_always, 
 		max_line_number, 
 		is_long_description);
+	
+	c_put_str(TERM_SLATE, "(arrows)Move", line_number++, 0);
+	line_number++;
+	c_put_str(TERM_SLATE, "(i)nventory", line_number++, 0);
+	c_put_str(TERM_SLATE, "(Q)Save&Quit", line_number++, 0);
 
 	return line_number;
 }

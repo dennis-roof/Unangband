@@ -199,10 +199,7 @@ Z:2:2
 G:h
 S:264:515:265:266:772:773:0:0
 L:0:56:0:411:155:0:0:0:SURFACE | DAYLIGHT | TOWN:the town of
-D:Here your adventure begins.  You can travel to Farmer Maggot's Farm or
-D: the East Road from here --- the easiest route by far is the East Road
-D: and then to Bree.  Press < to travel from any town, or when near the
-D: edge of the larger wilderness locations.
+D:Visit shops and prepare for your adventure. Touch the town edge to travel.
 
 N:2:Hobbiton in ruins
 X:7:12:0:0

@@ -1776,7 +1776,7 @@ F:ATTR_LITE |
 # 0x3C --> permanent wall -- basic (perm)
 
 N:60:permanent wall
-G:#:z
+G:#:w
 U:56
 #$ granite wall
 O:0
@@ -20303,3 +20303,31 @@ K:DEFAULT:1000:51
 F:LOS | PROJECT | MOVE | NOTICE | REMEMBER | ENTER | PERMANENT |
 F:GLOW | CAN_FLY |
 F:OUTSIDE | ATTR_LITE |
+
+# 0x3E9 --> permanent wall -- roof (perm)
+
+N:1001:permanent wall
+G:#:r
+U:56
+#$ granite wall
+O:0
+W:0:1:10:0
+K:DEFAULT:1001:0
+F:REMEMBER | TUNNEL | WALL | PERMANENT |
+F:FILLED | CAN_CLIMB |
+F:ATTR_LITE |
+D:This seems to be permanent rock.
+
+# 0x3EA --> permanent wall -- edge (perm)
+
+N:1002:permanent wall
+G:#:z
+U:56
+#$ granite wall
+O:0
+W:0:1:10:0
+K:DEFAULT:1002:0
+F:REMEMBER | TUNNEL | WALL | PERMANENT |
+F:FILLED | CAN_CLIMB |
+F:ATTR_LITE |
+D:This seems to be permanent rock.

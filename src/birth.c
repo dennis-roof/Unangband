@@ -2224,8 +2224,8 @@ static bool player_birth_aux_1(void)
 	p_ptr->max_lev = p_ptr->lev = 1;
 
 	/* First time player */
-	if (birth_first_time)
-	{
+	//if (birth_first_time)
+	//{
 		/* Choose the player's keyboard layout */
 		//if (!get_player_keyboard()) return (FALSE);
 
@@ -2243,29 +2243,29 @@ static bool player_birth_aux_1(void)
 		
 		/* Save the pref file */
 		dump_startup_prefs();
-	}
+	//}
 
 	/* Allow quickstart? */
-	else if (character_quickstart)
-	{
+	//else if (character_quickstart)
+	//{
 		/* Choose whether to use the last game's start-up */
-		if (!get_player_quickstart()) return (FALSE);
+		//if (!get_player_quickstart()) return (FALSE);
 
 		/* Clean up */
-		clear_question();
+		//clear_question();
 
 		/* Don't show choice any longer */
-		character_quickstart = FALSE;
+		//character_quickstart = FALSE;
 
 		/* If player is quickstarting, we are done */
-		if (birth_quickstart)
-		{
+		//if (birth_quickstart)
+		//{
 			/* Quick start the character */
-			player_birth_quickstart(&normal_quickstart);
+			//player_birth_quickstart(&normal_quickstart);
 
-			return (TRUE);
-		}
-	}
+			//return (TRUE);
+		//}
+	//}
 
 	/* Not quickstarting */
 	birth_quickstart = FALSE;

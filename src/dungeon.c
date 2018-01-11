@@ -2773,16 +2773,16 @@ static void process_command(void)
 #endif
 
 		/* Save and quit */
-		case KTRL('X'):
-		{
+		//case 'Q':
+		//{
 			/* Stop playing */
-			p_ptr->playing = FALSE;
+		//	p_ptr->playing = FALSE;
 
 			/* Leaving */
-			p_ptr->leaving = TRUE;
+		//	p_ptr->leaving = TRUE;
 
-			break;
-		}
+		//	break;
+		//}
 
 		/* Quit (commit suicide) */
 		case 'Q':

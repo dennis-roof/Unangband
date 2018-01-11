@@ -2930,15 +2930,16 @@ bool player_set_trap_or_spike(int item)
 
 static bool do_cmd_walk_test(int y, int x)
 {
+	int original_feature;
 	int feat;
 
 	cptr name;
 
 	/* Get feature */
-	feat = cave_feat[y][x];
+	original_feature = cave_feat[y][x];
 
 	/* Get mimiced feature */
-	feat = f_info[feat].mimic;
+	feat = f_info[original_feature].mimic;
 
 	/* Get the name */
 	name = (f_name + f_info[feat].name);
@@ -2954,6 +2955,14 @@ static bool do_cmd_walk_test(int y, int x)
 
 	/* Hack -- walking allows gathering XXX XXX */
 	if (f_info[feat].flags3 & (FF3_GET_FEAT)) return (TRUE);
+	
+	/* Travel when touching an outside edge */
+	if (p_ptr->outside 
+		&& (f_info[original_feature].flags1 & (FF1_PERMANENT))
+		&& (f_info[original_feature].flags1 & (FF1_SOLID))) {
+			do_cmd_go_up();
+			return (FALSE);
+	}
 
 	/* Player can not walk through "walls" */
 	/* Also cannot climb over unknown "trees/rubble" */
@@ -2988,6 +2997,9 @@ void do_cmd_walk()
 	int px = p_ptr->px;
 
 	int y, x, dir;
+	
+	int feat;
+	char query;
 
 	/* Get a direction (or abort) */
 	if (!get_rep_dir(&dir)) return;
@@ -3044,6 +3056,30 @@ void do_cmd_walk()
 
 	/* Move the player */
 	move_player(dir);
+	
+	feat = f_info[cave_feat[p_ptr->py][p_ptr->px]].mimic;
+
+	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_LESS))) {
+		put_str("Climb up the stairs? (y/n): ", 0, 0);
+		query = anykey().key;
+		put_str("                            ", 0, 0);
+		if (query == 'y')
+		{
+			do_cmd_go_up();
+			return (FALSE);
+		}
+	}
+
+	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_MORE))) {
+		put_str("Climb down the stairs? (y/n): ", 0, 0);
+		query = anykey().key;
+		put_str("                              ", 0, 0);
+		if (query == 'y')
+		{
+			do_cmd_go_down();
+			return (FALSE);
+		}
+	}
 }
 
 

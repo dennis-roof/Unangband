@@ -15493,23 +15493,28 @@ static void build_store(int feat, int yy, int xx)
 			for (x = x1; x <= x2; x++)
 			{
 				/* Create the building */
-				cave_set_feat(y, x, FEAT_PERM_EXTRA);
+				cave_set_feat(y, x, 
+					(y == 0 || (y-y1) / (float) (y2-y1) < 0.8 ? 
+						FEAT_PERM_ROOF : 
+						FEAT_PERM_EXTRA));
 			}
 		}
 	}
 
 	/* Pick a door direction (S,N,E,W) */
-	tmp = rand_int(4);
+	//tmp = rand_int(4);
 
 	/* Re-roll "annoying" doors */
-	if (((tmp == 0) && (yy == 1)) ||
-	    ((tmp == 1) && (yy == 0)) ||
-	    ((tmp == 2) && (xx == 3)) ||
-	    ((tmp == 3) && (xx == 0)))
-	{
+	//if (((tmp == 0) && (yy == 1)) ||
+	//    ((tmp == 1) && (yy == 0)) ||
+	//    ((tmp == 2) && (xx == 3)) ||
+	//    ((tmp == 3) && (xx == 0)))
+	//{
 		/* Pick a new direction */
-		tmp = rand_int(4);
-	}
+	//	tmp = rand_int(4);
+	//}
+	
+	tmp = 0;
 
 	/* Place the store door */
 	generate_door(y1, x1, y2, x2, tmp, feat);
