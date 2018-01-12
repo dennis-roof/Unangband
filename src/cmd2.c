@@ -3000,6 +3000,8 @@ void do_cmd_walk()
 	
 	int feat;
 	char query;
+	char climb_up_message[] = "Climb up the stairs? (y/n)";
+	char climb_down_message[] = "Climb down the stairs? (y/n)";
 
 	/* Get a direction (or abort) */
 	if (!get_rep_dir(&dir)) return;
@@ -3060,22 +3062,14 @@ void do_cmd_walk()
 	feat = f_info[cave_feat[p_ptr->py][p_ptr->px]].mimic;
 
 	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_LESS))) {
-		put_str("Climb up the stairs? (y/n): ", 0, 0);
-		query = anykey().key;
-		put_str("                            ", 0, 0);
-		if (query == 'y')
-		{
+		if (get_dialog(climb_up_message) == 'y') {
 			do_cmd_go_up();
 			return (FALSE);
 		}
 	}
 
 	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_MORE))) {
-		put_str("Climb down the stairs? (y/n): ", 0, 0);
-		query = anykey().key;
-		put_str("                              ", 0, 0);
-		if (query == 'y')
-		{
+		if (get_dialog(climb_down_message) == 'y') {
 			do_cmd_go_down();
 			return (FALSE);
 		}

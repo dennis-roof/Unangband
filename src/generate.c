@@ -15991,7 +15991,11 @@ void generate_cave(void)
 		if (level_flag & (LF1_TOWN))
 		{
 			/* Make a town */
-			if (!town_gen()) okay = FALSE;
+			if (!town_gen()) {
+				okay = FALSE;
+			} else {
+				p_ptr->town = p_ptr->dungeon;
+			}
 
 			/* Report why */
 			if (cheat_room) why = "defective town";
@@ -16156,7 +16160,16 @@ void generate_cave(void)
 		t_info[p_ptr->dungeon].visited = TRUE;
 
 		/* Show tip */
-		queue_tip(format("dungeon%d.txt", p_ptr->dungeon));
+		if (p_ptr->dungeon == 1) {
+			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
+			strcpy(p_ptr->dialog_text, "Your adventure begins here in Hobbiton. Acquire weapons, armor, and magical devices by bartering with shop owners. Then travel through the world of Unangband, explore dungeons, gain experience by killing fierce creatures and collect treasures.");
+		}
+		
+		if (p_ptr->dungeon == 5) {
+			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
+			strcpy(p_ptr->dialog_text, "A Heartfelt Love Letter: To Mrs Maggot, I'll be out in the fields again until sundown. As always, I'm looking forward to your home cooking. Have you seen the dogs? If they are chasing the neighbour's sheep again, I'll have to lock them in the cellar. Yours, Mr Maggot");
+		}
+		//queue_tip(format("dungeon%d.txt", p_ptr->dungeon));
 	}
 
 	/* Set maximum depth for this dungeon */

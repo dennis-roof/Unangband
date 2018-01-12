@@ -3718,6 +3718,12 @@ static void dungeon(void)
 
 		/* Handle "leaving" */
 		if (p_ptr->leaving) break;
+		
+		/* Display dialog box if text is set */
+		if (strlen(p_ptr->dialog_text) > 1) {
+			get_dialog(p_ptr->dialog_text);
+			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
+		}
 
 		/* Count game turns */
 		turn++;

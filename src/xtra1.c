@@ -740,10 +740,15 @@ int print_emergent_narrative(void)
 		max_line_number, 
 		is_long_description);
 	
-	c_put_str(TERM_SLATE, "(arrows)Move", line_number++, 0);
+	if (line_number < max_line_number)
+		c_put_str(TERM_SLATE, "(arrows)Move", line_number++, 0);
 	line_number++;
-	c_put_str(TERM_SLATE, "(i)nventory", line_number++, 0);
-	c_put_str(TERM_SLATE, "(Q)Save&Quit", line_number++, 0);
+	
+	if (line_number < max_line_number)
+		c_put_str(TERM_SLATE, "(i)nventory", line_number++, 0);
+	
+	if (line_number < max_line_number)
+		c_put_str(TERM_SLATE, "(Q)Save&Quit", line_number++, 0);
 
 	return line_number;
 }

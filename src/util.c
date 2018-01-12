@@ -3713,6 +3713,69 @@ bool get_check(cptr prompt)
 
 
 /*
+ * Show text in a dialog box and return the user keypress
+ */
+char get_dialog(char* text)
+{
+	char keypress;
+
+	int i;
+	int max_text_width = 56; // 40 dialog - 2x padding (left and right)
+	int starting_line_number = 3;
+	int line_number = starting_line_number;
+	int starting_line_column = (Term->wid / 2 - (max_text_width+4) / 2 + SIDEBAR_WID/2);
+	int line_column = starting_line_column;
+	
+	char token_trimmed[max_text_width+1];
+	char top_dialog_line[] = "************************************************************";
+	char open_dialog_line[] = "*                                                          *";
+	char bottom_dialog_line[] = "**************** Press any key to continue ****************";
+	
+	/* Prompt for it */
+	c_put_str(TERM_ORANGE, top_dialog_line, line_number++, starting_line_column);
+	c_put_str(TERM_ORANGE, open_dialog_line, line_number, starting_line_column);
+	
+	line_column = starting_line_column + 2;
+	char* token = strtok(text, " ");
+	
+	while( token != NULL && line_number < Term->hgt-1 ) {
+		if (strlen(token) > max_text_width) {
+			strncpy(token_trimmed, token, max_text_width);
+			token_trimmed[max_text_width] = '\0';
+		} else {
+			strcpy(token_trimmed, token);
+			token_trimmed[ strlen(token) ] = '\0';
+		}
+		
+		if ((line_column + strlen(token_trimmed)) 
+			>= starting_line_column+2+max_text_width) {
+				line_column = starting_line_column + 2;
+				line_number++;
+				c_put_str(TERM_ORANGE, open_dialog_line, line_number, starting_line_column);
+		}
+		
+		c_put_str(TERM_L_YELLOW, token_trimmed, line_number, line_column);
+		
+		line_column = line_column + strlen(token_trimmed) + 1;
+		
+		token = strtok(NULL, " ");
+	}
+	
+	line_number++;
+	c_put_str(TERM_ORANGE, bottom_dialog_line, line_number, starting_line_column);
+	
+	/* Retrieve keypress */
+	keypress = anykey().key;
+	
+	/* Clear message */
+	prt_map();
+	
+	/* Return keypress */
+	return keypress;
+}
+
+
+/*
  * Prompts for a keypress
  *
  * The "prompt" should take the form "Command: "

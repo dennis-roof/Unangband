@@ -1817,6 +1817,7 @@ struct player_type
 
 	char died_from[80];     /* Cause of death */
 	char history[250];    /* Initial history */
+	char dialog_text[300];     /* Dialog text to display */
 
 	u16b total_winner;      /* Total winner */
 	u16b panic_save;/* Panic save */

@@ -3086,7 +3086,7 @@ void player_birth(void)
 	}
 
 	/* Initialise birth tips */
-	if (adult_beginner)
+	if (FALSE && adult_beginner)
 	{
 		n = 1;
 
