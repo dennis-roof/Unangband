@@ -2596,11 +2596,11 @@ static void process_command(void)
 		}
 
 		/* Light or douse a light source */
-		case '|':
+		/*case '|':
 		{
 			do_cmd_item(COMMAND_ITEM_LITE);
 			break;
-		}
+		}*/
 
 		/*** Looking at Things (nearby or on map) ***/
 
@@ -3452,6 +3452,8 @@ static void process_player(void)
  */
 static void dungeon(void)
 {
+	bool player_move = FALSE;
+	
 	/* Hack -- enforce illegal panel */
 	p_ptr->wy = DUNGEON_HGT;
 	p_ptr->wx = DUNGEON_WID;
@@ -3654,6 +3656,9 @@ static void dungeon(void)
 				/* Process the player */
 				process_player();
 			}
+			
+			player_move = TRUE;
+			
 		}
 
 		/* Notice stuff */
@@ -3721,8 +3726,13 @@ static void dungeon(void)
 		
 		/* Display dialog box if text is set */
 		if (strlen(p_ptr->dialog_text) > 1) {
-			get_dialog(p_ptr->dialog_text);
+			get_dialog(p_ptr->dialog_text, FALSE);
 			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
+		}
+		
+		if (player_move) {
+			process_monster_speech();
+			player_move = FALSE;
 		}
 
 		/* Count game turns */

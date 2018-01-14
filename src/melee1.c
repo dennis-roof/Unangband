@@ -1062,6 +1062,7 @@ bool make_attack_normal(int m_idx, bool harmless)
 
 	char m_name[80];
 	char atk_desc[80];
+	char attack_speech[82];
 
 	char ddesc[80];
 
@@ -1203,7 +1204,10 @@ bool make_attack_normal(int m_idx, bool harmless)
 			result = attack_desc(atk_desc, -1, method, effect, damage, flg, 80);
 
 			/* Describe the attack */
-			if (result >= 0) msg_format("%^s %s", m_name, atk_desc);
+			//if (result >= 0) msg_format("%^s %s", m_name, atk_desc);
+			atk_desc[strlen(atk_desc)-1] = '*';
+			sprintf(attack_speech, "*%s", atk_desc);
+			if (result >= 0) add_monster_speech(m_ptr, attack_speech);
 
 			/* Slime */
 			if (method_ptr->flags2 & (PR2_SLIME))

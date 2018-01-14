@@ -15494,7 +15494,7 @@ static void build_store(int feat, int yy, int xx)
 			{
 				/* Create the building */
 				cave_set_feat(y, x, 
-					(y == 0 || (y-y1) / (float) (y2-y1) < 0.8 ? 
+					(y == 0 || (y-y1) / (float) (y2-y1) < 0.7 ? 
 						FEAT_PERM_ROOF : 
 						FEAT_PERM_EXTRA));
 			}

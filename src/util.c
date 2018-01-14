@@ -3711,11 +3711,70 @@ bool get_check(cptr prompt)
 	return (TRUE);
 }
 
+void add_monster_speech(monster_type *monster, char* speech)
+{
+	memset(monster->speech, '\0', sizeof(monster->speech));
+	
+	strncpy(monster->speech, speech, (strlen(speech) > 50 ? 50 : strlen(speech)));
+}
+
+void process_monster_speech()
+{
+	char speech[51];
+	int reserved_rows[300];
+	int speech_row;
+	int speech_col;
+	int c;
+	
+	int index;
+	
+	monster_type *monster;
+	
+	memset(reserved_rows, 0, sizeof(reserved_rows));
+	
+	if (p_ptr->remove_speech == TRUE) {
+		p_ptr->remove_speech = FALSE;
+		prt_map();
+	}
+
+	/* Loop over monsters to display new speech bubbles */
+	for (index = 1; index < z_info->m_max; index++) {
+		monster = &m_list[index];
+		
+		/* Only visible monsters */
+		if (!monster->ml) continue;
+		if (!player_can_see_bold(monster->fy, monster->fx)) continue;
+		
+		if (strlen(monster->speech) > 0) {
+			speech_row = (monster->fy < Term->hgt/2 ? monster->fy + 3 : monster->fy - 1);
+			
+			if (reserved_rows[speech_row] == 0) {
+				reserved_rows[speech_row] = 1;
+				
+				if (monster->fy < Term->hgt/2) {
+					c_put_str(TERM_ORANGE, "\\", monster->fy+2, monster->fx+1+SIDEBAR_WID);
+				} else {
+					c_put_str(TERM_ORANGE, "/", monster->fy, monster->fx+1+SIDEBAR_WID);
+				}
+				
+				speech_col = (monster->fx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
+				if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
+				if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
+				
+				c_put_str(TERM_L_YELLOW, monster->speech, speech_row, speech_col);
+				
+				memset(monster->speech, '\0', sizeof(monster->speech));
+				p_ptr->remove_speech = TRUE;
+			}
+		}
+	}
+}
+
 
 /*
  * Show text in a dialog box and return the user keypress
  */
-char get_dialog(char* text)
+char get_dialog(char* text, bool is_confirmation)
 {
 	char keypress;
 
@@ -3762,7 +3821,7 @@ char get_dialog(char* text)
 	}
 	
 	line_number++;
-	c_put_str(TERM_ORANGE, bottom_dialog_line, line_number, starting_line_column);
+	c_put_str(TERM_ORANGE, (is_confirmation ? top_dialog_line : bottom_dialog_line), line_number, starting_line_column);
 	
 	/* Retrieve keypress */
 	keypress = anykey().key;

@@ -2397,7 +2397,7 @@ sint scan_monsters(int *items, int size, int m_idx, int mode)
  */
 void display_inven(void)
 {
-  register int i, k, n = 0;
+	register int i, k, n = 0;
 	object_type *o_ptr;
 	byte attr;
 
@@ -2470,7 +2470,7 @@ void display_inven(void)
  */
 void display_equip(void)
 {
-  register int i, n;
+	register int i, n;
 	object_type *o_ptr;
 	byte attr;
 

@@ -1197,7 +1197,8 @@ struct monster_type
 	byte cdis;      /* Current dis from player */
 
 	bool ml;	/* Monster is "visible" */
-
+	
+	char speech[51];    /* Monster is speaking */
 };
 
 
@@ -1774,6 +1775,7 @@ struct player_type
 
 	s16b rest;      /* Current rest */
 	s16b water;     /* TODO: Current water */
+	s16b wet;     /* Count number of steps player remains wet and unlit */
 
 	s16b held_song;     /* Currently held song */
 	s16b spell_trap;	/* Spells the player cast get turned into traps */
@@ -2000,6 +2002,7 @@ struct player_type
 	byte outside;	/* Player is outside? */
 	bool cursed_quiver;	/* The quiver is cursed */
 
+	bool remove_speech; /* Remove displayed speech bubble */
 };
 
 

@@ -7762,7 +7762,8 @@ static void recover_monster(int m_idx, bool regen)
 		if ((m_ptr->summoned == MIN_TOWN_WARNING) && ((m_ptr->mflag & (MFLAG_TOWN)) != 0))
 		{
 			/* Note loss of patience. */
-			monster_speech(m_idx, (m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)], FALSE);
+			//monster_speech(m_idx, (m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)], FALSE);
+			add_monster_speech(m_ptr, (m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)]);
 		}
 
 		/* No longer summoned */
@@ -7802,7 +7803,8 @@ static void recover_monster(int m_idx, bool regen)
 				else if (m_ptr->mflag & (MFLAG_ALLY))
 				{
 					/* Note loss of allegiance. */
-					monster_speech(m_idx, comment_2a[rand_int(MAX_COMMENT_2a)], FALSE);
+					//monster_speech(m_idx, comment_2a[rand_int(MAX_COMMENT_2a)], FALSE);
+					add_monster_speech(m_ptr, comment_2a[rand_int(MAX_COMMENT_2a)]);
 				}
 				/* Only betray when the monster has support except rarely */
 				else if ((tell_allies_not_mflag(m_ptr->fy, m_ptr->fx, (MFLAG_TOWN), comment_2b[rand_int(MAX_COMMENT_2b)]))
@@ -7812,7 +7814,8 @@ static void recover_monster(int m_idx, bool regen)
 					monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 					/* Warn the player */
-					msg_format("%^s turns to fight.",m_name);
+					//msg_format("%^s turns to fight.",m_name);
+					add_monster_speech(m_ptr, comment_2b[rand_int(MAX_COMMENT_2b)]);
 
 					/* Become an enemy */
 					m_ptr->mflag &= ~(MFLAG_TOWN);
@@ -8035,7 +8038,8 @@ static void recover_monster(int m_idx, bool regen)
 				if ((m_ptr->cdis <= r_ptr->aaf) && (p_ptr->skills[SKILL_STEALTH] < rand_int(100)))
 				{
 					/* Give detailed messages */
-					if (m_ptr->ml) msg_format("%^s decides you are an easy target.", m_name);
+					//if (m_ptr->ml) msg_format("%^s decides you are an easy target.", m_name);
+					if (m_ptr->ml) add_monster_speech(m_ptr, "I see an easy target!");
 
 					/* Notice the player */
 					m_ptr->mflag &= ~(MFLAG_TOWN);
@@ -8047,7 +8051,8 @@ static void recover_monster(int m_idx, bool regen)
 					m_ptr->csleep = ((val * 2) + (s16b)randint(val * 10));
 
 					/* Give detailed messages */
-					if (m_ptr->ml) msg_format("%^s falls asleep.", m_name);
+					//if (m_ptr->ml) msg_format("%^s falls asleep.", m_name);
+					if (m_ptr->ml) add_monster_speech(m_ptr, "*falls asleep*");
 				}
 			}
 		}
@@ -8077,7 +8082,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s wakes up.", m_name);
+				//msg_format("%^s wakes up.", m_name);
+				add_monster_speech(m_ptr, "*wakes up*");
 			}
 		}
 
@@ -8119,7 +8125,8 @@ static void recover_monster(int m_idx, bool regen)
 						monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 						/* Dump a message */
-						msg_format("%^s is nearly awake.", m_name);
+						//msg_format("%^s is nearly awake.", m_name);
+						add_monster_speech(m_ptr, "*nearly awake*");
 					}
 					/* Notice when waking up a lot */
 					else if ((m_ptr->cdis < 6) && (m_ptr->csleep < 3 * d))
@@ -8128,7 +8135,8 @@ static void recover_monster(int m_idx, bool regen)
 						monster_desc(m_name, sizeof(m_name), m_idx, 0x02);
 
 						/* Dump a message */
-						msg_format("%^s slumber is disturbed.", m_name);
+						//msg_format("%^s slumber is disturbed.", m_name);
+						add_monster_speech(m_ptr, "*slumber disturbed*");
 					}
 				}
 			}
@@ -8146,7 +8154,8 @@ static void recover_monster(int m_idx, bool regen)
 					monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 					/* Dump a message */
-					msg_format("%^s wakes up.", m_name);
+					//msg_format("%^s wakes up.", m_name);
+					add_monster_speech(m_ptr, "*wakes up*");
 
 					/* Hack -- Update the health bar */
 					if (p_ptr->health_who == m_idx) p_ptr->redraw |= (PR_HEALTH);
@@ -8201,7 +8210,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer stunned.", m_name);
+				//msg_format("%^s is no longer stunned.", m_name);
+				add_monster_speech(m_ptr, "I can move again");
 			}
 		}
 	}
@@ -8232,7 +8242,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer confused.", m_name);
+				//msg_format("%^s is no longer confused.", m_name);
+				add_monster_speech(m_ptr, "Ah, there you are!");
 			}
 		}
 	}
@@ -8263,7 +8274,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer dazed.", m_name);
+				//msg_format("%^s is no longer dazed.", m_name);
+				add_monster_speech(m_ptr, "Oof, that hurt!");
 			}
 		}
 	}
@@ -8297,7 +8309,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer drugged.", m_name);
+				//msg_format("%^s is no longer drugged.", m_name);
+				add_monster_speech(m_ptr, "What? You drugged me!");
 			}
 		}
 	}
@@ -8328,7 +8341,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer terrified.", m_name);
+				//msg_format("%^s is no longer terrified.", m_name);
+				add_monster_speech(m_ptr, "I won't run anymore");
 			}
 		}
 	}
@@ -8359,7 +8373,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer forgetful.", m_name);
+				//msg_format("%^s is no longer forgetful.", m_name);
+				add_monster_speech(m_ptr, "Ah, I remember now");
 			}
 		}
 	}
@@ -8395,7 +8410,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_poss, sizeof(m_poss), m_idx, 0x22);
 
 				/* Dump a message */
-				msg_format("%^s recovers %s courage.", m_name, m_poss);
+				//msg_format("%^s recovers %s courage.", m_name, m_poss);
+				add_monster_speech(m_ptr, "You're not so tough");
 			}
 		}
 	}
@@ -8437,7 +8453,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s bleeds to death.", m_name);
+				//msg_format("%^s bleeds to death.", m_name);
+				add_monster_speech(m_ptr, "I'm fatally wounded!");
 			}
 
 			/* Take damage - only players can cut monsters */
@@ -8457,7 +8474,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer bleeding.", m_name);
+				//msg_format("%^s is no longer bleeding.", m_name);
+				add_monster_speech(m_ptr, "The bleeding has stopped");
 			}
 		}
 	}
@@ -8503,7 +8521,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer poisoned.", m_name);
+				//msg_format("%^s is no longer poisoned.", m_name);
+				add_monster_speech(m_ptr, "I'm no longer poisoned");
 			}
 		}
 	}
@@ -8535,7 +8554,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer blinded.", m_name);
+				//msg_format("%^s is no longer blinded.", m_name);
+				add_monster_speech(m_ptr, "My sight has returned");
 			}
 		}
 	}
@@ -8596,7 +8616,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				if ((r_ptr->flags1 & (RF1_NEVER_MOVE)) == 0) msg_format("%^s is now able to move again.", m_name);
+				//if ((r_ptr->flags1 & (RF1_NEVER_MOVE)) == 0) msg_format("%^s is now able to move again.", m_name);
+				if ((r_ptr->flags1 & (RF1_NEVER_MOVE)) == 0) add_monster_speech(m_ptr, "I can move again");
 			}
 
 			/* As we can now move, need to find new range */

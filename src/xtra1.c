@@ -247,8 +247,11 @@ static void prt_exp(void)
 	s32b exp_display;
 	byte attr;
 	int max_number;
+	int i;
 	
 	s32b xp_required = (player_exp[p_ptr->lev - 1] * p_ptr->expfact / 100L);
+	s32b xp_offset = (player_exp[p_ptr->lev - 2] * p_ptr->expfact / 100L);
+	int exp_bar = 0;
 
 	/*use different color if player's experience is drained*/
 	if (p_ptr->exp >= p_ptr->max_exp)
@@ -293,7 +296,15 @@ static void prt_exp(void)
 	  }
 	  else {
 	    //sprintf(out_val, "%6ld", exp_display);
-	    sprintf(out_val, "%6ld/%-6ld", p_ptr->exp, xp_required);
+	    
+	    sprintf(out_val, "[           ]");
+	    exp_bar = (int) ((p_ptr->exp - xp_offset) / (float) (xp_required - xp_offset) * 11);
+	    
+	    for (i = 1; i < 12; i++)
+		if (i-1 < exp_bar)
+	    		out_val[i] = '*';
+	    
+	    //sprintf(out_val, "%6ld/%-6ld", p_ptr->exp, xp_required);
 	  }
 	}
 
@@ -674,7 +685,7 @@ int print_emergent_narrative(void)
 	
 	int room = room_idx(p_ptr->py, p_ptr->px);
 	
-	char hungry_message[] = "You're hungry";
+	char wet_message[13];
 	char character_level[7];
 	char name[62];
 	char text_visible[1024];
@@ -683,7 +694,10 @@ int print_emergent_narrative(void)
 	//empty[0] = '\0';
 	
 	sprintf(character_level, "(L%2d)", p_ptr->lev);
-
+	
+	if (p_ptr->wet && p_ptr->wet > 0)
+		sprintf(wet_message, "Soaked for %d", p_ptr->wet);
+	
 	bool is_long_description;
 	
 	/* Get the room description */
@@ -703,12 +717,12 @@ int print_emergent_narrative(void)
 	
 	clear_sidebar(line_number, max_line_number);
 	
-	/* Additional hunger warning at the top left for larger screens */
-	if (Term->hgt > 40 && p_ptr->food < PY_FOOD_ALERT) {
+	/* Soaked message and count-down */
+	if (p_ptr->wet && p_ptr->wet > 0) {
 		line_number = print_text_in_sidebar(
 			line_number, 
-			TERM_L_RED, 
-			hungry_message, 
+			TERM_ORANGE, 
+			wet_message, 
 			max_line_number, 
 			(bool) 0);
 		line_number++;
@@ -748,7 +762,7 @@ int print_emergent_narrative(void)
 		c_put_str(TERM_SLATE, "(i)nventory", line_number++, 0);
 	
 	if (line_number < max_line_number)
-		c_put_str(TERM_SLATE, "(Q)Save&Quit", line_number++, 0);
+		c_put_str(TERM_SLATE, "(Q)uit", line_number++, 0);
 
 	return line_number;
 }
@@ -3356,82 +3370,95 @@ static void calc_hitpoints(void)
  */
 static void calc_torch(void)
 {
-	object_type *o_ptr = &inventory[INVEN_LITE];
+	int feat = f_info[cave_feat[p_ptr->py][p_ptr->px]].mimic;
+	
+	if (f_info[feat].flags2 & (FF2_WATER))
+		p_ptr->wet = 5;
+	
+	/* Assume player is always lit without light source */
+	if (p_ptr->wet && p_ptr->wet > 0) {
+		p_ptr->cur_lite = 0;
+		p_ptr->wet--;
+	} else {
+		p_ptr->cur_lite = 2;
+	}
+	
+	//object_type *o_ptr = &inventory[INVEN_LITE];
 
-	u32b f1;
-	u32b f2;
-	u32b f3;
-	u32b f4;
+	//u32b f1;
+	//u32b f2;
+	//u32b f3;
+	//u32b f4;
 
 	/* Assume no light */
-	p_ptr->cur_lite = 0;
+	//p_ptr->cur_lite = 0;
 
 	/* Get the object flags */
-	object_flags(o_ptr, &f1, &f2, &f3, &f4);
+	//object_flags(o_ptr, &f1, &f2, &f3, &f4);
 
 	/* Examine actual lites */
-	if (o_ptr->tval == TV_LITE)
-	{
+	//if (o_ptr->tval == TV_LITE)
+	//{
 		/* Burning torches provide some lite */
-		if ((o_ptr->sval == SV_LITE_TORCH) && (o_ptr->timeout > 0))
-		{
-			if (o_ptr->timeout < FUEL_LOW) p_ptr->cur_lite = 1;
-			else p_ptr->cur_lite = 2;
-		}
+		//if ((o_ptr->sval == SV_LITE_TORCH) && (o_ptr->timeout > 0))
+		//{
+		//	if (o_ptr->timeout < FUEL_LOW) p_ptr->cur_lite = 1;
+		//	else p_ptr->cur_lite = 2;
+		//}
 
 		/* Lanterns (with fuel) provide more lite */
-		if ((o_ptr->sval == SV_LITE_LANTERN) && (o_ptr->timeout > 0))
-		{
-			p_ptr->cur_lite = 2;
-		}
+		//if ((o_ptr->sval == SV_LITE_LANTERN) && (o_ptr->timeout > 0))
+		//{
+		//	p_ptr->cur_lite = 2;
+		//}
 
 		/* Artifact Lites provide permanent, bright, lite */
-		if (artifact_p(o_ptr))
-		{
-			p_ptr->cur_lite = 2;
+		//if (artifact_p(o_ptr))
+		//{
+		//	p_ptr->cur_lite = 2;
 
 #ifdef ALLOW_OBJECT_INFO_MORE
 			/* TODO: Sense as an artifact */
 #endif
 
-		}
+		//}
 
-	}
+	//}
 	/* Examine spells */
-	else if (o_ptr->tval == TV_SPELL)
-	{
-		if (f3 & (TR3_LITE))
-		{
-			p_ptr->cur_lite = 2;
+	//else if (o_ptr->tval == TV_SPELL)
+	//{
+		//if (f3 & (TR3_LITE))
+		//{
+			//p_ptr->cur_lite = 2;
 
 #ifdef ALLOW_OBJECT_INFO_MORE
-			object_can_flags(o_ptr,0x0L,0x0L,TR3_LITE,0x0L, FALSE);
+			//object_can_flags(o_ptr,0x0L,0x0L,TR3_LITE,0x0L, FALSE);
 #endif
-		}
-		else
-		{
-			p_ptr->cur_lite = 1;
-		}
-	}
+		//}
+		//else
+		//{
+			//p_ptr->cur_lite = 1;
+		//}
+	//}
 
 	/* Player is glowing */
-	if ((p_ptr->cur_flags3 & (TR3_LITE)) != 0)
-	{
+	//if ((p_ptr->cur_flags3 & (TR3_LITE)) != 0)
+	//{
 #ifdef ALLOW_OBJECT_INFO_MORE
-		equip_can_flags(0x0L,0x0L,TR3_LITE,0x0L);
+		//equip_can_flags(0x0L,0x0L,TR3_LITE,0x0L);
 #endif
-		p_ptr->cur_lite += p_ptr->glowing;
-	}
+		//p_ptr->cur_lite += p_ptr->glowing;
+	//}
 
 	/* Notice changes in the "lite radius" */
-	if (p_ptr->old_lite != p_ptr->cur_lite)
-	{
+	//if (p_ptr->old_lite != p_ptr->cur_lite)
+	//{
 		/* Update the visuals */
-		p_ptr->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
+		//p_ptr->update |= (PU_UPDATE_VIEW | PU_MONSTERS);
 
 		/* Remember the old lite */
-		p_ptr->old_lite = p_ptr->cur_lite;
-	}
+		//p_ptr->old_lite = p_ptr->cur_lite;
+	//}
 }
 
 

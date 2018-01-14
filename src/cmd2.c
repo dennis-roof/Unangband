@@ -3062,14 +3062,14 @@ void do_cmd_walk()
 	feat = f_info[cave_feat[p_ptr->py][p_ptr->px]].mimic;
 
 	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_LESS))) {
-		if (get_dialog(climb_up_message) == 'y') {
+		if (get_dialog(climb_up_message, TRUE) == 'y') {
 			do_cmd_go_up();
 			return (FALSE);
 		}
 	}
 
 	if ((f_info[feat].flags1 & (FF1_STAIRS)) && (f_info[feat].flags1 & (FF1_MORE))) {
-		if (get_dialog(climb_down_message) == 'y') {
+		if (get_dialog(climb_down_message, TRUE) == 'y') {
 			do_cmd_go_down();
 			return (FALSE);
 		}

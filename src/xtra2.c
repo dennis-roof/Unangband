@@ -909,227 +909,231 @@ bool set_cut(int v)
  */
 bool set_food(int v)
 {
-	int old_aux, new_aux;
+	/* Player never goes hungry and does not need food */
+	p_ptr->food = PY_FOOD_MAX - 1;
+	return (TRUE);
+	
+	//int old_aux, new_aux;
 
-	bool notice = FALSE;
+	//bool notice = FALSE;
 
 	/* Hack -- Force good values */
-	v = (v > 20000) ? 20000 : (v < 0) ? 0 : v;
+	//v = (v > 20000) ? 20000 : (v < 0) ? 0 : v;
 
 	/* Starving */
-	if (p_ptr->food < PY_FOOD_STARVE)
-	{
-		old_aux = 0;
-	}
+	//if (p_ptr->food < PY_FOOD_STARVE)
+	//{
+		//old_aux = 0;
+	//}
 
 	/* Fainting */
-	else if (p_ptr->food < PY_FOOD_FAINT)
-	{
-		old_aux = 1;
-	}
+	//else if (p_ptr->food < PY_FOOD_FAINT)
+	//{
+		//old_aux = 1;
+	//}
 
 	/* Weak */
-	else if (p_ptr->food < PY_FOOD_WEAK)
-	{
-		old_aux = 2;
-	}
+	//else if (p_ptr->food < PY_FOOD_WEAK)
+	//{
+		//old_aux = 2;
+	//}
 
 	/* Hungry */
-	else if (p_ptr->food < PY_FOOD_ALERT)
-	{
-		old_aux = 3;
-	}
+	//else if (p_ptr->food < PY_FOOD_ALERT)
+	//{
+		//old_aux = 3;
+	//}
 
 	/* Normal */
-	else if (p_ptr->food < PY_FOOD_FULL)
-	{
-		old_aux = 4;
-	}
+	//else if (p_ptr->food < PY_FOOD_FULL)
+	//{
+		//old_aux = 4;
+	//}
 
 	/* Full */
-	else if (p_ptr->food < PY_FOOD_MAX)
-	{
-		old_aux = 5;
-	}
+	//else if (p_ptr->food < PY_FOOD_MAX)
+	//{
+		//old_aux = 5;
+	//}
 
 	/* Gorged */
-	else
-	{
-		old_aux = 6;
-	}
+	//else
+	//{
+		//old_aux = 6;
+	//}
 
 	/* Starving */
-	if (v < PY_FOOD_STARVE)
-	{
-		new_aux = 0;
-	}
+	//if (v < PY_FOOD_STARVE)
+	//{
+		//new_aux = 0;
+	//}
 
 	/* Fainting */
-	else if (v < PY_FOOD_FAINT)
-	{
-		new_aux = 1;
-	}
+	//else if (v < PY_FOOD_FAINT)
+	//{
+		//new_aux = 1;
+	//}
 
 	/* Weak */
-	else if (v < PY_FOOD_WEAK)
-	{
-		new_aux = 2;
-	}
+	//else if (v < PY_FOOD_WEAK)
+	//{
+		//new_aux = 2;
+	//}
 
 	/* Hungry */
-	else if (v < PY_FOOD_ALERT)
-	{
-		new_aux = 3;
-	}
+	//else if (v < PY_FOOD_ALERT)
+	//{
+		//new_aux = 3;
+	//}
 
 	/* Normal */
-	else if (v < PY_FOOD_FULL)
-	{
-		new_aux = 4;
-	}
+	//else if (v < PY_FOOD_FULL)
+	//{
+		//new_aux = 4;
+	//}
 
 	/* Full */
-	else if (v < PY_FOOD_MAX)
-	{
-		new_aux = 5;
-	}
+	//else if (v < PY_FOOD_MAX)
+	//{
+		//new_aux = 5;
+	//}
 
 	/* Gorged */
-	else
-	{
-		new_aux = 6;
-	}
+	//else
+	//{
+		//new_aux = 6;
+	//}
 
 	/* Food increase */
-	if ((new_aux > old_aux) || ((v > p_ptr->food) && (new_aux == old_aux)))
-	{
+	//if ((new_aux > old_aux) || ((v > p_ptr->food) && (new_aux == old_aux)))
+	//{
 		/* Describe the state */
-		switch (new_aux)
-		{
+		//switch (new_aux)
+		//{
 			/* Weak */
-			case 0:
-			case 1:
-			case 2:
-			{
-				msg_print("You are still starving.");
-				break;
-			}
+			//case 0:
+			//case 1:
+			//case 2:
+			//{
+				//msg_print("You are still starving.");
+				//break;
+			//}
 
 			/* Hungry */
-			case 3:
-			{
-				msg_print("You are still hungry.");
-				break;
-			}
+			//case 3:
+			//{
+				//msg_print("You are still hungry.");
+				//break;
+			//}
 
 			/* Normal */
-			case 4:
-			{
-				if (new_aux != old_aux) msg_print("You are no longer hungry.");
-				break;
-			}
+			//case 4:
+			//{
+				//if (new_aux != old_aux) msg_print("You are no longer hungry.");
+				//break;
+			//}
 
 			/* Full */
-			case 5:
-			{
-				msg_print("You are full!");
-				break;
-			}
+			//case 5:
+			//{
+				//msg_print("You are full!");
+				//break;
+			//}
 
 			/* Bloated */
-			case 6:
-			{
-				msg_print("You have gorged yourself!");
-				break;
-			}
-		}
+			//case 6:
+			//{
+				//msg_print("You have gorged yourself!");
+				//break;
+			//}
+		//}
 
 		/* Change */
-		notice = TRUE;
-	}
+		//notice = TRUE;
+	//}
 
 	/* Food decrease */
-	else if (!new_aux || new_aux < old_aux)
-	{
+	//else if (!new_aux || new_aux < old_aux)
+	//{
 		/* Describe the state */
-		switch (new_aux)
-		{
+		//switch (new_aux)
+		//{
 		        /* A step from hunger death */
-			case 0:
-			{
+			//case 0:
+			//{
 			  /* Disturb */
-			  disturb(1, 1);
+			  //disturb(1, 1);
 
 			  /* Hack -- bell on first notice */
-			  if (new_aux < old_aux)
-			    bell("You are dying from hunger!");
+			  //if (new_aux < old_aux)
+			    //bell("You are dying from hunger!");
 
 			  /* Message */
-			  msg_print("You are dying from hunger!");
-			  msg_print(NULL);
-			  break;
-			}
+			  //msg_print("You are dying from hunger!");
+			  //msg_print(NULL);
+			  //break;
+			//}
 
 			/* Fainting / Starving */
-			case 1:
-			{
-				msg_print("You are getting faint from hunger!");
-				break;
-			}
+			//case 1:
+			//{
+				//msg_print("You are getting faint from hunger!");
+				//break;
+			//}
 
 			/* Weak */
-			case 2:
-			{
-				msg_print("You are getting weak from hunger!");
-				break;
-			}
+			//case 2:
+			//{
+				//msg_print("You are getting weak from hunger!");
+				//break;
+			//}
 
 			/* Hungry */
-			case 3:
-			{
-				msg_print("You are getting hungry.");
-				break;
-			}
+			//case 3:
+			//{
+				//msg_print("You are getting hungry.");
+				//break;
+			//}
 
 			/* Normal */
-			case 4:
-			{
-				msg_print("You are no longer full.");
-				break;
-			}
+			//case 4:
+			//{
+				//msg_print("You are no longer full.");
+				//break;
+			//}
 
 			/* Full */
-			case 5:
-			{
-				msg_print("You are no longer gorged.");
-				break;
-			}
-		}
+			//case 5:
+			//{
+				//msg_print("You are no longer gorged.");
+				//break;
+			//}
+		//}
 
 		/* Change */
-		notice = TRUE;
-	}
+		//notice = TRUE;
+	//}
 
 	/* Use the value */
-	p_ptr->food = v;
+	//p_ptr->food = v;
 
 	/* Nothing to notice */
-	if (!notice) return (FALSE);
+	//if (!notice) return (FALSE);
 
 	/* Disturb - wake player if hungry */
-	if (disturb_state) disturb(0, new_aux <= 2 ? TRUE : FALSE);
+	//if (disturb_state) disturb(0, new_aux <= 2 ? TRUE : FALSE);
 
 	/* Recalculate bonuses */
-	p_ptr->update |= (PU_BONUS);
+	//p_ptr->update |= (PU_BONUS);
 
 	/* Redraw hunger */
-	p_ptr->redraw |= (PR_HUNGER);
+	//p_ptr->redraw |= (PR_HUNGER);
 
 	/* Handle stuff */
-	handle_stuff();
+	//handle_stuff();
 
 	/* Result */
-	return (TRUE);
+	//return (TRUE);
 }
 
 
