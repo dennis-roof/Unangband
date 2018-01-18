@@ -156,7 +156,7 @@ static option_entry options[OPT_MAX] =
 { "use_sound",           "Use sound",                                   FALSE }, /* 2 */
 { "pickup_detail",       "Be verbose when picking things up",           TRUE },  /* 3 */
 { "use_old_target",      "Use old target by default",                   FALSE }, /* 4 */
-{ "pickup_always",       "Always pickup items",                         FALSE }, /* 5 */
+{ "pickup_always",       "Always pickup items",                         TRUE }, /* 5 */
 { "pickup_inven",        "Always pickup items matching inventory",      TRUE },  /* 6 */
 { NULL,                  NULL,                                          FALSE }, /* 7 */
 { NULL,                  NULL,                                          FALSE }, /* 8 */
@@ -245,7 +245,7 @@ static option_entry options[OPT_MAX] =
 { "room_names",          "Display room names",                          FALSE }, /* 91 */
 { "verify_mana",         "Verify critical mana",                        FALSE }, /* 92 */
 { "easy_autos",          "Automatically inscribe all objects",          FALSE }, /* 93 */
-{ "easy_search",         "Start searching if not disturbed",            FALSE }, /* 94 */
+{ "easy_search",         "Start searching if not disturbed",            TRUE }, /* 94 */
 { "view_glowing_lite",   "Use special colours for glowing lite",        TRUE }, /* 95 */
 { "show_sidebar",        "Display stats in main window",                FALSE }, /* 96 */
 { "show_itemlist",       "Display all items on the bottom line",        FALSE }, /* 97 */

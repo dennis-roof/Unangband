@@ -546,7 +546,7 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 	const char *basenm;
 	const char *modstr;
 
-	int power;
+	int power, min_damage, max_damage;
 
 	bool aware;
 	bool named;
@@ -1248,15 +1248,23 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 	/* Display the item like armour */
 	if (o_ptr->ac) show_armour = TRUE;
 
-	/* Dump base weapon info */
+	/* Dump base weapon info, shown as avg damage */
 	if (k_ptr->flags5 & (TR5_SHOW_DD))
 	{
+		min_damage = p_ptr->dis_to_d + o_ptr->dd + o_ptr->to_d;
+		max_damage = (p_ptr->dis_to_d + o_ptr->dd + o_ptr->to_d) * o_ptr->ds;
 		/* Append a "damage" string */
+		/*object_desc_chr_macro(t, ' ');
+		object_desc_chr_macro(t, p1);
+		object_desc_num_macro(t, o_ptr->dd + o_ptr->to_d);
+		object_desc_chr_macro(t, '-');
+		object_desc_num_macro(t, (o_ptr->dd + o_ptr->to_d) * o_ptr->ds);
+		object_desc_str_macro(t, " dmg");
+		object_desc_chr_macro(t, p2);*/
 		object_desc_chr_macro(t, ' ');
 		object_desc_chr_macro(t, p1);
-		object_desc_num_macro(t, o_ptr->dd);
-		object_desc_chr_macro(t, 'd');
-		object_desc_num_macro(t, o_ptr->ds);
+		object_desc_num_macro(t, (min_damage + max_damage) / 2 * p_ptr->num_blow);
+		object_desc_str_macro(t, " dmg");
 		object_desc_chr_macro(t, p2);
 	}
 
@@ -1268,42 +1276,49 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 
 		/* Append a "power" string */
 		object_desc_chr_macro(t, ' ');
-		object_desc_chr_macro(t, p1);
-		object_desc_chr_macro(t, 'x');
+		object_desc_chr_macro(t, p1); // p_ptr->num_fire
+		object_desc_num_macro(t, p_ptr->num_fire);
+		object_desc_str_macro(t, " shots/turn, ");
 		object_desc_num_macro(t, power);
+		object_desc_chr_macro(t, 'x');
+		object_desc_str_macro(t, " damage");
 		object_desc_chr_macro(t, p2);
 	}
 
-	/* Add the weapon bonuses */
+	/* Add the weapon bonuses eg. [+0, +0] */
 	if (bonus)
 	{
 		/* Show the tohit/todam on request */
-		if (show_weapon)
+		if (show_weapon && o_ptr->to_h > 0)
 		{
 			object_desc_chr_macro(t, ' ');
 			object_desc_chr_macro(t, p1);
-			object_desc_int_macro(t, o_ptr->to_h);
-			object_desc_chr_macro(t, ',');
-			object_desc_int_macro(t, o_ptr->to_d);
+			object_desc_int_macro(t, p_ptr->dis_to_h + o_ptr->to_h);
+			object_desc_str_macro(t, " accuracy");
+			//object_desc_chr_macro(t, ',');
+			//object_desc_int_macro(t, o_ptr->to_d);
+			//object_desc_str_macro(t, " dmg");
 			object_desc_chr_macro(t, p2);
 		}
 
 		/* Show the tohit if needed */
-		else if (o_ptr->to_h)
+		else if (o_ptr->to_h && o_ptr->to_h > 0)
 		{
 			object_desc_chr_macro(t, ' ');
 			object_desc_chr_macro(t, p1);
-			object_desc_int_macro(t, o_ptr->to_h);
+			object_desc_int_macro(t, p_ptr->dis_to_h + o_ptr->to_h);
+			object_desc_str_macro(t, " accuracy");
 			object_desc_chr_macro(t, p2);
 		}
 
-		/* Show the todam if needed */
+		/* Show the todam if needed, already used in avg damage calculation */
 		else if (o_ptr->to_d)
 		{
-			object_desc_chr_macro(t, ' ');
-			object_desc_chr_macro(t, p1);
-			object_desc_int_macro(t, o_ptr->to_d);
-			object_desc_chr_macro(t, p2);
+			//object_desc_chr_macro(t, ' ');
+			//object_desc_chr_macro(t, p1);
+			//object_desc_int_macro(t, o_ptr->to_d);
+			//object_desc_str_macro(t, " dmg");
+			//object_desc_chr_macro(t, p2);
 		}
 	}
 
@@ -1316,9 +1331,10 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 		{
 			object_desc_chr_macro(t, ' ');
 			object_desc_chr_macro(t, b1);
-			object_desc_num_macro(t, o_ptr->ac);
-			object_desc_chr_macro(t, ',');
-			object_desc_int_macro(t, o_ptr->to_a);
+			object_desc_num_macro(t, p_ptr->dis_to_a + o_ptr->ac + o_ptr->to_a);
+			object_desc_str_macro(t, " defense");
+			//object_desc_chr_macro(t, ',');
+			//object_desc_int_macro(t, o_ptr->to_a);
 			object_desc_chr_macro(t, b2);
 		}
 
@@ -1327,7 +1343,8 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 		{
 			object_desc_chr_macro(t, ' ');
 			object_desc_chr_macro(t, b1);
-			object_desc_int_macro(t, o_ptr->to_a);
+			object_desc_int_macro(t, p_ptr->dis_to_a + o_ptr->to_a);
+			object_desc_str_macro(t, " defense");
 			object_desc_chr_macro(t, b2);
 		}
 	}
@@ -1337,7 +1354,8 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 	{
 		object_desc_chr_macro(t, ' ');
 		object_desc_chr_macro(t, b1);
-		object_desc_num_macro(t, o_ptr->ac);
+		object_desc_num_macro(t, p_ptr->dis_to_a + o_ptr->ac);
+		object_desc_str_macro(t, " defense");
 		object_desc_chr_macro(t, b2);
 	}
 
@@ -2788,7 +2806,7 @@ void show_inven(void)
 			if (i < p_ptr->pack_size_reduce_quiver)
 			{
 				strnfmt(o_name, sizeof(o_name), "(QUIVER - %d missile%s)", ammo_slot, (ammo_slot == 1) ? "": "s");
-				attr = TERM_BLUE;
+				attr = TERM_HIGH_BLUE;
 			}
 			/* Hack -- use "(BAG CONTENTS)" as a description. */
 			else if (i < p_ptr->pack_size_reduce_quiver + p_ptr->pack_size_reduce_bags)

@@ -1417,13 +1417,81 @@ bool stat_commands(char choice, const s16b *sn, int i, bool *redraw)
 	return (TRUE);
 }
 
+int remove_drained_stat(int stat) {
+	int tmp = 0;
+	
+	if (p_ptr->stat_cur[stat] < p_ptr->stat_max[stat])
+		tmp = p_ptr->stat_cur[stat];
+	p_ptr->stat_cur[stat] = p_ptr->stat_max[stat];
+	
+	return tmp;
+}
+
+void set_stat(int stat, int value) {
+	p_ptr->stat_cur[stat] = value;
+}
+
 /*
  * Improve a player-chosen set of stats.
  * Note the hack to always improve the maximal value of a stat.
  */
 static void improve_stat(void)
 {
-	int tmp = 0;
+	char keypress;
+	bool valid_choice = FALSE;
+	
+	int old_str, old_con, old_dex, old_agi, old_int, old_wis;
+	
+	char improve_stat_dialog[] = "Congratulations, you gained a level and can improve your character. Choose:\n\n (1) to improve your strength\n (2) to improve your agility\n (3) to improve your magic skill";
+	
+	keypress = get_dialog(improve_stat_dialog, TRUE, "123");
+	
+	switch (keypress) {
+		case '1':
+			old_str = remove_drained_stat(A_STR);
+			old_con = remove_drained_stat(A_CON);
+			
+			inc_stat(A_STR);
+			inc_stat(A_CON);
+			
+			/* restore drained stats */
+			if (old_str) set_stat(A_STR, old_str);
+			if (old_con) set_stat(A_CON, old_con);
+
+			break;
+		case '2':
+			old_dex = remove_drained_stat(A_DEX);
+			old_agi = remove_drained_stat(A_AGI);
+			
+			inc_stat(A_DEX);
+			inc_stat(A_AGI);
+			
+			/* restore drained stats */
+			if (old_dex) set_stat(A_DEX, old_dex);
+			if (old_agi) set_stat(A_AGI, old_agi);
+			
+			break;
+		case '3':
+			old_int = remove_drained_stat(A_INT);
+			old_wis = remove_drained_stat(A_WIS);
+			
+			inc_stat(A_INT);
+			inc_stat(A_WIS);
+			
+			/* restore drained stats */
+			if (old_int) set_stat(A_INT, old_int);
+			if (old_wis) set_stat(A_WIS, old_wis);
+			
+			break;
+	}
+	
+	/* Update stats */
+	p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
+	update_stuff();
+	
+	return;
+	
+	/*int tmp = 0;
 	int i;
 
 	s16b table[A_MAX+1];
@@ -1434,201 +1502,201 @@ static void improve_stat(void)
 
 	cptr p = "";
 
-	int count = 0;
+	int count = 0;*/
 
 #ifdef ALLOW_BORG
-	if (count_stop) return;
+	//if (count_stop) return;
 #endif
 
 	/* Flush messages */
-	if (easy_more) messages_easy(FALSE);
+	//if (easy_more) messages_easy(FALSE);
 
 	/* Check which stats can still be improved and store old stats*/
-	for (i = 0; i < A_MAX; i++)
-	{
-		table[i] = i;
-		if (p_ptr->stat_max[i] < 18 + 999) count++;
-		old_max[i] = p_ptr->stat_max[i];
-		old_cur[i] = p_ptr->stat_cur[i];
-	}
+	//for (i = 0; i < A_MAX; i++)
+	//{
+	//	table[i] = i;
+	//	if (p_ptr->stat_max[i] < 18 + 999) count++;
+	//	old_max[i] = p_ptr->stat_max[i];
+	//	old_cur[i] = p_ptr->stat_cur[i];
+	//}
 
 	/* No stats left to improve */
-	if (!count) return;
+	//if (!count) return;
 
 	/* Reduce count to number of abilities allowed improvements */
-	if (count > stat_gains[p_ptr->lev -1]) count = stat_gains[p_ptr->lev -1];
+	//if (count > stat_gains[p_ptr->lev -1]) count = stat_gains[p_ptr->lev -1];
 
-	if (adult_rand_stats)
-	{
-		/* Improve how many stats with level gain */
-		for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
-		{
-			/* Pick a random stat */
-			stat_gain_selection[stat_gain_selected] = rand_int(A_MAX);
-			
-			/* Valid choice? */
-			if (p_ptr->stat_max[stat_gain_selection[stat_gain_selected]] < 18 + 999)
-			{
-				bool okay = TRUE;
-				
-				/* Check we are not improving another stat */
-				for (i = 0; i < stat_gain_selected; i++)
-				{
-					if (stat_gain_selection[i] == stat_gain_selection[stat_gain_selected]) okay = FALSE;
-				}
-				
-				/* Retry */
-				if (!okay) stat_gain_selected--;
-			}
-			else
-			{
-				/* Retry */
-				stat_gain_selected--;
-			}
-		}
+	//if (adult_rand_stats)
+	//{
+	//	/* Improve how many stats with level gain */
+	//	for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
+	//	{
+	//		/* Pick a random stat */
+	//		stat_gain_selection[stat_gain_selected] = rand_int(A_MAX);
+	//		
+	//		/* Valid choice? */
+	//		if (p_ptr->stat_max[stat_gain_selection[stat_gain_selected]] < 18 + 999)
+	//		{
+	//			bool okay = TRUE;
+	//			
+	//			/* Check we are not improving another stat */
+	//			for (i = 0; i < stat_gain_selected; i++)
+	//			{
+	//				if (stat_gain_selection[i] == stat_gain_selection[stat_gain_selected]) okay = FALSE;
+	//			}
+	//			
+	//			/* Retry */
+	//			if (!okay) stat_gain_selected--;
+	//		}
+	//		else
+	//		{
+	//			/* Retry */
+	//			stat_gain_selected--;
+	//		}
+	//	}
 		
         /* Improve how many stats with level gain */
-        for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
-        {
+        //for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
+        //{
 			/* Display */
-			if (p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] < p_ptr->stat_max[stat_gain_selection[stat_gain_selected]])
-			{
-				/* Set description */
-				p = "you could be ";
-				
-				/* Hack --- store stat */
-				tmp = p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]];
-				p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = p_ptr->stat_max[stat_gain_selection[stat_gain_selected]];
-			}
-			else
-			{
-				p = "";
-				tmp = 0;
-			}
-			
-			/* Increase */
-			inc_stat(stat_gain_selection[stat_gain_selected]);
+	//		if (p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] < p_ptr->stat_max[stat_gain_selection[stat_gain_selected]])
+	//		{
+	//			/* Set description */
+	//			p = "you could be ";
+	//			
+	//			/* Hack --- store stat */
+	//			tmp = p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]];
+	//			p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = p_ptr->stat_max[stat_gain_selection[stat_gain_selected]];
+	//		}
+	//		else
+	//		{
+	//			p = "";
+	//			tmp = 0;
+	//		}
+	//		
+	//		/* Increase */
+	//		inc_stat(stat_gain_selection[stat_gain_selected]);
 #if 0
 			/* Message */
-			msg_format("You feel %s%s.",p,desc_stat_imp[stat_gain_selection[stat_gain_selected]]);
+	//		msg_format("You feel %s%s.",p,desc_stat_imp[stat_gain_selection[stat_gain_selected]]);
 #endif
 			/* Hack --- restore stat */
-			if (tmp) p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = tmp;
-        }
+	//		if (tmp) p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = tmp;
+        //}
 		
 		/* end adult_rand_stats */
-		return;
-	}
+	//	return;
+	//}
 	
 	/* Save screen */
-	screen_save();
+	//screen_save();
 	
 	/* Update stats */
-	p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
-	update_stuff();
+	//p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
+	//update_stuff();
 
 	/* Confirm stat selection */
-	while (count)
-	{
-		/* Improve how many stats with level gain */
-		for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
-		{
-			/* Should be paranoid here */
-			while (TRUE)
-			{
-				sprintf(buf,"Improve which attribute%s (%d)", count > 1 ? "s" : "", count - stat_gain_selected);
-				
-				/* Select stat to improve */
-				if (get_list(print_stats, table, A_MAX, "Attribute", buf, ", ?=help", 1, 36, stat_commands, &(stat_gain_selection[stat_gain_selected])))
-				{
-					/* Check if stat at maximum */
-					if (p_ptr->stat_max[stat_gain_selection[stat_gain_selected]] >= 18 + 999)
-					{
-						msg_format("You cannot get any better.");
-					}
+	//while (count)
+	//{
+	//	/* Improve how many stats with level gain */
+	//	for (stat_gain_selected = 0; stat_gain_selected < count; stat_gain_selected++)
+	//	{
+	//		/* Should be paranoid here */
+	//		while (TRUE)
+	//		{
+	//			sprintf(buf,"Improve which attribute%s (%d)", count > 1 ? "s" : "", count - stat_gain_selected);
+	//			
+	//			/* Select stat to improve */
+	//			if (get_list(print_stats, table, A_MAX, "Attribute", buf, ", ?=help", 1, 36, stat_commands, &(stat_gain_selection[stat_gain_selected])))
+	//			{
+	//				/* Check if stat at maximum */
+	//				if (p_ptr->stat_max[stat_gain_selection[stat_gain_selected]] >= 18 + 999)
+	//				{
+	//					msg_format("You cannot get any better.");
+	//				}
 
-					/* Good stat_gain_selection? */
-					else
-					{
-						bool okay = TRUE;
+	//				/* Good stat_gain_selection? */
+	//				else
+	//				{
+	//					bool okay = TRUE;
 
-						/* Check we are not improving another stat */
-						for (i = 0; i < stat_gain_selected; i++)
-						{
-							if (stat_gain_selection[i] == stat_gain_selection[stat_gain_selected]) okay = FALSE;
-						}
+	//					/* Check we are not improving another stat */
+	//					for (i = 0; i < stat_gain_selected; i++)
+	//					{
+	//						if (stat_gain_selection[i] == stat_gain_selection[stat_gain_selected]) okay = FALSE;
+	//					}
 
-						if (okay)
-						{
-							/* Check for drained stats */
-							if (p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]]
-								   < p_ptr->stat_max[stat_gain_selection[stat_gain_selected]])
-								tmp = p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]];
-							else
-								tmp = 0;
-							
-							/* Temporarily restore the stat before increasing */
-							p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = p_ptr->stat_max[stat_gain_selection[stat_gain_selected]];
-							
-							/* Increase */
-							inc_stat(stat_gain_selection[stat_gain_selected]);
-							
-							/* Restore drained stats */
-							if (tmp) p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = tmp;
+	//					if (okay)
+	//					{
+	//						/* Check for drained stats */
+	//						if (p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]]
+	//							   < p_ptr->stat_max[stat_gain_selection[stat_gain_selected]])
+	//							tmp = p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]];
+	//						else
+	//							tmp = 0;
+	//						
+	//						/* Temporarily restore the stat before increasing */
+	//						p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = p_ptr->stat_max[stat_gain_selection[stat_gain_selected]];
+	//						
+	//						/* Increase */
+	//						inc_stat(stat_gain_selection[stat_gain_selected]);
+	//						
+	//						/* Restore drained stats */
+	//						if (tmp) p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] = tmp;
 
-							/* Update stats */
-							p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
-							update_stuff();
+	//						/* Update stats */
+	//						p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
+	//						update_stuff();
 							
 							/* Redisplay stats */
-							print_stats(table, A_MAX, 1, 36);
+	//						print_stats(table, A_MAX, 1, 36);
 														
-							break;
-						}
-					}
-				}
-				else
-				{
+	//						break;
+	//					}
+	//				}
+	//			}
+	//			else
+	//			{
 					/* Clear the attributes */
-					stat_gain_selected = 0;
+	//				stat_gain_selected = 0;
 					
 					/* Restore old stats */
-					for (i = 0; i < A_MAX; i++)
-					{
-						p_ptr->stat_max[i] = old_max[i];
-						p_ptr->stat_cur[i] = old_cur[i];
-					}
+	//				for (i = 0; i < A_MAX; i++)
+	//				{
+	//					p_ptr->stat_max[i] = old_max[i];
+	//					p_ptr->stat_cur[i] = old_cur[i];
+	//				}
 
 					/* Update stats */
-					p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
-					update_stuff();
-				}
-			}
-		}
+	//				p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
+	//				update_stuff();
+	//			}
+	//		}
+	//	}
 
 		/* Redisplay stats */			
-		print_stats(table, A_MAX, 1, 36);
+	//	print_stats(table, A_MAX, 1, 36);
 
 		/* Confirm? */
-		if (get_check("Increasing highlighted stats. Are you sure? "))
-		{
-			break;
-		}
+	//	if (get_check("Increasing highlighted stats. Are you sure? "))
+	//	{
+	//		break;
+	//	}
 
 		/* Otherwise restore old stats */
-		for (i = 0; i < A_MAX; i++)
-		{
-			p_ptr->stat_max[i] = old_max[i];
-			p_ptr->stat_cur[i] = old_cur[i];
-		}
+	//	for (i = 0; i < A_MAX; i++)
+	//	{
+	//		p_ptr->stat_max[i] = old_max[i];
+	//		p_ptr->stat_cur[i] = old_cur[i];
+	//	}
 
 		/* Update stats */
-		p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
-		update_stuff();
-	}
+	//	p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
+	//	update_stuff();
+	//}
 	
 	/* Load screen */
-	screen_load();	
+	//screen_load();	
 }
 
 
@@ -3171,12 +3239,12 @@ bool mon_take_hit(int m_idx, int dam, bool *fear, cptr note)
 			 (r_ptr->flags2 & (RF2_STUPID)))
 		{
 			/* Warn allies */
-			tell_allies_death(m_ptr->fy, m_ptr->fx, "& has destroyed one of us!");
+			tell_allies_death(m_ptr->fy, m_ptr->fx, "They has destroyed one of us!");
 		}
 		else
 		{
 			/* Warn allies */
-			tell_allies_death(m_ptr->fy, m_ptr->fx, "& has killed one of us!");
+			tell_allies_death(m_ptr->fy, m_ptr->fx, "They has killed one of us!");
 		}
 
 		/* Death of player allies doesn't provide experience */
@@ -5827,7 +5895,7 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 					break;
 				}
 
-				case ' ':
+				//case ' ':
 				case '*':
 				case '+':
 				{
@@ -5996,6 +6064,8 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 				case '5':
 				case '0':
 				case '@':
+				case 'f':
+				case ' ':
 				{
 					int m_idx = cave_m_idx[y][x];
 
@@ -6080,6 +6150,7 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 				/* Use interesting grid if found */
 				if (i >= 0) m = i;
 			}
+			
 		}
 
 		/* Arbitrary grids */
@@ -6107,7 +6178,7 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 					break;
 				}
 
-				case ' ':
+				//case ' ':
 				case '*':
 				case '+':
 				case '-':
@@ -6270,6 +6341,8 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 				case 't':
 				case '5':
 				case '0':
+				case 'f':
+				case ' ':
 				{
 					/* Prevent easy suicide */
 					if ((p_ptr->py == y) && (p_ptr->px == x))
@@ -6312,6 +6385,7 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 					break;
 				}
 			}
+
 
 			/* Handle "direction" */
 			if (d)
@@ -6369,7 +6443,9 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 					handle_stuff();
 				}
 			}
+			
 		}
+
 	}
 
 	/* Forget */
@@ -6442,6 +6518,8 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 	int dir;
 
 	key_event ke;
+	
+	char keypress = '*';
 
 	cptr p;
 
@@ -6468,8 +6546,8 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 	if (use_old_target && target_okay()) dir = 5;
 
 	/* Ask until satisfied */
-	while (!dir)
-	{
+	//while (!dir)
+	//{
 		/* Choose a prompt */
 		if (!target_okay())
 		{
@@ -6481,10 +6559,10 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 		}
 
 		/* Get a command (or Cancel) */
-		if (!get_com_ex(p, &ke)) break;
+		//if (!get_com_ex(p, &ke)) break;
 
 		/* Analyze */
-		switch (ke.key)
+		switch (keypress /*ke.key*/)
 		{
 			/* Mouse aiming */
 			case '\xff':
@@ -6500,7 +6578,7 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 					dir = 5;
 					break;
 				}
-				else continue;
+				//else continue;
 			}
 
 			/* Set new target, use target if legal */
@@ -6530,7 +6608,7 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 
 		/* Error */
 		if (!dir) bell("Illegal aim direction!");
-	}
+	//}
 
 	/* No direction */
 	if (!dir) return (FALSE);

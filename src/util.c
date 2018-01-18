@@ -3774,11 +3774,12 @@ void process_monster_speech()
 /*
  * Show text in a dialog box and return the user keypress
  */
-char get_dialog(char* text, bool is_confirmation)
+char get_dialog(char* text, bool is_confirmation, char* valid_keys)
 {
 	char keypress;
+	bool is_valid_key = FALSE;
 
-	int i;
+	int i, newlines;
 	int max_text_width = 56; // 40 dialog - 2x padding (left and right)
 	int starting_line_number = 3;
 	int line_number = starting_line_number;
@@ -3788,7 +3789,7 @@ char get_dialog(char* text, bool is_confirmation)
 	char token_trimmed[max_text_width+1];
 	char top_dialog_line[] = "************************************************************";
 	char open_dialog_line[] = "*                                                          *";
-	char bottom_dialog_line[] = "**************** Press any key to continue ****************";
+	char bottom_dialog_line[] = "****************** Press space to continue *****************";
 	
 	/* Prompt for it */
 	c_put_str(TERM_ORANGE, top_dialog_line, line_number++, starting_line_column);
@@ -3798,6 +3799,14 @@ char get_dialog(char* text, bool is_confirmation)
 	char* token = strtok(text, " ");
 	
 	while( token != NULL && line_number < Term->hgt-1 ) {
+		newlines = 0;
+		
+		for (i = 0; i < strlen(token); i++)
+			if (token[i] == '\n') {
+				newlines++;
+				token[i] = ' ';
+			}
+		
 		if (strlen(token) > max_text_width) {
 			strncpy(token_trimmed, token, max_text_width);
 			token_trimmed[max_text_width] = '\0';
@@ -3817,6 +3826,14 @@ char get_dialog(char* text, bool is_confirmation)
 		
 		line_column = line_column + strlen(token_trimmed) + 1;
 		
+		if (newlines > 0) {
+			line_column = starting_line_column + 2;
+			for (i = 0; i < newlines; i++) {
+				line_number++;
+				c_put_str(TERM_ORANGE, open_dialog_line, line_number, starting_line_column);
+			}
+		}
+		
 		token = strtok(NULL, " ");
 	}
 	
@@ -3824,7 +3841,19 @@ char get_dialog(char* text, bool is_confirmation)
 	c_put_str(TERM_ORANGE, (is_confirmation ? top_dialog_line : bottom_dialog_line), line_number, starting_line_column);
 	
 	/* Retrieve keypress */
-	keypress = anykey().key;
+	if (strlen(valid_keys) == 0) {
+		while (! is_valid_key) {
+			keypress = anykey().key;
+			if (keypress == ' ') is_valid_key = TRUE;
+		}
+	} else {
+		while (! is_valid_key) {
+			keypress = anykey().key;
+			for (i = 0; i < strlen(valid_keys); i++)
+				if (keypress == valid_keys[i])
+					is_valid_key = TRUE;
+		}
+	}
 	
 	/* Clear message */
 	prt_map();

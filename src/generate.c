@@ -16162,12 +16162,12 @@ void generate_cave(void)
 		/* Show tip */
 		if (p_ptr->dungeon == 1) {
 			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
-			strcpy(p_ptr->dialog_text, "Your adventure begins here in Hobbiton. Acquire weapons, armor, and magical devices by bartering with shop owners. Then travel through the world of Unangband, explore dungeons, gain experience by killing fierce creatures and collect treasures.");
+			strcpy(p_ptr->dialog_text, "Your adventure begins here in Hobbiton.\n\n Acquire weapons, armor, and magical devices by bartering with shop owners. Then travel through the world of Unangband, explore dungeons, gain experience by killing fierce creatures and collect treasures.");
 		}
 		
 		if (p_ptr->dungeon == 5) {
 			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
-			strcpy(p_ptr->dialog_text, "A Heartfelt Love Letter: To Mrs Maggot, I'll be out in the fields again until sundown. As always, I'm looking forward to your home cooking. Have you seen the dogs? If they are chasing the neighbour's sheep again, I'll have to lock them in the cellar. Yours, Mr Maggot");
+			strcpy(p_ptr->dialog_text, "A Heartfelt Love Letter:\n\n To Mrs Maggot, I'll be out in the fields again until sundown. As always, I'm looking forward to your home cooking.\n\n Have you seen the dogs? If they are chasing the neighbour's sheep again, I'll have to lock them in the cellar.\n\n Yours, Mr Maggot");
 		}
 		//queue_tip(format("dungeon%d.txt", p_ptr->dungeon));
 	}

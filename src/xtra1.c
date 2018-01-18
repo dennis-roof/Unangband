@@ -271,7 +271,7 @@ static void prt_exp(void)
 			       p_ptr->exp);
 		/*Print experience label*/
 		//put_str("NEXT ", ROW_EXP, COL_EXP);
-		put_str("XP:", ROW_EXP, COL_EXP);
+		put_str("XP:", ROW_EXP, COL_EXP-4);
 
 		max_number = 99999;
 	}
@@ -281,7 +281,7 @@ static void prt_exp(void)
 
 		/*Print experience label*/
 		//put_str("EXP ", ROW_EXP, COL_EXP);
-		put_str("XP:", ROW_EXP, COL_EXP);
+		put_str("XP:", ROW_EXP, COL_EXP-4);
 
 		max_number = 999999;
 	}
@@ -297,10 +297,10 @@ static void prt_exp(void)
 	  else {
 	    //sprintf(out_val, "%6ld", exp_display);
 	    
-	    sprintf(out_val, "[           ]");
-	    exp_bar = (int) ((p_ptr->exp - xp_offset) / (float) (xp_required - xp_offset) * 11);
+	    sprintf(out_val, "[               ]");
+	    exp_bar = (int) ((p_ptr->exp - xp_offset) / (float) (xp_required - xp_offset) * 15);
 	    
-	    for (i = 1; i < 12; i++)
+	    for (i = 1; i < 16; i++)
 		if (i-1 < exp_bar)
 	    		out_val[i] = '*';
 	    
@@ -308,7 +308,7 @@ static void prt_exp(void)
 	  }
 	}
 
-	c_put_str(attr, out_val, ROW_EXP, COL_EXP + 3);
+	c_put_str(attr, out_val, ROW_EXP, COL_EXP - 1);
 }
 
 
@@ -670,6 +670,24 @@ int print_room_narrative(int line_number, char* title, char* text, int max_line_
 	return line_number;
 }
 
+/*
+ * Get direction name from NESW direction and set to name
+ */
+void get_destination_name(char *name, town_type *t_ptr, int direction)
+{
+	int destination_trim_size;
+	char destination_name[43];
+	char directionArrow[] = "^>v<";
+	
+	memset(name, '\0', sizeof(name));
+	
+	if (t_ptr->nearby[direction] != 0) {
+		long_level_name(destination_name, t_ptr->nearby[direction], 0);
+		destination_trim_size = strlen(destination_name);
+		if (destination_trim_size > 11) destination_trim_size = 14;
+		snprintf(name, destination_trim_size, "%c %s", directionArrow[direction], destination_name);
+	}
+}
 
 /*
  * Print emergent narrative using:
@@ -681,7 +699,9 @@ int print_room_narrative(int line_number, char* title, char* text, int max_line_
 int print_emergent_narrative(void)
 {
 	int line_number = 1;
-	int max_line_number = (Term->hgt - 3);
+	int max_line_number = (Term->hgt - 2);
+	int ammo;
+	char ammo_message[10];
 	
 	int room = room_idx(p_ptr->py, p_ptr->px);
 	
@@ -691,7 +711,27 @@ int print_emergent_narrative(void)
 	char text_visible[1024];
 	char text_always[1024];
 	char text_empty[] = "";
+	
+	char north[15];
+	char east[15];
+	char south[15];
+	char west[15];
+	
+	char destination_name[43];
+	int destination_trim_size;
+	
+	bool has_directions = FALSE;
 	//empty[0] = '\0';
+	
+	town_type *t_ptr = &t_info[p_ptr->dungeon];
+	
+	get_destination_name(&north, t_ptr, 0);
+	get_destination_name(&east, t_ptr, 1);
+	get_destination_name(&south, t_ptr, 2);
+	get_destination_name(&west, t_ptr, 3);
+	
+	if (strlen(north) > 0 || strlen(east) > 0 || strlen(south) > 0 || strlen(west) > 0)
+		has_directions = TRUE;
 	
 	sprintf(character_level, "(L%2d)", p_ptr->lev);
 	
@@ -737,6 +777,11 @@ int print_emergent_narrative(void)
 	line_number = print_object_narrative(line_number, max_line_number);
 	line_number = print_feature_narrative(line_number, max_line_number);
 	
+	ammo = find_quiver_size();
+	sprintf(ammo_message, "Ammo: %d", ammo);
+	if (line_number < max_line_number) 
+		c_put_str(TERM_YELLOW, ammo_message, line_number++, 0);
+	
 	/* Add whitespace between list and room description for smaller screens */
 	if (Term->hgt <= 40) line_number++;
 	
@@ -755,14 +800,37 @@ int print_emergent_narrative(void)
 		is_long_description);
 	
 	if (line_number < max_line_number)
-		c_put_str(TERM_SLATE, "(arrows)Move", line_number++, 0);
-	line_number++;
-	
+		if (has_directions)
+			c_put_str(TERM_SLATE, "Directions:", line_number++, 0);
 	if (line_number < max_line_number)
-		c_put_str(TERM_SLATE, "(i)nventory", line_number++, 0);
-	
+		if (north && strlen(north) > 0)
+			c_put_str(TERM_SLATE, north, line_number++, 0);
 	if (line_number < max_line_number)
-		c_put_str(TERM_SLATE, "(Q)uit", line_number++, 0);
+		if (east && strlen(east) > 0)
+			c_put_str(TERM_SLATE, east, line_number++, 0);
+	if (line_number < max_line_number)
+		if (south && strlen(south) > 0)
+			c_put_str(TERM_SLATE, south, line_number++, 0);
+	if (line_number < max_line_number)
+		if (west && strlen(west) > 0)
+			c_put_str(TERM_SLATE, west, line_number++, 0);
+	
+	if (has_directions) line_number++;
+
+	if (line_number < max_line_number)
+		c_put_str(TERM_SLATE, "? = help", line_number++, 0);
+	
+	//if (line_number < max_line_number)
+	//	c_put_str(TERM_SLATE, "(I)nventory", line_number++, 0);
+	
+	//if (line_number < max_line_number)
+	//	c_put_str(TERM_SLATE, "(M)ap", line_number++, 0);
+	
+	//if (line_number < max_line_number)
+	//	c_put_str(TERM_SLATE, "(S)ave & quit", line_number++, 0);
+	
+	//if (line_number < max_line_number)
+	//	c_put_str(TERM_SLATE, "(Q) Reset", line_number++, 0);
 
 	return line_number;
 }
@@ -2132,7 +2200,7 @@ static void prt_frame_extra(void)
 	prt_state();
 
 	/* Food */
-	prt_hunger();
+	//prt_hunger();
 
 	/* Disease */
 	prt_disease();
@@ -4999,7 +5067,7 @@ void redraw_stuff(void)
 	if (p_ptr->redraw & (PR_HUNGER))
 	{
 		p_ptr->redraw &= ~(PR_HUNGER);
-		prt_hunger();
+		//prt_hunger();
 	}
 
 	if (p_ptr->redraw & (PR_BLIND))

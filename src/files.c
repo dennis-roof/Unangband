@@ -609,6 +609,8 @@ errr process_pref_file_command(char *buf)
 			if (read_byte_or_char(zz[1], &a, &c))
 			      n1 = a;
 			else  n1 = (byte)color_char_to_attr(c);
+			
+			if (n1 == 6) n1 = 37; // HACK: make blue bright for readability
 
 			if ((j < 0) || (j >= 128)) return (1);
 			if (n1) tval_to_attr[j] = n1;
@@ -4891,11 +4893,22 @@ bool show_file(cptr name, cptr what, int line, int mode)
 }
 
 
+void show_help_dialog(void)
+{
+	char help[] = "Movement keys:\n\n q w e y k u 7 8 9\n `\\|/ ``\\|/ ``\\|/\n a- -f h- -l 4- -6\n `/|\\ ``/|\\ ``/|\\\n z s c b j n 1 2 3\n\n i = inventory (press / inside menu for equipment)\n m = cast magic spell\n M = world map in towns and wilderness\n\n space, f, t = select target, press again to fire ammo\n\n ESCAPE = save and quit\n R = reset game";
+	
+	get_dialog(help, FALSE, "");
+}
+
+
 /*
  * Peruse the On-Line-Help
  */
 void do_cmd_help(void)
 {
+	show_help_dialog();
+	return;
+	
 	/* Save screen */
 	screen_save();
 
@@ -4912,6 +4925,9 @@ void do_cmd_help(void)
  */
 void do_cmd_quick_help(void)
 {
+	show_help_dialog();
+	return;
+	
 	/* Save screen */
 	screen_save();
 

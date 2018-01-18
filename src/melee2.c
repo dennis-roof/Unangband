@@ -4143,8 +4143,10 @@ bool tell_allies_info(int y, int x, cptr saying, intptr_t u, int v, int w, bool 
 	/* Nothing to say? */
 	if (!vocal) return (FALSE);
 
-	/* Speak */
-	if ((saying) && (strlen(saying))) monster_speech(cave_m_idx[y][x], saying, FALSE);
+	monster_type *m_ptr = &m_list[cave_m_idx[y][x]];
+	/* Speak add_monster_speech(monster_type *monster, char* speech) */
+	//if ((saying) && (strlen(saying))) monster_speech(cave_m_idx[y][x], saying, FALSE);
+	if ((saying) && (strlen(saying))) add_monster_speech(m_ptr, saying);
 
 	/* Something said */
 	return (TRUE);

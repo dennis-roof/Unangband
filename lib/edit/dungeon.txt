@@ -138,7 +138,7 @@
 # increase for each new item. Full name of the dungeon is obtained
 # by concatenating the name of the first level and the abbreviated dungeon name.
 
-# 'X' indicates the dungeons that may be reached from this dungeon.
+# 'X' indicates the dungeons that may be reached from this dungeon. Order: north-east-south-west
 
 # 'L' defines dungeon 'zones'. A dungeon zone extends from the level listed until 1 below
 # the next level listed. Zones must be shown in increasing order of level. The last L:
@@ -194,7 +194,7 @@ D: report the bug and collect your reward from the abandoned store.
 # Campaign starting dungeon.
 
 N:1:Hobbiton
-X:4:5:0:0
+X:0:4:5:0
 Z:2:2
 G:h
 S:264:515:265:266:772:773:0:0
@@ -202,7 +202,7 @@ L:0:56:0:411:155:0:0:0:SURFACE | DAYLIGHT | TOWN:the town of
 D:Visit shops and prepare for your adventure. Touch the town edge to travel.
 
 N:2:Hobbiton in ruins
-X:7:12:0:0
+X:0:12:7:0
 Q:3:532
 Z:3:3
 G:g
@@ -212,7 +212,7 @@ D:Someone with a silver-tongue and guile-full words has brought fair
 D: Hobbiton to its knees in a whir of devilish industry and foul pollution.
 
 N:3:Hobbiton rebuilt
-X:72:73:0:0
+X:72:0:0:73
 G:h
 S:264:515:265:266:772:773:774:0
 L:0:56:0:407:153:0:0:0:SURFACE | DAYLIGHT | TOWN:
@@ -221,7 +221,7 @@ D: Or you can choose to sail from here into the West and let another take
 D: on the might of Morgoth.
 
 N:4:East Road
-X:1:12:0:0
+X:0:12:0:1
 G:h
 Q:6:111
 R:ANIMAL
@@ -250,7 +250,7 @@ D: doors of the famous farm cellars are open; to climb down, press '>'
 D: when standing on the entrance '>'.
 
 N:6:Brandywine Ferry
-X:4:5:7:0
+X:4:7:5:0
 G:h
 R:ANIMAL
 S:903:0:0:0:0:0:0:0
@@ -262,7 +262,7 @@ D: ways you can never come back.  The East Road from Hobbiton looks a
 D: fairer route, and safer too.
 
 N:7:Buckland
-X:8:0:0:0
+X:0:0:8:0
 Q:6:546
 G:h
 R:ANIMAL
@@ -295,14 +295,14 @@ L:5:56:56:0:0:0:0:0:ROOMS | TUNNELS | LESS | MORE:
 L:17:56:56:0:0:431:0:0:ROOMS | TUNNELS | LESS:
 
 N:11:Tyrn Gorthad
-X:12:15:0:0
+X:15:0:0:12
 Q:8:546
 L:10:407:420:420:56:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS | MORE:the entrance to
 L:11:56:56:0:0:0:0:0:ROOMS | TUNNELS | LESS | MORE:the barrows of
 L:23:56:56:0:0:1081:0:0:ROOMS | TUNNELS | LESS:deep under
 
 N:12:Bree
-X:10:13:14:0
+X:13:14:10:0
 Q:2:546
 Y:440:28
 W:440:28
@@ -320,13 +320,13 @@ D: marked with '>' and can be descended by pressing '>' when standing over
 D: the grates.
 
 N:13:Trollshaws Forest
-X:12:16:0:0
+X:0:16:12:0
 L:4:407:420:420:155:343:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS | MORE:a hill in
 L:5:56:419:0:0:344:0:0:ROOMS | TUNNELS | LESS | MORE:the Troll Clearing in
 L:6:56:56:0:0:345:0:0:ROOMS | TUNNELS | LESS:the Troll Cave in
 
 N:14:Midgewater Marshes
-X:12:15:0:0
+X:0:15:0:12
 G:R
 R:INSECT
 L:10:407:435:153:199:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS | MORE:the
@@ -337,7 +337,7 @@ L:17:56:56:0:153:215:0:0:ROOMS | TUNNELS | LESS:the
 # No guardian at the top, but worth exploring due to treasure at the top
 
 N:15:Weathertop
-X:10:14:16:0
+X:14:16:10:0
 Y:449:28
 W:449:28
 S:954:0:0:0:0:0:0:0
@@ -346,7 +346,7 @@ L:18:141:56:0:0:0:31:0:TOWER | LESS | MORE:the tower of
 L:30:141:0:407:0:0:31:0:TOWER | TOWN | MORE:the crown of
 
 N:16:Ford to Rivendell
-X:13:15:17:0
+X:13:17:0:15
 W:453:28
 L:8:407:420:154:126:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS:the
 D:River Bruinen runs here swiftly over its rocky bed.  From the nearby
@@ -355,7 +355,7 @@ D: rule of the Lord of Rivendell.  The hidden valley of Rivendell is not
 D: yet visible from here.
 
 N:17:Rivendell
-X:16:18:29:46
+X:18:46:29:16
 S:267:9:10:11:519:13:268:513
 L:0:56:0:420:155:0:0:0:SURFACE | DAYLIGHT | TOWN:the stronghold of
 D:This is the Last Homely House on the Edge of the Wild, full of laughter
@@ -365,7 +365,7 @@ D: and singing.  Evil things do not come into the Rivendell valley.
 # East-west passage is free because goblins are on lookout from the west.
 
 N:18:Misty Mountains
-X:17:0:0:0
+X:0:0:17:0
 Q:19:173
 Z:47:24
 G:k
@@ -382,7 +382,7 @@ D: entering the Wild.  After a long walk up the pass, you are exhausted,
 D: but fortunately, you find an entrance '>' to a cave...
 
 N:19:house of Beorn
-X:18:21:0:0
+X:0:0:21:18
 R:ANIMAL
 S:269:0:0:0:0:0:0:0
 L:15:56:0:435:0:566:0:0:SURFACE | DAYLIGHT | TOWN:the
@@ -392,7 +392,7 @@ D:Beorn lives in a big hall with a veranda.  He is not fond of guests.
 # Goblin King recycled from Misty Mountains
 
 N:20:Woodmen Village
-X:21:43:46:0
+X:21:0:43:46
 Y:1366:21
 W:173:24
 G:C
@@ -404,7 +404,7 @@ D:Wolves are howling around.  Woodmen keep hidden inside their fenced
 D: village on the western edge of Mirkwood.
 
 N:21:Mirkwood the Great
-X:19:20:22:0
+X:19:22:20:0
 G:l
 R:CAN_CLIMB
 S:270:271:503:11:12:504:505:0
@@ -419,7 +419,7 @@ D: then.  Occasionally, an errant breeze stirs the heavy air and then you
 D: imagine catching a subtle, sweet scent or a faint, captivating melody.
 
 N:22:Lake-town
-X:21:25:28:0
+X:25:0:28:21
 Z:23:25
 S:8:9:10:11:12:13:14:508
 L:0:56:0:155:152:0:0:0:SURFACE | DAYLIGHT | TOWN:
@@ -433,7 +433,7 @@ D: all.
 # With disastrous consequences.
 
 N:23:ruins of Lake-town
-X:21:25:28:0
+X:25:0:28:21
 Z:24:24
 G:t
 R:CAN_SWIM
@@ -445,7 +445,7 @@ D: splendour you set out with?
 # But then people abandon burnt Lake-town and rebuild ancient Dale
 
 N:24:the Dale
-X:21:25:28:0
+X:25:0:28:21
 S:509:516:517:11:12:13:506:508
 L:0:56:0:530:153:0:0:0:SURFACE | DAYLIGHT | TOWN:that marketplace of
 D:The people of burnt Lake-town have elected to rebuild the nearby ancient
@@ -455,7 +455,7 @@ D: grateful townsfolk.
 # We disturb Smaug while entering his lair...
 
 N:25:Lonely Mountain
-X:23:0:0:0
+X:0:0:23:0
 Q:24:475
 Z:26:24
 G:B
@@ -472,7 +472,7 @@ D: smoke rising as Lake-town burns.
 # TODO: make Bolg more powerful, I guess, he's fought after Smaug
 
 N:26:Five Armies
-X:24:0:0:0
+X:0:0:24:0
 Q:27:235
 Z:27:27
 G:C
@@ -485,7 +485,7 @@ D: in the Lonely Mountain.
 # The one below is evidently the dwarven version of the story. ;)
 
 N:27:vaults of Erebor
-X:24:0:0:0
+X:0:0:24:0
 S:897:898:899:900:901:902:0:0
 L:21:56:0:56:1:0:0:0:DESTROYED | SURFACE | DAYLIGHT | TOWN:the
 D:The innermost vaults of the dwarven city of Erebor, ripped open by the
@@ -500,7 +500,7 @@ D: wealth, your share is here for taking.
 # but to avoid visiting dungeons you have to stir evil at Dol Guldur
 
 N:28:Dol Guldur
-X:22:34:35:0
+X:22:0:35:34
 G:q
 R:EVIL
 L:36:407:420:56:420:474:44:0:DESTROYED | SURFACE | DAYLIGHT | TOWER | WILD | ROOMS | TUNNELS:
@@ -512,7 +512,7 @@ D: land since its waking.
 # No dungeon, part of the one-time free pass east around Misty Mountains.
 
 N:29:Dunland
-X:17:31:39:0
+X:17:39:31:0
 Z:30:28
 G:t
 L:9:407:419:149:422:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS:
@@ -576,7 +576,7 @@ D: tidings?
 # We warn about crossing to Dol Guldur
 
 N:34:Fangorn Forest
-X:28:31:0:0
+X:0:28:0:31
 Q:35:1313
 Z:35:35
 G::
@@ -588,7 +588,7 @@ D: to strangle trespassers with their roots, but in Dol Guldur, wise
 D: people say, Death itself has made home among the twisted trees...
 
 N:35:Fangorn aflame
-X:28:32:0:0
+X:0:28:0:32
 Q:36:249
 Z:36:36
 G:o
@@ -602,7 +602,7 @@ D: Guldur.  Now it is clear that the lust for power corrupted Saruman
 D: beyond help.
 
 N:36:the Ent Moot
-X:28:33:0:0
+X:0:28:0:33
 Q:48:483
 R:PLANT
 S:949:950:951:952:953:0:0:0
@@ -633,7 +633,7 @@ D: around him, but seeks less than wise council...
 # to make it interesting, in particular no men and no trolls
 
 N:38:Hornburg
-X:50:0:0:0
+X:0:50:0:0
 Q:36:249
 G:t
 R:TROLL
@@ -649,7 +649,7 @@ D: If the odds turn against you, do not flee into the mountains!  They are
 D: haunted and even maps will not let you find your way back.
 
 N:39:west Moria entrance
-X:29:46:0:0
+X:46:0:29:0
 Q:43:262
 Z:40:27
 L:6:407:49:397:56:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS | MORE:
@@ -664,7 +664,7 @@ D: mines behind them are home to only fouler things.
 # Smeagol recycled from Misty Mountains
 
 N:40:west gates of Moria
-X:29:46:0:0
+X:46:0:29:0
 W:52:27
 L:33:407:49:397:56:0:0:0:DESTROYED | SURFACE | DAYLIGHT | WILD | ROOMS | TUNNELS | MORE:the
 L:34:56:56:393:0:0:0:0:ROOMS | TUNNELS | LESS | MORE:
@@ -682,7 +682,7 @@ D: entrance, something deadly stirs in the water outside.
 # to do anything, just flat empty space
 
 N:41:the door to Moria
-X:39:42:0:0
+X:0:42:0:39
 G:E
 L:20:56:0:1:56:0:0:0:SURFACE | DAYLIGHT | TOWN:
 D:As you read the map, starlight leads the way.  'Speak friend, and enter'.
@@ -748,7 +748,7 @@ D:Drums. Drums. Drums in the deep.
 # TODO: recycle 297
 
 N:46:Redhorn pass
-X:17:39:0:0
+X:17:0:39:0
 Q:20:140
 Z:47:24
 G:o
@@ -765,7 +765,7 @@ D: pass while their leader stands.
 # Guardian purposefully more powerful than 50 (verify!)
 
 N:47:Caradhras
-X:17:39:0:0
+X:17:0:39:0
 Q:48:1272
 G:C
 R:GIANT
@@ -781,7 +781,7 @@ D: to fight your way across the treacherous precipices filled with snow,
 D: nobody knows where you'll end.  Turn back, while you can!
 
 N:48:Lothlorien
-X:34:43:49:0
+X:43:49:34:0
 G:l
 S:270:503:11:12:13:504:510:0
 L:0:56:0:420:420:0:0:0:SURFACE | DAYLIGHT | TOWN:
@@ -791,7 +791,7 @@ D: you with gifts at her mirror.
 # No guardian at the bottom, TODO: find an exciting reason to explore
 
 N:49:Parth Galen
-X:48:57:0:0
+X:0:0:57:48
 L:20:407:420:155:56:0:0:0:SURFACE | DAYLIGHT | WILD | TUNNELS | MORE | ROOMS:
 L:21:56:56:0:0:0:0:0:ROOMS | TUNNELS | LESS | MORE:
 L:40:56:56:0:0:0:0:0:ROOMS | TUNNELS | LESS:
@@ -816,7 +816,7 @@ D: lifeless place.
 # Goes upwards
 
 N:51:Minas Tirith
-X:31:70:0:0
+X:0:70:0:31
 Q:53:1085
 G:t
 R:MAGE

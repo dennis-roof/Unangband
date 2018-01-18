@@ -845,7 +845,7 @@ static void player_outfit(void)
 /* Locations of the tables on the screen */
 #define HEADER_ROW		1
 #define QUESTION_ROW	7
-#define TABLE_ROW		9
+#define TABLE_ROW		10
 
 #define QUESTION_COL	3
 #define KEYBOARD_COL	0
@@ -2140,7 +2140,7 @@ int display_menu_header(int i)
 		while (0 == my_fgets(fp, buf, sizeof(buf)))
 		{
 			/* Display and advance */
-			Term_putstr(0, i++, -1, TERM_WHITE, buf);
+			Term_putstr(0, i++, -1, TERM_HIGH_GREEN, buf);
 		}
 
 		/* Close */

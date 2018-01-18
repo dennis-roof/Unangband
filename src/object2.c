@@ -10344,7 +10344,7 @@ int get_tag_num(int o_idx, int cmd, byte *tag_num)
  * Calculate and apply the reduction in pack size due to use of the
  * Quiver.
  */
-void find_quiver_size(void)
+int find_quiver_size(void)
 {
 	int ammo_num, i;
 	object_type *i_ptr;
@@ -10369,6 +10369,8 @@ void find_quiver_size(void)
 
 	/* Every 99 missiles in the quiver takes up one backpack slot. */
 	p_ptr->pack_size_reduce_quiver = (ammo_num + 98) / 99;
+	
+	return ammo_num;
 }
 
 

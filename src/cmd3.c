@@ -45,7 +45,7 @@ void do_cmd_inven(void)
 	prt("(Inventory) Command: ", 0, 0);
 
 	/* Hack -- Get a new command */
-	p_ptr->command_new = inkey_ex();
+	//p_ptr->command_new = inkey_ex();
 
 	/* Load screen */
 	screen_load();
