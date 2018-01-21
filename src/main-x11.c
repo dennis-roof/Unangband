@@ -2457,7 +2457,7 @@ static errr term_data_init(term_data *td, int i)
 		/* Main window min size is 80x24 */
 		sh->flags = PMinSize | PMaxSize;
 		sh->min_width = 80 * td->fnt->wid + (ox + ox);
-		sh->min_height = 24 * td->fnt->hgt + (oy + oy);
+		sh->min_height = 34 * td->fnt->hgt + (oy + oy);
 		sh->max_width = 255 * td->fnt->wid + (ox + ox);
 		sh->max_height = 255 * td->fnt->hgt + (oy + oy);
 	}

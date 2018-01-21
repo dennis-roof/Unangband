@@ -510,6 +510,9 @@ static void do_cmd_travel(void)
 	if (selection == 0) return;
 	
 	long_level_name(destination_name, selection, 0);
+	
+	town_type *next_town = &t_info[selection];
+	dungeon_zone *next_zone = &next_town->zone[0];
 
 	current_long_level_name(str);
 
@@ -571,7 +574,7 @@ static void do_cmd_travel(void)
 			//if (get_list(print_routes, routes, num, "Routes", "Travel to where", ", L=locations, M=map", 1, 22, route_commands, &selection))
 			
 			
-			sprintf(travel_confirm_message, "Do you want to travel to %s? [y/n]", destination_name);
+			sprintf(travel_confirm_message, "Do you want to travel to %s (difficulty level %d)? [y/n]", destination_name, next_zone->level);
 			keypress = get_dialog(travel_confirm_message, TRUE, "yn");
 			
 			if (keypress == 'y')

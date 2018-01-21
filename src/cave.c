@@ -587,6 +587,17 @@ bool is_daytime()
 
 
 /*
+ * Hack: is_animated is TRUE if feature is water and color is blue
+ */
+bool is_animated(byte a, int y, int x)
+{
+	return (
+		(f_info[cave_feat[y][x]].flags2 & (FF2_WATER)) != 0
+		&& a == 6 // COLOR 6 = TERM_BLUE
+	);
+}
+
+/*
  * Modify a 'boring' grid appearance based on the ambient light
  */
 void modify_grid_boring_view(byte *a, char *c, int y, int x, byte cinfo, byte pinfo)
@@ -618,7 +629,9 @@ void modify_grid_boring_view(byte *a, char *c, int y, int x, byte cinfo, byte pi
 		
 		/* Highlight terrain when seen outside */
 		if (p_ptr->outside) {
+			//if (! is_animated(*a, y, x) || Rand_div(10) > 7) {
 			*a = get_color(*a, ATTR_HIGH, 1);
+			//}
 		}
 	}
 

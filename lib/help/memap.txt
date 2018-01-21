@@ -1,22 +1,20 @@
-               Trollshaws Forest (4-6)               ##  Lonely Mountain (26-42)
+               Trollshaws Forest (lvl 6)             ##  Lonely Mountain(lvl 26)
                 |                  |     Misty Mountains                     |
-                |   Midgewater     |     path (5-13)<-------Beorn's  Lake-town*
+                |   Midgewater     |     path (lvl 5)<------Beorn's  Lake-town*
 Hobbiton*       |  / Marshes |     |            /      #    House \   /      | 
- | \            | /  (10-17) |     |           /       #          Mirkwood   |
- |  \          Bree*         |     |  Rivendell*       #        Road (13-26) |
- | East Road-->(0-4)    Weathertop |   /|    \         ##        |           |
- |                  \     (17-31)  |  / |     Redhorn ###    Woodmen*        |
- |  Brandywine       \       |  \  | /  |     Pass (7-37)<-Village (10-13)   |
+ | \            | /  (lvl 17)|     |           /       #          Mirkwood   |
+ |  \          Bree*         |     |  Rivendell*       #        Road (lvl 13)|
+ | East Road->(lvl 4)   Weathertop |   /|    \         ##        |           |
+ |                  \    (lvl 17)  |  / |     Redhorn ###    Woodmen*        |
+ |  Brandywine       \       |  \  | /  |     Pass(lvl 7)<-Village (lvl 10)  |
  |  | Ferry  |        \      |   Ford   |         /   ##        /            |
  |  |        V     ?   \     |          |West Moria   ## East Moria          |
- |  V   Buckland*  |    \    |          | entrance    # entrance (13-24)     |
-Farmer    |        V     \   |          |  (6-24)    ##                      |
-Maggot's  Old Forest-->Barrow Downs     |  /        #         Dol Guldur (42-64)
- Farm       (6-10)        (4-23)     Dunland       #Lorien*        /            
- (2-6)                                     \       #        Fangorn Forest
-                                            Isengard (3-35)-/
+ |  V   Buckland*  |    \    |          | entrance    # entrance (lvl 13)    |
+Farmer    |        V     \   |          |  (lvl 6)   ##                      |
+Maggot's  Old Forest-->Barrow Downs     |  /        #         Dol Guldur(lvl 42)
+ Farm       (lvl 6)       (lvl 4)    Dunland       #Lorien*        /            
+(lvl 2)                                    \       #        Fangorn Forest
+                                            Isengard (lvl 3)/
                                                     \             Parth Galen
-                                  ############### Edoras* (8-27)    Dead Marshes
-                        ##############     Paths #####              
-                                        of the Dead  #######             Minas
-                                                          ############## Tirith*
+                              ################### Edoras*(lvl 8)    Dead Marshes
+                        #######Paths of the dead################## Minas Tirith*

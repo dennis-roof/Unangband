@@ -20331,3 +20331,19 @@ F:REMEMBER | TUNNEL | WALL | PERMANENT |
 F:FILLED | CAN_CLIMB |
 F:ATTR_LITE |
 D:This seems to be permanent rock.
+
+# 0x3EB --> permanent wall -- roof (perm)
+
+N:1003:permanent wall
+G:^:g
+U:56
+#$ granite wall
+O:0
+W:0:1:10:0
+K:DEFAULT:1001:0
+F:LOS | PROJECT | MOVE | PLACE | DROP | RUN |
+F:PATH | LAKE | HURT_FIRE | CAN_CLIMB | CAN_FLY | HIDE_ITEM | HIDE_SNEAK |
+F:HIDE_DIG |
+F:HURT_WATER | GROUND | OUTSIDE | LIVING | ATTR_LITE |
+D:This seems to be grass.
+

@@ -15450,7 +15450,7 @@ static bool cave_gen(void)
  */
 static void build_store(int feat, int yy, int xx)
 {
-	int y, x, y0, x0, y1, x1, y2, x2, tmp;
+	int y, x, y0, x0, y1, x1, y2, x2, tmp, x1_loop, x2_loop;
 
 	/* Hack -- extract char value */
 	byte d_char = f_info[feat].d_char;
@@ -15469,10 +15469,12 @@ static void build_store(int feat, int yy, int xx)
 	x0 = xx * 14 + 12;
 
 	/* Determine the store boundaries */
-	y1 = y0 - randint((yy == 0) ? 3 : 2);
-	y2 = y0 + randint((yy == 1) ? 3 : 2);
-	x1 = x0 - randint(5);
-	x2 = x0 + randint(5);
+	//y1_rand = ((yy == 0) ? 3 : 2);
+	//y2_rand = ((yy == 1) ? 3 : 2);
+	y1 = y0 - randint((yy == 0 && p_ptr->dungeon != 1) ? 3 : 2);
+	y2 = y0 + randint((yy == 1 && p_ptr->dungeon != 1) ? 3 : 1);
+	x1 = x0 - randint((5));
+	x2 = x0 + randint((5));
 
 	/* Hack -- decrease building size to create space for small terrain */
 	if (zone->small)
@@ -15490,13 +15492,27 @@ static void build_store(int feat, int yy, int xx)
 		/* Build an invulnerable rectangular building */
 		for (y = y1; y <= y2; y++)
 		{
-			for (x = x1; x <= x2; x++)
+			x1_loop = x1;
+			x2_loop = x2;
+			
+			// Rounded top corners for Hobbiton houses
+			if (p_ptr->dungeon == 1 && y-y1 < 2) {
+				x1_loop += (2 - (y-y1));
+				x2_loop -= (2 - (y-y1));
+				if (x1_loop > x2_loop) continue;
+			}
+			
+			for (x = x1_loop; x <= x2_loop; x++)
 			{
 				/* Create the building */
-				cave_set_feat(y, x, 
-					(y == 0 || (y-y1) / (float) (y2-y1) < 0.7 ? 
-						FEAT_PERM_ROOF : 
-						FEAT_PERM_EXTRA));
+				if (p_ptr->dungeon == 1) { // Hobbit houses
+					cave_set_feat(y, x, FEAT_PERM_HOBBIT);
+				} else { // regular houses
+					cave_set_feat(y, x, 
+						(y == 0 || (y-y1) / (float) (y2-y1) < 0.7 ? 
+							FEAT_PERM_ROOF : 
+							FEAT_PERM_EXTRA));
+				}
 			}
 		}
 	}

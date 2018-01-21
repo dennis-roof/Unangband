@@ -1250,7 +1250,7 @@ static bool visible;
 static int level_name_start;
 static char level_name_str[46];
 static int level_depth_start;
-static char level_depth_str[5];
+static char level_depth_str[14];
 
 static void print_level_depth(void)
 {
@@ -1292,7 +1292,13 @@ static void init_level_name(void)
 
     if (p_ptr->depth > 0)
 		if (depth_in_feet) sprintf(level_depth_str, " %4d'", 50 * p_ptr->depth);
-		else sprintf(level_depth_str, " %2d", p_ptr->depth);
+		else { 
+			sprintf(
+				level_depth_str, 
+				"  depth:%2d/%-2d", 
+				(p_ptr->depth - min_depth(p_ptr->dungeon) + 1),
+				(max_depth(p_ptr->dungeon) - min_depth(p_ptr->dungeon)));
+		}
     else
 		level_depth_str[0] = 0;
 
