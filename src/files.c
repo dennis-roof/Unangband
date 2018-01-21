@@ -4410,7 +4410,10 @@ static void string_lower(char *buf)
  */
 bool show_file(cptr name, cptr what, int line, int mode)
 {
-	int i, k, n;
+	bool color = (strcmp(name, "memap.txt") == 0);
+	char current_char[] = " ";
+	
+	int i, k, n, p;
 
 	key_event ke;
 
@@ -4675,7 +4678,52 @@ bool show_file(cptr name, cptr what, int line, int mode)
 			find = NULL;
 
 			/* Dump the line */
-			Term_putstr(0, i+2, -1, TERM_WHITE, buf);
+			if (color) {
+				for (p = 0; p < strlen(buf); p++) {
+					current_char[0] = buf[p];
+					switch (buf[p]) {
+						case '#':
+							Term_putstr(p, i+2, -1, TERM_MUD, current_char);
+							break;
+						case '*':
+							Term_putstr(p, i+2, -1, TERM_ORANGE, current_char);
+							break;
+						case '(':
+						case ')':
+							Term_putstr(p, i+2, -1, TERM_L_DARK, current_char);
+							break;
+						case '-':
+						case '|':
+						case '\\':
+						case '/':
+							Term_putstr(p, i+2, -1, TERM_TEAL, current_char);
+							break;
+						case '<':
+						case 'V':
+						case '>':
+						case '^':
+							Term_putstr(p, i+2, -1, TERM_L_TEAL, current_char);
+							break;
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						case '7':
+						case '8':
+						case '9':
+							Term_putstr(p, i+2, -1, TERM_YELLOW, current_char);
+							break;
+						default:
+							Term_putstr(p, i+2, -1, TERM_HIGH_GREEN, current_char);
+							break;
+					}
+				}
+			} else {
+				Term_putstr(0, i+2, -1, TERM_WHITE, buf);
+			}
 
 			/* Hilite "shower" */
 			if (shower[0])
