@@ -3455,8 +3455,6 @@ static void process_player(void)
  */
 static void dungeon(void)
 {
-	bool player_move = FALSE;
-	
 	/* Hack -- enforce illegal panel */
 	p_ptr->wy = DUNGEON_HGT;
 	p_ptr->wx = DUNGEON_WID;
@@ -3645,13 +3643,13 @@ static void dungeon(void)
 
 		/* Hack -- player always gets at least one energy */
 		p_ptr->energy += ((delta_energy > 0) ? delta_energy : 1);
-
+		
 		/* Can the player move? */
 		while ((p_ptr->energy >= 100) && !p_ptr->leaving)
 		{
-
 			/* process monster with even more energy first */
 			process_monsters((byte)(p_ptr->energy + 1));
+			process_monster_speech();
 
 			/* if still alive */
 			if (!p_ptr->leaving)
@@ -3659,9 +3657,6 @@ static void dungeon(void)
 				/* Process the player */
 				process_player();
 			}
-			
-			player_move = TRUE;
-			
 		}
 
 		/* Notice stuff */
@@ -3731,11 +3726,6 @@ static void dungeon(void)
 		if (strlen(p_ptr->dialog_text) > 1) {
 			get_dialog(p_ptr->dialog_text, FALSE, "");
 			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
-		}
-		
-		if (player_move) {
-			process_monster_speech();
-			player_move = FALSE;
 		}
 
 		/* Count game turns */

@@ -176,6 +176,11 @@
 #define MAX_STORES	8
 
 /*
+ * Maximum number of rumours townfolk can talk about
+ */
+#define MAX_TOWN_RUMOURS	4
+
+/*
  * Total number of items in home (see "store.c", etc)
  */
 #define MAX_INVENTORY_HOME	24

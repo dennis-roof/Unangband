@@ -3716,6 +3716,8 @@ void add_monster_speech(monster_type *monster, char* speech)
 	memset(monster->speech, '\0', sizeof(monster->speech));
 	
 	strncpy(monster->speech, speech, (strlen(speech) > 50 ? 50 : strlen(speech)));
+	
+	p_ptr->show_speech = 5;
 }
 
 void process_monster_speech()
@@ -3732,42 +3734,43 @@ void process_monster_speech()
 	
 	memset(reserved_rows, 0, sizeof(reserved_rows));
 	
-	if (p_ptr->remove_speech == TRUE) {
-		p_ptr->remove_speech = FALSE;
-		prt_map();
-	}
+	if (p_ptr->show_speech > -1) prt_map();
 
 	/* Loop over monsters to display new speech bubbles */
-	for (index = 1; index < z_info->m_max; index++) {
-		monster = &m_list[index];
-		
-		/* Only visible monsters */
-		if (!monster->ml) continue;
-		if (!player_can_see_bold(monster->fy, monster->fx)) continue;
-		
-		if (strlen(monster->speech) > 0) {
-			speech_row = (monster->fy < Term->hgt/2 ? monster->fy + 3 : monster->fy - 1);
+	if (p_ptr->show_speech > 0) {
+		for (index = 1; index < z_info->m_max; index++) {
+			monster = &m_list[index];
 			
-			if (reserved_rows[speech_row] == 0) {
-				reserved_rows[speech_row] = 1;
+			/* Only visible monsters */
+			if (!monster->ml) continue;
+			if (!player_can_see_bold(monster->fy, monster->fx)) continue;
+			
+			if (strlen(monster->speech) > 0) {
+				speech_row = (monster->fy < Term->hgt/2 ? monster->fy + 3 : monster->fy - 1);
 				
-				if (monster->fy < Term->hgt/2) {
-					c_put_str(TERM_ORANGE, "\\", monster->fy+2, monster->fx+1+SIDEBAR_WID);
-				} else {
-					c_put_str(TERM_ORANGE, "/", monster->fy, monster->fx+1+SIDEBAR_WID);
+				if (reserved_rows[speech_row] == 0) {
+					reserved_rows[speech_row] = 1;
+					
+					if (monster->fy < Term->hgt/2) {
+						c_put_str(TERM_ORANGE, "\\", monster->fy+2, monster->fx+1+SIDEBAR_WID);
+					} else {
+						c_put_str(TERM_ORANGE, "/", monster->fy, monster->fx+1+SIDEBAR_WID);
+					}
+					
+					speech_col = (monster->fx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
+					if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
+					if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
+					
+					c_put_str(TERM_L_YELLOW, monster->speech, speech_row, speech_col);
+					
+					//memset(monster->speech, '\0', sizeof(monster->speech));
+					//if (p_ptr->remove_speech == 0) p_;
 				}
-				
-				speech_col = (monster->fx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
-				if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
-				if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
-				
-				c_put_str(TERM_L_YELLOW, monster->speech, speech_row, speech_col);
-				
-				memset(monster->speech, '\0', sizeof(monster->speech));
-				p_ptr->remove_speech = TRUE;
 			}
 		}
 	}
+	
+	if (p_ptr->show_speech > -1) p_ptr->show_speech--;
 }
 
 

@@ -3019,7 +3019,7 @@ static void monster_surrender_or_fight(int m_idx)
 			&& (rand_int(adj_chr_stock[p_ptr->stat_ind[A_CHR]]) < (r_ptr->flags2 & (RF2_SNEAKY) ? 20 : 10)))
 		{
 			/* Dump a message */
-			msg_format("%^s surrenders!", m_name);
+			add_monster_speech(m_ptr, "I surrender!");
 			
 			/* Stop attacking player */
 			m_ptr->mflag |= (MFLAG_TOWN);
@@ -3035,7 +3035,7 @@ static void monster_surrender_or_fight(int m_idx)
 		else
 		{
 			/* Dump a message */
-			msg_format("%^s turns to fight!", m_name);
+			add_monster_speech(m_ptr, "*turns to fight*");
 		}
 	}
 }
@@ -7738,6 +7738,8 @@ static void recover_monster(int m_idx, bool regen)
 	monster_race *r_ptr = &r_info[m_ptr->r_idx];
 	monster_lore *l_ptr = &l_list[m_ptr->r_idx];
 
+	town_type *t_ptr = &t_info[p_ptr->dungeon];
+	
 	/* Get the origin */
 	int y = m_ptr->fy;
 	int x = m_ptr->fx;
@@ -8028,34 +8030,45 @@ static void recover_monster(int m_idx, bool regen)
 
 
 		/* Monster is a town monster - do some interesting stuff */
-		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && !(m_ptr->csleep) && !(m_ptr->summoned) && !(rand_int(9)))
+		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && /*!(m_ptr->csleep) &&*/ !(m_ptr->summoned) && !(rand_int(2)))
 		{
 			/* We don't care about the player */
 			if ((m_ptr->mflag & (MFLAG_AGGR | MFLAG_ALLY)) == 0)
 			{
 				/* Get the monster name */
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
+				
+				//int random = rand_int(25);
+				
+				//printf("5 < %d? %c\n", random, (5 < random ? 'Y' : 'N'));
+				
+				//if (5 < random)
+				//{
+					int rumour_index = rand_int(MAX_TOWN_RUMOURS);
+					if (t_ptr->rumours[rumour_index][0] != '\0')
+						add_monster_speech(m_ptr, t_ptr->rumours[rumour_index]);
+				//}
 
 				/* Notice and attack the player */
-				if ((m_ptr->cdis <= r_ptr->aaf) && (p_ptr->skills[SKILL_STEALTH] < rand_int(100)))
-				{
+				//if ((m_ptr->cdis <= r_ptr->aaf) && (p_ptr->skills[SKILL_STEALTH] < rand_int(100)))
+				//{
 					/* Give detailed messages */
 					//if (m_ptr->ml) msg_format("%^s decides you are an easy target.", m_name);
-					if (m_ptr->ml) add_monster_speech(m_ptr, "I see an easy target!");
+				//	if (m_ptr->ml) add_monster_speech(m_ptr, "I see an easy target!");
 
 					/* Notice the player */
-					m_ptr->mflag &= ~(MFLAG_TOWN);
-				}
+				//	m_ptr->mflag &= ~(MFLAG_TOWN);
+				//}
 				/* Bored - go to sleep */
-				else
-				{
-					int val = r_ptr->sleep;
-					m_ptr->csleep = ((val * 2) + (s16b)randint(val * 10));
+				//else
+				//{
+				//	int val = r_ptr->sleep;
+				//	m_ptr->csleep = ((val * 2) + (s16b)randint(val * 10));
 
 					/* Give detailed messages */
 					//if (m_ptr->ml) msg_format("%^s falls asleep.", m_name);
-					if (m_ptr->ml) add_monster_speech(m_ptr, "*falls asleep*");
-				}
+				//	if (m_ptr->ml) add_monster_speech(m_ptr, "*falls asleep*");
+				//}
 			}
 		}
 	}

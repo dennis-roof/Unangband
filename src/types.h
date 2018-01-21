@@ -266,6 +266,8 @@ struct town_type
 
 	byte a_char;	/* Use races of this char as allies for BATTLE levels */
 	u32b a_flag;	/* Use races with this flag as allies for BATTLE levels */
+	
+	char rumours[MAX_TOWN_RUMOURS][80]; /* Store up to 4 town rumours spoken by townfolk */
 };
 
 
@@ -2002,7 +2004,7 @@ struct player_type
 	byte outside;	/* Player is outside? */
 	bool cursed_quiver;	/* The quiver is cursed */
 
-	bool remove_speech; /* Remove displayed speech bubble */
+	int show_speech; /* Show speech for these number of turns, usually 3 */
 };
 
 

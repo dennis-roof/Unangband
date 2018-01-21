@@ -7211,6 +7211,25 @@ errr parse_t_info(char *buf, header *head)
 		if (!add_text(&t_ptr->text, head, s))
 			return (PARSE_ERROR_OUT_OF_MEMORY);
 	}
+	/* Process 'T' for "Town rumour" */
+	else if (buf[0] == 'T')
+	{
+		int rumour_index;
+		for (rumour_index = 0; rumour_index < MAX_TOWN_RUMOURS+1; rumour_index++)
+			if (t_ptr->rumours[rumour_index][0] == '\0') break;
+		
+		/* If town rumour max is reached, ignore rumour */
+		if (rumour_index == MAX_TOWN_RUMOURS+1) return 0;
+		
+		/* There better be a current t_ptr */
+		if (!t_ptr) return (PARSE_ERROR_MISSING_RECORD_HEADER);
+
+		/* Store the rumour */
+		for (int char_index = 2; char_index < strlen(buf); char_index++) {
+			if (buf[char_index] == '\0') break;
+			t_ptr->rumours[rumour_index][char_index-2] = buf[char_index];
+		}
+	}
 
 	else
 	{
