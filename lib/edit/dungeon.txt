@@ -675,7 +675,7 @@ L:22:56:56:0:0:0:0:0:DESTROYED | ROOMS | TUNNELS | MORE:
 L:23:56:56:0:0:0:0:0:ROOMS | TUNNELS | LESS | MORE:
 L:30:56:0:1:56:1277:0:0:TOWN | LESS:
 D:There is a thunderous roar and rocks tumble about you. Something has closed
-D the door to Moria, from the outside. Your only choice is to press onwards...
+D: the door to Moria, from the outside. Your only choice is to press onwards...
 
 # Keep the dungeon here identical to west Moria entrance, except the top
 
