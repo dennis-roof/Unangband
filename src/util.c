@@ -3727,14 +3727,18 @@ void process_monster_speech()
 	int speech_row;
 	int speech_col;
 	
+	int area_height = ((level_flag & (LF1_TOWN)) != 0 ? TOWN_HGT : Term->hgt);
+	
 	int index;
 	
 	monster_type *monster;
 	
 	memset(reserved_rows, 0, sizeof(reserved_rows));
 	
-	if (p_ptr->show_speech > -1) prt_map();
-
+	if (p_ptr->show_speech > -1) {
+		prt_map();
+	}
+	
 	/* Loop over monsters to display new speech bubbles */
 	if (p_ptr->show_speech > 0) {
 		for (index = 1; index < z_info->m_max; index++) {
@@ -3745,12 +3749,12 @@ void process_monster_speech()
 			if (!player_can_see_bold(monster->fy, monster->fx)) continue;
 			
 			if (strlen(monster->speech) > 0) {
-				speech_row = (monster->fy < Term->hgt/2 ? monster->fy + 3 : monster->fy - 1);
+				speech_row = (monster->fy < area_height/2 ? monster->fy + 3 : monster->fy - 1);
 				
 				if (reserved_rows[speech_row] == 0) {
 					reserved_rows[speech_row] = 1;
 					
-					if (monster->fy < Term->hgt/2) {
+					if (monster->fy < area_height/2) {
 						c_put_str(TERM_ORANGE, "\\", monster->fy+2, monster->fx+1+SIDEBAR_WID);
 					} else {
 						c_put_str(TERM_ORANGE, "/", monster->fy, monster->fx+1+SIDEBAR_WID);
@@ -3762,8 +3766,8 @@ void process_monster_speech()
 					
 					c_put_str(TERM_L_YELLOW, monster->speech, speech_row, speech_col);
 					
-					//memset(monster->speech, '\0', sizeof(monster->speech));
-					//if (p_ptr->remove_speech == 0) p_;
+					if (p_ptr->show_speech == 1)
+						memset(monster->speech, '\0', strlen(monster->speech));
 				}
 			}
 		}
