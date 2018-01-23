@@ -1714,28 +1714,28 @@ static void mark_selection(void)
 /*
  * Forget a selection for one reason or another.
  */
-static void copy_x11_release(void)
-{
+//static void copy_x11_release(void)
+//{
 	/* Deselect the current selection. */
-	x11_selection->select = FALSE;
+//	x11_selection->select = FALSE;
 
 	/* Remove its graphical represesntation. */
-	mark_selection();
-}
+//	mark_selection();
+//}
 
 
 /*
  * Start to select some text on the screen.
  */
-static void copy_x11_start(int x, int y)
-{
-	if (x11_selection->select) copy_x11_release();
+//static void copy_x11_start(int x, int y)
+//{
+//	if (x11_selection->select) copy_x11_release();
 
 	/* Remember where the selection started. */
-	x11_selection->t = Term;
-	x11_selection->init.x = x11_selection->cur.x = x11_selection->old.x = x;
-	x11_selection->init.y = x11_selection->cur.y = x11_selection->old.y = y;
-}
+//	x11_selection->t = Term;
+//	x11_selection->init.x = x11_selection->cur.x = x11_selection->old.x = x;
+//	x11_selection->init.y = x11_selection->cur.y = x11_selection->old.y = y;
+//}
 
 
 /*
@@ -1854,8 +1854,8 @@ static errr CheckEvent(bool wait)
 			bool press = (xev->type == ButtonPress);
 
 			/* Where is the mouse */
-			int x = xev->xbutton.x;
-			int y = xev->xbutton.y;
+			x = xev->xbutton.x;
+			y = xev->xbutton.y;
 
 			int z = 0;
 

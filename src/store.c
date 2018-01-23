@@ -677,6 +677,7 @@ static void store_object_absorb(object_type *o_ptr, object_type *j_ptr, int stor
 				o_ptr->origin = j_ptr->origin;
 				o_ptr->origin_depth = j_ptr->origin_depth;
 				o_ptr->origin_xtra = j_ptr->origin_xtra;
+				break;
 			}
 
 			/* Set as "mixed" */

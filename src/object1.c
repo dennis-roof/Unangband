@@ -408,10 +408,10 @@ void reset_visuals(bool unused)
  */
 #define object_desc_str_macro(T,S) do { \
  \
-	cptr s = (S); \
+	cptr s2 = (S); \
  \
 	/* Copy the string */ \
-	while (*s) *(T)++ = *s++; \
+	while (*s2) *(T)++ = *s2++; \
  \
 } while (0)
 
@@ -742,6 +742,7 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 						break;
 					}
 					/* Drop down */
+					__attribute__ ((fallthrough));
 				default:
 					modstr = "broken";
 					break;
@@ -1111,10 +1112,10 @@ void object_desc(char *buf, size_t max, const object_type *o_ptr, int pref, int 
 			int x1, x2; /* Fake xtra flags */
 			u32b j;
 
-			u32b f1 = o_ptr->can_flags1;
-			u32b f2 = o_ptr->can_flags2;
-			u32b f3 = o_ptr->can_flags3;
-			u32b f4 = o_ptr->can_flags4;
+			f1 = o_ptr->can_flags1;
+			f2 = o_ptr->can_flags2;
+			f3 = o_ptr->can_flags3;
+			f4 = o_ptr->can_flags4;
 
 			/* Remove flags on aware objects */
 			if (k_info[o_ptr->k_idx].aware)
@@ -2366,7 +2367,7 @@ sint scan_monsters(int *items, int size, int m_idx, int mode)
 		/* Scan all monsters */
 		for (i = 1; i < m_max; i++)
 		{
-			monster_type *m_ptr = &m_list[i];
+			m_ptr = &m_list[i];
 	
 			if (!m_ptr->r_idx) continue;
 			

@@ -1981,80 +1981,80 @@ static bool get_player_difficulty(void)
 /*
  * Player difficulty
  */
-static bool get_player_keyboard(void)
-{
-	int     choice;
-	birth_menu keyboard[MAX_KEYBOARD_CHOICES] =
-	{
-		{FALSE, "Desktop", 0},
-		{FALSE, "Laptop", 1}
-	};
-
-	/*** Player roller choice ***/
-
-	/* Extra info */
-	Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
-		    "Choose your current keyboard layout.");
-
-	choice = get_player_choice(keyboard, MAX_KEYBOARD_CHOICES, KEYBOARD_COL, DIFFICULTY_COL - KEYBOARD_COL - 1,
-				     "keyboard.txt", NULL);
-
-	/* Selection? */
-	switch(choice)
-	{
-		case INVALID_CHOICE:
-			return(FALSE);
-
-		case 0:
-			rogue_like_commands = FALSE;
-			break;
-		case 1:
-			rogue_like_commands = TRUE;
-			break;
-	}
-
-	return (TRUE);
-}
+//static bool get_player_keyboard(void)
+//{
+//	int     choice;
+//	birth_menu keyboard[MAX_KEYBOARD_CHOICES] =
+//	{
+//		{FALSE, "Desktop", 0},
+//		{FALSE, "Laptop", 1}
+//	};
+//
+//	/*** Player roller choice ***/
+//
+//	/* Extra info */
+//	Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
+//		    "Choose your current keyboard layout.");
+//
+//	choice = get_player_choice(keyboard, MAX_KEYBOARD_CHOICES, KEYBOARD_COL, DIFFICULTY_COL - KEYBOARD_COL - 1,
+//				     "keyboard.txt", NULL);
+//
+//	/* Selection? */
+//	switch(choice)
+//	{
+//		case INVALID_CHOICE:
+//			return(FALSE);
+//
+//		case 0:
+//			rogue_like_commands = FALSE;
+//			break;
+//		case 1:
+//			rogue_like_commands = TRUE;
+//			break;
+//	}
+//
+//	return (TRUE);
+//}
 
 #define MAX_QUICKSTART_CHOICES	2
 
 /*
  * Player difficulty
  */
-static bool get_player_quickstart(void)
-{
-	int     choice;
-	birth_menu quickstart[MAX_QUICKSTART_CHOICES] =
-	{
-		{FALSE, "Yes", 0},
-		{FALSE, "No", 1}
-	};
+//static bool get_player_quickstart(void)
+//{
+//	int     choice;
+//	birth_menu quickstart[MAX_QUICKSTART_CHOICES] =
+//	{
+//		{FALSE, "Yes", 0},
+//		{FALSE, "No", 1}
+//	};
 
 	/*** Player roller choice ***/
 
 	/* Extra info */
-	Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
-		    "Quick start the game using the same choices as the last character?");
+//	Term_putstr(QUESTION_COL, QUESTION_ROW, -1, TERM_YELLOW,
+//		    "Quick start the game using the same choices as the last character?");
 
-	choice = get_player_choice(quickstart, MAX_QUICKSTART_CHOICES, QUICKSTART_COL, 80 - QUICKSTART_COL - 1,
-				     "quickstart.txt", NULL);
+//	choice = get_player_choice(quickstart, MAX_QUICKSTART_CHOICES, QUICKSTART_COL, 80 - QUICKSTART_COL - 1,
+//				     "quickstart.txt", NULL);
 
 	/* Selection? */
-	switch(choice)
-	{
-		case INVALID_CHOICE:
-			return(FALSE);
+//	switch(choice)
+//	{
+//		case INVALID_CHOICE:
+//			return(FALSE);
+//
+//		case 0:
+//			birth_quickstart = TRUE;
+//			break;
+//		case 1:
+//			birth_quickstart = FALSE;
+//			break;
+//	}
 
-		case 0:
-			birth_quickstart = TRUE;
-			break;
-		case 1:
-			birth_quickstart = FALSE;
-			break;
-	}
-
-	return (TRUE);
-}
+//	return (TRUE);
+//}
 
 
 /*
@@ -2529,7 +2529,7 @@ static bool player_birth_aux_3(void)
 	int i, j, m, v;
 
 	bool flag;
-	bool prev = FALSE;
+	bool previous = FALSE;
 
 	key_event ke;
 
@@ -2832,7 +2832,7 @@ static bool player_birth_aux_3(void)
 			Term_gotoxy(2, 23);
 			Term_addch(TERM_WHITE, b1);
 			Term_addstr(-1, TERM_WHITE, "'r' to reroll, '?' for help");
-			if (prev) Term_addstr(-1, TERM_WHITE, ", 'p' for prev");
+			if (previous) Term_addstr(-1, TERM_WHITE, ", 'p' for prev");
 			Term_addstr(-1, TERM_WHITE, ", or Enter to accept");
 			Term_addch(TERM_WHITE, b2);
 
@@ -2859,7 +2859,7 @@ static bool player_birth_aux_3(void)
 			}
 
 			/* Previous character */
-			if (prev && (ke.key == 'p'))
+			if (previous && (ke.key == 'p'))
 			{
 				load_prev_data();
 				continue;
@@ -2887,7 +2887,7 @@ static bool player_birth_aux_3(void)
 		save_prev_data();
 
 		/* Note that a previous roll exists */
-		prev = TRUE;
+		previous = TRUE;
 	}
 
 	/* Clear prompt */

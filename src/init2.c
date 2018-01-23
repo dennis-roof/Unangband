@@ -2171,7 +2171,7 @@ void init_angband(void)
 
 	int mode = 0644;
 
-	FILE *fp;
+	//FILE *fp;
 
 	char buf[1024];
 

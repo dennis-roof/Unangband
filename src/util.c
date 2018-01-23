@@ -3726,7 +3726,6 @@ void process_monster_speech()
 	int reserved_rows[300];
 	int speech_row;
 	int speech_col;
-	int c;
 	
 	int index;
 	
@@ -3782,8 +3781,9 @@ char get_dialog(char* text, bool is_confirmation, char* valid_keys)
 	char keypress;
 	bool is_valid_key = FALSE;
 
-	int i, newlines;
-	int max_text_width = 56; // 40 dialog - 2x padding (left and right)
+	unsigned int i;
+	unsigned int newlines;
+	unsigned int max_text_width = 56; // 40 dialog - 2x padding (left and right)
 	int starting_line_number = 3;
 	int line_number = starting_line_number;
 	int starting_line_column = (Term->wid / 2 - (max_text_width+4) / 2 + SIDEBAR_WID/2);
@@ -5027,11 +5027,11 @@ bool is_valid_pf(int y, int x)
 	/* Don't move over known regions */
 	for (this_region_piece = cave_region_piece[y][x]; this_region_piece; this_region_piece = next_region_piece)
 	{
-		region_piece_type *rp_ptr = &region_piece_list[this_region_piece];
-		region_type *r_ptr = &region_list[rp_ptr->region];
+		region_piece_type *rp_ptr2 = &region_piece_list[this_region_piece];
+		region_type *r_ptr = &region_list[rp_ptr2->region];
 
 		/* Get the next region */
-		next_region_piece = rp_ptr->next_in_grid;
+		next_region_piece = rp_ptr2->next_in_grid;
 
 		/* Skip dead regions */
 		if (!r_ptr->type) continue;
@@ -5060,8 +5060,11 @@ static void fill_terrain_info(void)
 	ex = MIN(p_ptr->px + MAX_PF_RADIUS / 2 - 1,DUNGEON_WID);
 	ey = MIN(p_ptr->py + MAX_PF_RADIUS / 2 - 1,DUNGEON_HGT);
 
-	for (i=0;i<MAX_PF_RADIUS*MAX_PF_RADIUS;i++)
-		terrain[0][i] = -1;
+	/*for (i=0;i<MAX_PF_RADIUS*MAX_PF_RADIUS;i++)
+		terrain[0][i] = -1;*/
+	for (i=0;i<MAX_PF_RADIUS;i++)
+		for (j=0;j<MAX_PF_RADIUS;j++)
+			terrain[j][i] = -1;
 
 	for (j=oy;j<ey;j++)
 		for (i=ox;i<ex;i++)
@@ -5239,7 +5242,7 @@ cptr get_month_name(int day, bool full, bool compact)
 		{
 			char buf2[20];
 
-			sprintf(buf2, get_day(day + 1));
+			sprintf(buf2, "%s", get_day(day + 1));
 			if (full) sprintf(buf, "%s (%s day)", month_name[i], buf2);
 			else sprintf(buf, "%s", month_name[i]);
 			break;
@@ -5250,8 +5253,8 @@ cptr get_month_name(int day, bool full, bool compact)
 			char buf2[20];
 			char buf3[20];
 
-			sprintf(buf2, get_day(day + 1 - month_day[i]));
-			sprintf(buf3, get_day(day + 1));
+			sprintf(buf2, "%s", get_day(day + 1 - month_day[i]));
+			sprintf(buf3, "%s", get_day(day + 1));
 
 			if (full) sprintf(buf, "%s day of %s (%s day)", buf2, month_name[i], buf3);
 			else if (compact) sprintf(buf, "%s day of %s", buf2, month_name[i]);

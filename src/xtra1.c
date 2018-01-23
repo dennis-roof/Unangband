@@ -402,7 +402,7 @@ int print_monster_narrative(int line_number, int max_line_number)
 	byte color;
 	
 	monster_type *monster;
-	monster_race *monster_race;
+	monster_race *monster_race2;
 	
 	/* Loop over monsters */
 	for (index = 1; index < z_info->m_max; index++) {
@@ -414,12 +414,12 @@ int print_monster_narrative(int line_number, int max_line_number)
 		if (!player_can_see_bold(monster->fy, monster->fx)) continue;
 		
 		/* Get monster race */
-		monster_race = &r_info[monster->r_idx];
+		monster_race2 = &r_info[monster->r_idx];
 		
 		/* Get the monster name */
 		monster_desc(name, sizeof(name), index, 0x208);
 		
-		color = monster_race->d_attr;
+		color = monster_race2->d_attr;
 		
 		/* Ignore duplicates */
 		if ( is_in_array(
@@ -431,7 +431,7 @@ int print_monster_narrative(int line_number, int max_line_number)
 		line_number = print_tokenized_name(
 			line_number, 
 			color, 
-			monster_race->d_char, 
+			monster_race2->d_char, 
 			name, 
 			max_line_number);
 		
@@ -670,6 +670,8 @@ int print_room_narrative(int line_number, char* title, char* text, int max_line_
 	return line_number;
 }
 
+#define MAX_DESTINATION_NAME_LENGTH 15
+
 /*
  * Get direction name from NESW direction and set to name
  */
@@ -679,7 +681,7 @@ void get_destination_name(char *name, town_type *t_ptr, int direction)
 	char destination_name[43];
 	char directionArrow[] = "^>v<";
 	
-	memset(name, '\0', sizeof(name));
+	memset(name, '\0', MAX_DESTINATION_NAME_LENGTH);
 	
 	if (t_ptr->nearby[direction] != 0) {
 		long_level_name(destination_name, t_ptr->nearby[direction], 0);
@@ -705,38 +707,34 @@ int print_emergent_narrative(void)
 	
 	int room = room_idx(p_ptr->py, p_ptr->px);
 	
-	char wet_message[13];
+	char wet_message[16];
 	char character_level[7];
 	char name[62];
 	char text_visible[1024];
 	char text_always[1024];
 	char text_empty[] = "";
 	
-	char north[15];
-	char east[15];
-	char south[15];
-	char west[15];
-	
-	char destination_name[43];
-	int destination_trim_size;
+	char north[MAX_DESTINATION_NAME_LENGTH];
+	char east[MAX_DESTINATION_NAME_LENGTH];
+	char south[MAX_DESTINATION_NAME_LENGTH];
+	char west[MAX_DESTINATION_NAME_LENGTH];
 	
 	bool has_directions = FALSE;
-	//empty[0] = '\0';
 	
 	town_type *t_ptr = &t_info[p_ptr->dungeon];
 	
-	get_destination_name(&north, t_ptr, 0);
-	get_destination_name(&east, t_ptr, 1);
-	get_destination_name(&south, t_ptr, 2);
-	get_destination_name(&west, t_ptr, 3);
+	get_destination_name(&north[0], t_ptr, 0);
+	get_destination_name(&east[0], t_ptr, 1);
+	get_destination_name(&south[0], t_ptr, 2);
+	get_destination_name(&west[0], t_ptr, 3);
 	
 	if (strlen(north) > 0 || strlen(east) > 0 || strlen(south) > 0 || strlen(west) > 0)
 		has_directions = TRUE;
 	
-	sprintf(character_level, "(L%2d)", p_ptr->lev);
+	sprintf(character_level, " L%-d", (char) p_ptr->lev);
 	
 	if (p_ptr->wet && p_ptr->wet > 0)
-		sprintf(wet_message, "Soaked for %d", p_ptr->wet);
+		sprintf(wet_message, "Soaked for %-d", (char) p_ptr->wet);
 	
 	bool is_long_description;
 	
@@ -803,16 +801,16 @@ int print_emergent_narrative(void)
 		if (has_directions)
 			c_put_str(TERM_SLATE, "Directions:", line_number++, 0);
 	if (line_number < max_line_number)
-		if (north && strlen(north) > 0)
+		if (strlen(north) > 0)
 			c_put_str(TERM_SLATE, north, line_number++, 0);
 	if (line_number < max_line_number)
-		if (east && strlen(east) > 0)
+		if (strlen(east) > 0)
 			c_put_str(TERM_SLATE, east, line_number++, 0);
 	if (line_number < max_line_number)
-		if (south && strlen(south) > 0)
+		if (strlen(south) > 0)
 			c_put_str(TERM_SLATE, south, line_number++, 0);
 	if (line_number < max_line_number)
-		if (west && strlen(west) > 0)
+		if (strlen(west) > 0)
 			c_put_str(TERM_SLATE, west, line_number++, 0);
 	
 	if (has_directions) line_number++;
@@ -981,44 +979,44 @@ static void prt_depth(void)
 /*
  * Prints status of hunger
  */
-static void prt_hunger(void)
-{
+//static void prt_hunger(void)
+//{
 	/* Fainting / Starving */
-	if (p_ptr->food < PY_FOOD_FAINT)
-	{
-		c_put_str(TERM_RED, (show_sidebar ? "Weak  " : "Weak"), ROW_HUNGRY, COL_HUNGRY);
-	}
+//	if (p_ptr->food < PY_FOOD_FAINT)
+//	{
+//		c_put_str(TERM_RED, (show_sidebar ? "Weak  " : "Weak"), ROW_HUNGRY, COL_HUNGRY);
+//	}
 
 	/* Weak */
-	else if (p_ptr->food < PY_FOOD_WEAK)
-	{
-		c_put_str(TERM_ORANGE, (show_sidebar ? "Weak  " : "Weak"), ROW_HUNGRY, COL_HUNGRY);
-	}
+//	else if (p_ptr->food < PY_FOOD_WEAK)
+//	{
+//		c_put_str(TERM_ORANGE, (show_sidebar ? "Weak  " : "Weak"), ROW_HUNGRY, COL_HUNGRY);
+//	}
 
 	/* Hungry */
-	else if (p_ptr->food < PY_FOOD_ALERT)
-	{
-		c_put_str(TERM_YELLOW, (show_sidebar ? "Hungry" : "Hung"), ROW_HUNGRY, COL_HUNGRY);
-	}
+//	else if (p_ptr->food < PY_FOOD_ALERT)
+//	{
+//		c_put_str(TERM_YELLOW, (show_sidebar ? "Hungry" : "Hung"), ROW_HUNGRY, COL_HUNGRY);
+//	}
 
 	/* Normal */
-	else if (p_ptr->food < PY_FOOD_FULL)
-	{
-		c_put_str(TERM_L_GREEN, (show_sidebar ? "      " : "    "), ROW_HUNGRY, COL_HUNGRY);
-	}
+//	else if (p_ptr->food < PY_FOOD_FULL)
+//	{
+//		c_put_str(TERM_L_GREEN, (show_sidebar ? "      " : "    "), ROW_HUNGRY, COL_HUNGRY);
+//	}
 
 	/* Full */
-	else if (p_ptr->food < PY_FOOD_MAX)
-	{
-		c_put_str(TERM_L_GREEN, (show_sidebar ? "Full  " : "Full"), ROW_HUNGRY, COL_HUNGRY);
-	}
+//	else if (p_ptr->food < PY_FOOD_MAX)
+//	{
+//		c_put_str(TERM_L_GREEN, (show_sidebar ? "Full  " : "Full"), ROW_HUNGRY, COL_HUNGRY);
+//	}
 
 	/* Gorged */
-	else
-	{
-		c_put_str(TERM_GREEN, (show_sidebar ? "Gorged" : "Gorg"), ROW_HUNGRY, COL_HUNGRY);
-	}
-}
+//	else
+//	{
+//		c_put_str(TERM_GREEN, (show_sidebar ? "Gorged" : "Gorg"), ROW_HUNGRY, COL_HUNGRY);
+//	}
+//}
 
 /*
  * Prints Searching, Resting, Paralysis, or 'count' status

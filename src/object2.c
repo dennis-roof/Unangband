@@ -582,6 +582,7 @@ errr get_obj_num_prep(void)
 					if ((k_info[table[i].index].flags3 & (TR3_ACTIVATE | TR3_UNCONTROLLED)) == 0) break;
 
 					/* Fall through */
+					__attribute__ ((fallthrough));
 				}
 				case TV_ROD:
 				case TV_STAFF:
@@ -632,11 +633,11 @@ s16b get_obj_num(int level)
 {
 	int i, j, p;
 
-	int k_idx;
+	//int k_idx;
 
 	long value, total;
 
-	object_kind *k_ptr;
+	//object_kind *k_ptr;
 
 	alloc_entry *table = alloc_kind_table;
 
@@ -666,10 +667,10 @@ s16b get_obj_num(int level)
 		table[i].prob3 = 0;
 
 		/* Get the index */
-		k_idx = table[i].index;
+		//k_idx = table[i].index;
 
 		/* Get the actual kind */
-		k_ptr = &k_info[k_idx];
+		//k_ptr = &k_info[k_idx];
 
 		/* Accept */
 		table[i].prob3 = table[i].prob2;
@@ -1314,6 +1315,7 @@ s32b object_value_real(const object_type *o_ptr)
 			if (o_ptr->tval == TV_WAND) break;
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 
 		/* Bows/Weapons/Ammo */
@@ -1561,6 +1563,9 @@ s32b object_value(const object_type *o_ptr)
 
 					/* Give credit for known pval */
 					value += pval;
+					
+					/* Probably done? */
+					break;
 				}
 
 				/* Ammo */
@@ -1620,6 +1625,7 @@ s32b object_value(const object_type *o_ptr)
 				case INSCRIP_UNBREAKABLE:
 				{
 					bonus = 1000;
+					break;
 				}
 				case INSCRIP_SUPERB:
 				{
@@ -1828,6 +1834,7 @@ bool object_similar(const object_type *o_ptr, const object_type *j_ptr)
 			if ((o_ptr->timeout != 0) && (j_ptr->charges != 0)) return (FALSE);
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 
 		/* Weapons and Armor */
@@ -2018,7 +2025,7 @@ bool object_similar(const object_type *o_ptr, const object_type *j_ptr)
  * negative numbers is undefined in C.
  */
 
-void object_absorb(object_type *o_ptr, const object_type *j_ptr, bool floor)
+void object_absorb(object_type *o_ptr, object_type *j_ptr, bool floor)
 {
 	int total = o_ptr->number + j_ptr->number;
 
@@ -2234,6 +2241,7 @@ void object_absorb(object_type *o_ptr, const object_type *j_ptr, bool floor)
 				o_ptr->origin = j_ptr->origin;
 				o_ptr->origin_depth = j_ptr->origin_depth;
 				o_ptr->origin_xtra = j_ptr->origin_xtra;
+				break;
 			}
 
 			/* Set as "mixed" */
@@ -4398,6 +4406,8 @@ bool sense_magic(object_type *o_ptr, int sense_type, bool heavy, bool floor)
 			
 			/* Lanterns only pseudo id if magical/ego/artifact */
 			if (!(o_ptr->name1) && !(o_ptr->name2) && !(o_ptr->xtra1)) break;
+			
+			__attribute__ ((fallthrough));
 		}
 
 		case TV_RING:
@@ -4729,6 +4739,7 @@ void apply_magic(object_type *o_ptr, int lev, bool okay, bool good, bool great)
 			}
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 
 		default:
@@ -5509,7 +5520,8 @@ static bool kind_is_race(int k_idx)
 			/* Hack -- priests other than shamans only carry hafted weapons */
 			if ((r_ptr->flags2 & (RF2_PRIEST)) && !(r_ptr->flags2 & (RF2_MAGE))) return (FALSE);
 
-		/* Fall through */
+			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 		case TV_HAFTED:
 		{
@@ -5533,6 +5545,7 @@ static bool kind_is_race(int k_idx)
 			if (hack_monster_equip & (RF8_DROP_MISSILE)) return (FALSE);
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 		case TV_SHOT:
 		case TV_BOLT:
@@ -5693,6 +5706,9 @@ static bool kind_is_race(int k_idx)
 		case TV_STAFF:
 		{
 			if (hack_monster_equip & (RF8_DROP_WEAPON)) return (FALSE);
+			
+			/* Should this fall through? */
+			__attribute__ ((fallthrough));
 		}
 		case TV_ROD:
 		case TV_WAND:
@@ -5921,6 +5937,7 @@ bool make_object(object_type *j_ptr, bool good, bool great)
 			if ((k_info[j_ptr->k_idx].flags3 & (TR3_ACTIVATE | TR3_UNCONTROLLED)) == 0) break;
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 		case TV_ROD:
 		case TV_STAFF:
@@ -6676,6 +6693,7 @@ bool apply_alchemical_formula(object_type *o_ptr, int *dam, int *rad, int *rng, 
 						*flg |= (PROJECT_EDGE | PROJECT_BOOM);
 						*flg &= ~(PROJECT_BEAM);
 					}
+					break;
 				}
 				case 'q':
 				{
@@ -7985,7 +8003,7 @@ void pick_trap(int y, int x, bool player)
 		/* Set hook */
 		if (f_ptr->flags3 & (FF3_CHEST))
 		{
-			feature_type *f_ptr = &f_info[feat];
+			f_ptr = &f_info[feat];
 
 			chest_drops =  ((f_ptr->flags3 & (FF3_DROP_1D3)) ? 3 : 0) + ((f_ptr->flags3 & (FF3_DROP_1D2)) ? 2 : 0);
 			chest_drop_good = (f_ptr->flags3 & (FF3_DROP_GOOD)) ? TRUE : FALSE;
@@ -10217,12 +10235,12 @@ s16b spell_chance(int spell)
  */
 bool spell_okay(int spell, bool known)
 {
-	spell_type *s_ptr;
+	//spell_type *s_ptr;
 
 	int i;
 
 	/* Get the spell */
-	s_ptr = &s_info[spell];
+	//s_ptr = &s_info[spell];
 
 	/* Spell is illegible */
 	if (!spell_legible(spell)) return (FALSE);

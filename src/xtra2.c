@@ -1437,10 +1437,10 @@ void set_stat(int stat, int value) {
  */
 static void improve_stat(void)
 {
-	char keypress;
-	bool valid_choice = FALSE;
+	//char keypress;
+	//bool valid_choice = FALSE;
 	
-	int old_str, old_con, old_dex, old_agi, old_int, old_wis;
+	//int old_str, old_con, old_dex, old_agi, old_int, old_wis;
 	
 	//char improve_stat_dialog[] = "Congratulations, you gained a level and can improve your character. Choose:\n\n (1) to improve your strength and health\n (2) to improve your agility\n (3) to improve your magic skill";
 	
@@ -1494,13 +1494,13 @@ static void improve_stat(void)
 	int tmp = 0;
 	int i;
 
-	s16b table[A_MAX+1];
-	s16b old_max[A_MAX+1];
-	s16b old_cur[A_MAX+1];
+	//s16b table[A_MAX+1];
+	//s16b old_max[A_MAX+1];
+	//s16b old_cur[A_MAX+1];
 
-	char buf[32];
+	//char buf[32];
 
-	cptr p = "";
+	//cptr p = "";
 
 	int count = 0;
 
@@ -1514,10 +1514,10 @@ static void improve_stat(void)
 	/* Check which stats can still be improved and store old stats*/
 	for (i = 0; i < A_MAX; i++)
 	{
-		table[i] = i;
+		//table[i] = i;
 		if (p_ptr->stat_max[i] < 18 + 999) count++;
-		old_max[i] = p_ptr->stat_max[i];
-		old_cur[i] = p_ptr->stat_cur[i];
+		//old_max[i] = p_ptr->stat_max[i];
+		//old_cur[i] = p_ptr->stat_cur[i];
 	}
 
 	/* No stats left to improve */
@@ -1562,7 +1562,7 @@ static void improve_stat(void)
 				if (p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]] < p_ptr->stat_max[stat_gain_selection[stat_gain_selected]])
 				{
 					/* Set description */
-					p = "you could be ";
+					//p = "you could be ";
 					
 					/* Hack --- store stat */
 					tmp = p_ptr->stat_cur[stat_gain_selection[stat_gain_selected]];
@@ -1570,7 +1570,7 @@ static void improve_stat(void)
 				}
 				else
 				{
-					p = "";
+					//p = "";
 					tmp = 0;
 				}
 				
@@ -2290,7 +2290,8 @@ bool check_quest(quest_event *qe1_ptr, bool advance)
 
 				/* Check for level match */
 				if ((qe2_ptr->dungeon) && ((qe2_ptr->dungeon != qe1_ptr->dungeon) ||
-						(qe2_ptr->level != qe2_ptr->level))) continue;
+						(qe2_ptr->level != qe1_ptr->level))) 
+							continue;
 
 				/* Check for race match */
 				if (qe1_ptr->flags & (EVENT_GIVE_RACE | EVENT_GET_RACE | EVENT_FIND_RACE | EVENT_KILL_RACE |
@@ -2604,6 +2605,7 @@ bool monster_drop(int m_idx)
 				case TV_BOW:
 				{
 					hack_monster_equip |= (RF8_DROP_MISSILE);
+					__attribute__ ((fallthrough));
 				}
 				case TV_SHOT:
 				case TV_ARROW:
@@ -2635,6 +2637,7 @@ bool monster_drop(int m_idx)
 				{
 					if (rand_int(100) < 50) hack_monster_equip |= (RF8_DROP_MUSIC);
 					if (rand_int(100) < 50) hack_monster_equip |= (RF8_DROP_WRITING);
+					__attribute__ ((fallthrough));
 				}
 				case TV_INSTRUMENT:
 				{
@@ -2717,6 +2720,7 @@ bool monster_drop(int m_idx)
 				case TV_STAFF:
 				{
 					hack_monster_equip |= (RF8_DROP_WEAPON);
+					__attribute__ ((fallthrough));
 				}
 				case TV_ROD:
 				case TV_WAND:
@@ -3566,6 +3570,7 @@ void get_room_desc(int room, char *name, int name_s, char *text_visible, int tex
 			beware = TRUE;
 
 			/* Fall through */
+			__attribute__ ((fallthrough));
 		}
 
 		case (ROOM_LESSER_VAULT):
@@ -4635,11 +4640,11 @@ static bool target_set_interactive_accept(int y, int x)
 	/* Scan all regions in the grid */
 	for (this_region_piece = cave_region_piece[y][x]; this_region_piece; this_region_piece = next_region_piece)
 	{
-		region_piece_type *rp_ptr = &region_piece_list[this_region_piece];
-		region_type *r_ptr = &region_list[rp_ptr->region];
+		region_piece_type *rp_ptr2 = &region_piece_list[this_region_piece];
+		region_type *r_ptr = &region_list[rp_ptr2->region];
 
 		/* Get the next region */
-		next_region_piece = rp_ptr->next_in_grid;
+		next_region_piece = rp_ptr2->next_in_grid;
 
 		/* Skip dead regions */
 		if (!r_ptr->type) continue;
@@ -4956,7 +4961,7 @@ key_event target_set_interactive_aux(int y, int x, int *room, int mode, cptr inf
 
 					object_type *o_ptr;
 
-					bool recall = FALSE;
+					recall = FALSE;
 
 					/* Get the object */
 					o_ptr = &o_list[this_o_idx];
@@ -5039,11 +5044,11 @@ key_event target_set_interactive_aux(int y, int x, int *room, int mode, cptr inf
 		/* Regions */
 		for (this_region_piece = cave_region_piece[y][x]; this_region_piece; this_region_piece = next_region_piece)
 		{
-			region_piece_type *rp_ptr = &region_piece_list[this_region_piece];
-			region_type *r_ptr = &region_list[rp_ptr->region];
+			region_piece_type *rp_ptr2 = &region_piece_list[this_region_piece];
+			region_type *r_ptr = &region_list[rp_ptr2->region];
 
 			/* Get the next region */
-			next_region_piece = rp_ptr->next_in_grid;
+			next_region_piece = rp_ptr2->next_in_grid;
 
 			/* Skip dead regions */
 			if (!r_ptr->type) continue;
@@ -5065,10 +5070,10 @@ key_event target_set_interactive_aux(int y, int x, int *room, int mode, cptr inf
 				boring = FALSE;
 
 				/* Bring region to 'top' */
-				region_highlight(rp_ptr->region);
+				region_highlight(rp_ptr2->region);
 
 				/* And refresh */
-				region_refresh(rp_ptr->region);
+				region_refresh(rp_ptr2->region);
 
 				/* Interact */
 				while (1)
@@ -5126,7 +5131,7 @@ key_event target_set_interactive_aux(int y, int x, int *room, int mode, cptr inf
 				{
 					r_ptr->flags1 &= ~(RE1_DISPLAY);
 
-					region_refresh(rp_ptr->region);
+					region_refresh(rp_ptr2->region);
 				}
 
 				/* Change the intro */
@@ -5942,6 +5947,9 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 
 					/* Handle stuff */
 					handle_stuff();
+					
+					/* Should this fall through? */
+					__attribute__ ((fallthrough));
 				}
 
 				case 'o':
@@ -6350,6 +6358,8 @@ bool target_set_interactive(int mode, int range, int radius, u32b flg, byte arc,
 						bell("Illegal target! Use @ to target yourself.");
 						break;
 					}
+					
+					__attribute__ ((fallthrough));
 				}
 				case '@':
 				{
@@ -6521,7 +6531,7 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 	
 	char keypress = '*';
 
-	cptr p;
+	//cptr p;
 
 #ifdef ALLOW_REPEAT
 
@@ -6551,11 +6561,11 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 		/* Choose a prompt */
 		if (!target_okay())
 		{
-			p = "Direction ('*' to choose a target, Escape to cancel)? ";
+			//p = "Direction ('*' to choose a target, Escape to cancel)? ";
 		}
 		else
 		{
-			p = "Direction ('5' for target, '*' to re-target, Escape to cancel)? ";
+			//p = "Direction ('5' for target, '*' to re-target, Escape to cancel)? ";
 		}
 
 		/* Get a command (or Cancel) */
@@ -6579,6 +6589,9 @@ bool get_aim_dir(int *dp, int mode, int range, int radius, u32b flg, byte arc, b
 					break;
 				}
 				//else continue;
+				
+				/* Should this fall through? */
+				__attribute__ ((fallthrough));
 			}
 
 			/* Set new target, use target if legal */

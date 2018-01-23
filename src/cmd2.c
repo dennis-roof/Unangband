@@ -232,67 +232,67 @@ int actual_route(int dun)
  * and has no "!<" in its inscription.
  * Also, if it has "=<' it will be always eaten, reasonable or not.
  */
-static bool auto_consume_okay(const object_type *o_ptr)
-{
-	cptr s;
+//static bool auto_consume_okay(const object_type *o_ptr)
+//{
+//	cptr s;
 
 	/* Inedible */
-	if (!item_tester_hook_food_edible(o_ptr)) return (FALSE);
+//	if (!item_tester_hook_food_edible(o_ptr)) return (FALSE);
 
 	/* Hack -- normal food is fine except gorging meat, etc. */
 	/* You can inscribe them with !< to prevent this however */
-	if ((o_ptr->tval == TV_FOOD)
-		 && (o_ptr->sval != SV_FOOD_WAYBREAD)
-		 && (o_ptr->sval != SV_FOOD_SPRIG_OF_ATHELAS)
-		 && (o_ptr->sval != SV_FOOD_COOKED_MEET)
-		 && (o_ptr->sval != SV_FOOD_PINT_OF_SPIRITS))
-	{
+//	if ((o_ptr->tval == TV_FOOD)
+//		 && (o_ptr->sval != SV_FOOD_WAYBREAD)
+//		 && (o_ptr->sval != SV_FOOD_SPRIG_OF_ATHELAS)
+//		 && (o_ptr->sval != SV_FOOD_COOKED_MEET)
+//		 && (o_ptr->sval != SV_FOOD_PINT_OF_SPIRITS))
+//	{
 		/* No inscription */
-		if (!o_ptr->note) return (TRUE);
+//		if (!o_ptr->note) return (TRUE);
 
 		/* Find a '!' */
-		s = strchr(quark_str(o_ptr->note), '!');
+//		s = strchr(quark_str(o_ptr->note), '!');
 
 		/* Process inscription */
-		while (s)
-		{
+//		while (s)
+//		{
 			/* Not auto-consume on "!<" */
-			if (s[1] == '<')
-			{
+//			if (s[1] == '<')
+//			{
 				/* Pick up */
-				return (FALSE);
-			}
+//				return (FALSE);
+//			}
 
 			/* Find another '=' */
-			s = strchr(s + 1, '!');
-		}
+//			s = strchr(s + 1, '!');
+//		}
 
-		return (TRUE);
-	}
+//		return (TRUE);
+//	}
 
 	/* No inscription */
-	if (!o_ptr->note) return (FALSE);
+//	if (!o_ptr->note) return (FALSE);
 
 	/* Find a '=' */
-	s = strchr(quark_str(o_ptr->note), '=');
+//	s = strchr(quark_str(o_ptr->note), '=');
 
 	/* Process inscription */
-	while (s)
-	{
+//	while (s)
+//	{
 		/* Auto-consume on "=<" */
-		if (s[1] == '<')
-		{
+//		if (s[1] == '<')
+//		{
 			/* Pick up */
-			return (TRUE);
-		}
+//			return (TRUE);
+//		}
 
 		/* Find another '=' */
-		s = strchr(s + 1, '=');
-	}
+//		s = strchr(s + 1, '=');
+//	}
 
 	/* Don't auto consume */
-	return (FALSE);
-}
+//	return (FALSE);
+//}
 
 
 /*
@@ -442,7 +442,7 @@ int set_routes(s16b *routes, int max_num, int from)
 	/* Sort the routes in order */
 	for(i = 0; i < num; i++)
 	{
-		int ii;
+		//int ii;
 		s16b temp;
 
 		max = i;
@@ -474,7 +474,8 @@ static void do_cmd_travel(void)
 	town_type *t_ptr = &t_info[p_ptr->dungeon];
 	dungeon_zone *zone = &t_ptr->zone[0];
 
-	int i, num = 0;
+	//int i, num = 0;
+	int i = 0;
 
 	int journey = 0;
 
@@ -492,7 +493,7 @@ static void do_cmd_travel(void)
 	//town = t_ptr->nearby[i]; //route[i];
 	//long_level_name(str, town, 0);
 
-	char str[46];
+	char str[1000];
 	char destination_name[46];
 	char travel_confirm_message[240];
 	char keypress;
@@ -552,7 +553,7 @@ static void do_cmd_travel(void)
 		else
 		{
 
-			s16b routes[24];
+			//s16b routes[24];
 
 			quest_event event;
 
@@ -568,7 +569,7 @@ static void do_cmd_travel(void)
 			if (check_quest(&event, FALSE)) return;
 
 			/* Routes */
-			num = set_routes(routes, 24, p_ptr->dungeon);
+			//num = set_routes(routes, 24, p_ptr->dungeon);
 
 			/* Display the list and get a selection */
 			//if (get_list(print_routes, routes, num, "Routes", "Travel to where", ", L=locations, M=map", 1, 22, route_commands, &selection))
@@ -585,7 +586,7 @@ static void do_cmd_travel(void)
 
 				if (!t_info[selection].visited)
 				{
-					char str[1000];
+					memset(str, '\0', sizeof(str));
 
 					for (i = 1; i < z_info->t_max; i++)
 					{
@@ -1623,7 +1624,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 {
 	bool more = FALSE;
 
-	int i,j;
+	int j;
 
 	cptr name;
 
@@ -1634,7 +1635,7 @@ static bool do_cmd_tunnel_aux(int y, int x)
 	/* Verify legality */
 	if (!do_cmd_test(y, x, FS_TUNNEL)) return (FALSE);
 
-	i = p_ptr->skills[SKILL_DIGGING];
+	//i = p_ptr->skills[SKILL_DIGGING];
 
 	j = f_info[cave_feat[y][x]].power;
 
@@ -2784,6 +2785,7 @@ bool player_set_trap_or_spike(int item)
 					    case 3:
 					    {
 							if (i_ptr->tval != TV_SHOT) trap_allowed = FALSE;
+							__attribute__ ((fallthrough));
 					    }
 						default:
 						{
@@ -3024,7 +3026,7 @@ static bool do_cmd_walk_test(int y, int x)
 /*
  * Walk into a grid. For mouse movement when confused.
  */
-void do_cmd_walk()
+bool do_cmd_walk()
 {
 	int py = p_ptr->py;
 	int px = p_ptr->px;
@@ -3032,19 +3034,19 @@ void do_cmd_walk()
 	int y, x, dir, keypress;
 	
 	int feat;
-	char query;
+	//char query;
 	char climb_up_message[] = "Climb up the stairs? (y/n)";
 	char climb_down_message[] = "Climb down the stairs? (y/n)";
 
 	/* Get a direction (or abort) */
-	if (!get_rep_dir(&dir)) return;
+	if (!get_rep_dir(&dir)) return (FALSE);
 
 	/* Get location */
 	y = py + ddy[dir];
 	x = px + ddx[dir];
 
 	/* Verify legality */
-	if (!do_cmd_walk_test(y, x)) return;
+	if (!do_cmd_walk_test(y, x)) return (FALSE);
 
 	/* Take time */
 	p_ptr->energy_use = 100;
@@ -3074,7 +3076,7 @@ void do_cmd_walk()
 	}
 
 	/* Verify legality */
-	if (!do_cmd_walk_test(y, x)) return;
+	if (!do_cmd_walk_test(y, x)) return (FALSE);
 
 	/* Allow repeated command */
 	if (p_ptr->command_arg)
@@ -3109,6 +3111,8 @@ void do_cmd_walk()
 			return (FALSE);
 		}
 	}
+	
+	return (FALSE);
 }
 
 

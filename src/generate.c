@@ -1232,8 +1232,8 @@ static bool draw_maze(int y1, int x1, int y2, int x2, s16b feat_wall,
 	/* Save the existing terrain to overwrite the maze later */
 	if ((flag & (MAZE_SAVE)) != 0)
 	{
-		int const dx =  1 + x2 - x1;
-		int const dy =  1 + y2 - y1;
+		dx =  1 + x2 - x1;
+		dy =  1 + y2 - y1;
 
 		saved = C_ZNEW(dx*dy,s16b);
 
@@ -1834,8 +1834,8 @@ static bool draw_maze(int y1, int x1, int y2, int x2, s16b feat_wall,
 	/* Restore grids */
 	if ((flag & (MAZE_SAVE)) != 0)
 	{
-		int const dx =  1 + x2 - x1;
-		int const dy =  1 + y2 - y1;
+		dx =  1 + x2 - x1;
+		dy =  1 + y2 - y1;
 
 		for (y = 0; y < dy; y++)
 		{
@@ -2756,7 +2756,7 @@ static bool generate_cellular_cave(int y1, int x1, int y2, int x2, s16b wall, s1
 	 		case GRID_EDGE:
 	 		{
 	 			int d;
-	 			bool edged = FALSE;
+	 			//bool edged = FALSE;
 	 			byte cave_flag_edge = (edge && f_info[edge].flags1 & (FF1_OUTER)) ? (cave_flag) : ((cave_flag) & ~(CAVE_ROOM));
 
 	 			if (edge || wall)
@@ -2769,7 +2769,7 @@ static bool generate_cellular_cave(int y1, int x1, int y2, int x2, s16b wall, s1
 		 				{
 							cave_set_feat(y1 + yi, x1 + xi, edge ? edge : wall);
 							cave_info[y1+yi][x1 + xi] |= (cave_flag_edge);
-							edged = TRUE;
+							//edged = TRUE;
 		 					break;
 		 				}
 		 			}
@@ -2950,7 +2950,7 @@ static bool generate_poly_room(int n, int *y, int *x, s16b edge, s16b floor, s16
 	 		case GRID_EDGE:
 	 		{
 	 			int d;
-	 			bool edged = FALSE;
+	 			//bool edged = FALSE;
 
 	 			if (edge)
 	 			{
@@ -2962,7 +2962,7 @@ static bool generate_poly_room(int n, int *y, int *x, s16b edge, s16b floor, s16
 		 				{
 							cave_set_feat(y0 + yi, x0 + xi, edge);
 							cave_info[y0+yi][x0 + xi] |= (cave_flag_edge);
-							edged = TRUE;
+							//edged = TRUE;
 		 					break;
 		 				}
 		 			}
@@ -3554,7 +3554,7 @@ static void generate_patt(int y1, int x1, int y2, int x2, s16b feat, u32b flag, 
 			else
 			{
 				u32b maze_exits = 0L;
-				int k = 0;
+				k = 0;
 
 				if (((maze_flags & (MAZE_OUTER_N)) == 0) && !(rand_int(++k))) maze_exits = MAZE_EXIT_N;
 				if (((maze_flags & (MAZE_OUTER_S)) == 0) && !(rand_int(++k))) maze_exits = MAZE_EXIT_S;
@@ -5622,7 +5622,7 @@ static bool build_overlapping(int room, int type, int y1a, int x1a, int y2a, int
 				try_simple = FALSE;
 
 				/* Ensure some space */
-				if (x2w <= x2w) x2w = x1w + 1;
+				if (TRUE /*x2w <= x2w*/) x2w = x1w + 1;
 				generate_patt(y1w, x1w, y2w, x2w, place_feat, place_flag, exclude, dy, dx, scale, (scatter + placements - 1) / placements);
 			}
 
@@ -8047,6 +8047,7 @@ static bool build_vault(int room, int y0, int x0, int ymax, int xmax, cptr data)
 					case '&':
 					{
 						place_chest(y, x);
+						break;
 					}
 					/* Lava. */
 					case '@':
@@ -10967,7 +10968,7 @@ static bool build_tunnel(int row1, int col1, int row2, int col2, bool allow_over
 	/* If the ending room has decorations next to doors, overwrite the start */
 	if ((end_room) && (end_room < DUN_ROOMS) && (room_info[end_room].theme[THEME_SOLID]) && (dun->next_n < NEXT_MAX))
 	{
-		int j;
+		//int j;
 
 		for (j = first_next; j < dun->next_n; j++)
 		{
@@ -12519,7 +12520,7 @@ static bool build_type232425(int room, int type)
 							/* Allow lighting up rooms to work correctly */
 							if (f_info[cave_feat[y][x]].flags1 & (FF1_LOS))
 							{
-								int d;
+								//int d;
 
 								/* Look in all directions. */
 								for (d = 0; d < 8; d++)
@@ -15142,8 +15143,11 @@ static bool cave_gen(void)
 		/* For safety sake we identify and fix special levels */
 		switch(dun->special)
 		{
-			case SPECIAL_GREAT_PILLARS:
+			case SPECIAL_GREAT_PILLARS: {
 				level_flag &= ~(LF1_ROOMS);
+				
+				__attribute__ ((fallthrough));
+			}
 			case SPECIAL_GREAT_HALL:
 			case SPECIAL_GREAT_CAVE:
 				level_flag |= (LF1_WILD);

@@ -1248,7 +1248,7 @@ static void process_world(void)
 		/* Update the stores once a day (while in dungeon) */
 		if (!(turn % (10L * STORE_TURNS)))
 		{
-		  int n, i;
+			int n;
 
 			/* Message */
 			if (cheat_xtra) msg_print("Updating Shops...");
@@ -1257,7 +1257,7 @@ static void process_world(void)
 			for (n = 0; n < total_store_count; n++)
 			{
 				/* no restocking for alien towns; at most 1 shop n in each town */
-				town_type *t_ptr = &t_info[p_ptr->town];
+				t_ptr = &t_info[p_ptr->town];
 				for (i = 0; i < MAX_STORES; i++)
 				{
 			      if (t_ptr->store_index[i] == n)
@@ -1880,7 +1880,8 @@ static void process_world(void)
 	/* Uncontrolled items */
 	if ((p_ptr->uncontrolled) && (rand_int(UNCONTROLLED_CHANCE) < 1))
 	{
-		int j = 0, k = 0;
+		j = 0;
+		k = 0;
 
 		/* Scan inventory and pick uncontrolled item */
 		for (i = INVEN_WIELD; i < END_EQUIPMENT; i++)
@@ -4036,19 +4037,19 @@ void play_game(bool new_game)
 				guard = t_info[i].zone[ii].guard;
 				if (guard)
 				{
-					int zone_depth;
+					//int zone_depth;
 
 					assert (r_info[guard].flags1 & RF1_UNIQUE);
 					r_info[guard].flags1 |= (RF1_GUARDIAN);
 					if (r_info[guard].max_num > 1) r_info[guard].max_num = 1;
 
 					/* Sane depth */
-					if (ii == MAX_DUNGEON_ZONES - 1
-						|| t_info[i].zone[ii+1].level == 0)
+					//if (ii == MAX_DUNGEON_ZONES - 1
+					//	|| t_info[i].zone[ii+1].level == 0)
 						/* last zone */
-						zone_depth = t_info[i].zone[ii].level;
-					else
-						zone_depth = t_info[i].zone[ii+1].level - 1;
+					//	zone_depth = t_info[i].zone[ii].level;
+					//else
+					//	zone_depth = t_info[i].zone[ii+1].level - 1;
 
 #if 0
 					if (r_info[guard].level /* Maggot */

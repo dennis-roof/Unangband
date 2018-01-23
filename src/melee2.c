@@ -531,7 +531,8 @@ static int find_resist(u32b smart, int effect)
 			if (smart & (SM_RES_CHAOS)) return(30);
 			if (smart & (SM_RES_NETHR))  a += 10;
 			if (smart & (SM_RES_CONFU))  a += 10;
-			else return (a);
+			//else return (a);
+			return (a);
 		}
 
 		/* Shards Spells */
@@ -546,7 +547,8 @@ static int find_resist(u32b smart, int effect)
 		case GF_FORCE:
 		{
 			if (smart & (SM_RES_SOUND)) a += 30;
-			else return (a);
+			//else return (a);
+			return (a);
 		}
 
 		/* Confusion Spells, damage dealing */
@@ -590,6 +592,7 @@ static int find_resist(u32b smart, int effect)
 			if ((cave_info[p_ptr->py][p_ptr->px] & (CAVE_GLOW)) != 0) a += 10;
 
 			/* Drop through */
+			__attribute__ ((fallthrough));
 		}
 		case GF_LITE:
 		{
@@ -604,6 +607,7 @@ static int find_resist(u32b smart, int effect)
 			if ((cave_info[p_ptr->py][p_ptr->px] & (CAVE_GLOW)) == 0) a += 10;
 
 			/* Drop through */
+			__attribute__ ((fallthrough));
 		}
 		case GF_DARK:
 		{
@@ -2031,7 +2035,7 @@ static int choose_ranged_attack(int m_idx, int *tar_y, int *tar_x, byte choose)
 	/* Figure out if we want mana */
 	if (m_ptr->mana < r_ptr->mana/4) want_mana +=2;
 	else if (m_ptr->mana < r_ptr->mana/2) want_mana++;
-	else if (m_ptr->mana == m_ptr->mana) f6 &= ~(RF6_ADD_MANA);
+	else if (m_ptr->mana == r_ptr->mana) f6 &= ~(RF6_ADD_MANA);
 
 	/* Figure out if we want to scram */
 	if (want_hps) want_escape = want_hps - 1;
@@ -3300,7 +3304,7 @@ static bool get_move(int m_idx, int *ty, int *tx, bool *fear,
 	 */
 	if ((r_ptr->flags1 & (RF1_NEVER_MOVE)) || (m_ptr->petrify))
 	{
-		int i;
+		//int i;
 		int d = 9;
 
 		/* Hack -- memorize lack of moves after a while. */
@@ -3656,10 +3660,10 @@ static bool get_move(int m_idx, int *ty, int *tx, bool *fear,
 			else
 			  {
 			    /* pick a random grid next to the monster */
-			    int i = rand_int(8);
+			    int i2 = rand_int(8);
 
-			    *ty = m_ptr->fy + ddy_ddd[i];
-			    *tx = m_ptr->fx + ddx_ddd[i];
+			    *ty = m_ptr->fy + ddy_ddd[i2];
+			    *tx = m_ptr->fx + ddx_ddd[i2];
 			  }
 		}
 	}
@@ -4146,7 +4150,7 @@ bool tell_allies_info(int y, int x, cptr saying, intptr_t u, int v, int w, bool 
 	monster_type *m_ptr = &m_list[cave_m_idx[y][x]];
 	/* Speak add_monster_speech(monster_type *monster, char* speech) */
 	//if ((saying) && (strlen(saying))) monster_speech(cave_m_idx[y][x], saying, FALSE);
-	if ((saying) && (strlen(saying))) add_monster_speech(m_ptr, saying);
+	if ((saying) && (strlen(saying))) add_monster_speech(m_ptr, (char *) saying);
 
 	/* Something said */
 	return (TRUE);
@@ -4754,7 +4758,7 @@ static bool make_move(int m_idx, int *ty, int *tx, bool fear, bool *bash)
 					/* Look for an adjacent grid leading to the target */
 					if (get_route_to_target(m_ptr, ty, tx))
 					{
-						int chance;
+						//int chance;
 
 						/* Calculate the chance to enter the grid */
 						chance = cave_passable_mon(m_ptr, *ty, *tx, bash);
@@ -4984,7 +4988,8 @@ static bool make_move(int m_idx, int *ty, int *tx, bool fear, bool *bash)
 			monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 			/* Dump a message */
-			msg_format("%^s turns on you!", m_name);
+			//msg_format("%^s turns on you!", m_name);
+			add_monster_speech(m_ptr, "*turns on you*");
 		}
 	}
 
@@ -5065,9 +5070,10 @@ static bool bash_from_under(int m_idx, int y, int x, bool *bash)
 			/* Get the monster name */
 			monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-			msg_format("%^s emerges from %s%s.",m_name,
-				((f_ptr->flags2 & (FF2_FILLED))?"":"the "),
-				f_name+f_ptr->name);
+			//msg_format("%^s emerges from %s%s.",m_name,
+			//	((f_ptr->flags2 & (FF2_FILLED))?"":"the "),
+			//	f_name+f_ptr->name);
+			add_monster_speech(m_ptr, "*emerges*");
 
 			if ((disturb_move || ((m_ptr->mflag & (MFLAG_VIEW)) &&
 		      		disturb_near))
@@ -5111,7 +5117,8 @@ static bool crash_from_above(int m_idx, int y, int x)
 			/* Get the monster name */
 			monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-			msg_format("%^s crashes through the ceiling.",m_name);
+			//msg_format("%^s crashes through the ceiling.",m_name);
+			add_monster_speech(m_ptr, "*crash through ceiling*");
 
 			if ((disturb_move || ((m_ptr->mflag & (MFLAG_VIEW)) &&
 		      		disturb_near))
@@ -5248,9 +5255,10 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 				/* Get the monster name */
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-				msg_format("%^s emerges from %s%s.",m_name,
-					((f_info[cave_feat[oy][ox]].flags2 & (FF2_FILLED))?"":"the "),
-					f_name+f_info[cave_feat[oy][ox]].name);
+				//msg_format("%^s emerges from %s%s.",m_name,
+				//	((f_info[cave_feat[oy][ox]].flags2 & (FF2_FILLED))?"":"the "),
+				//	f_name+f_info[cave_feat[oy][ox]].name);
+				add_monster_speech(m_ptr, "*emerges*");
 			}
 
 			/* Disturb on "move" */
@@ -5603,7 +5611,8 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 			if (m_ptr->monfear)
 			{
 				/* Describe the attack */
-				if (ally_messages) msg_format("%^s is afraid.", m_name);
+				//if (ally_messages) msg_format("%^s is afraid.", m_name);
+				if (ally_messages) add_monster_speech(m_ptr, "I'm afraid");
 			}
 			
 			/* Attack if not afraid */
@@ -5642,7 +5651,8 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 					if (!method)
 					{
 						/* Describe the attack */
-						if ((!hit) && (ally_messages)) msg_format("%^s misses.", m_name);
+						//if ((!hit) && (ally_messages)) msg_format("%^s misses.", m_name);
+						if ((!hit) && (ally_messages)) add_monster_speech(m_ptr, "I missed");
 						
 						break;
 					}
@@ -5728,7 +5738,8 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 					}
 
 					/* Describe the attack */
-					if ((result >= 0) && (ally_messages)) msg_format("%^s %s", m_name, atk_desc);
+					//if ((result >= 0) && (ally_messages)) msg_format("%^s %s", m_name, atk_desc);
+					if ((result >= 0) && (ally_messages)) add_monster_speech(m_ptr, atk_desc);
 					
 					if (result >= 0) hit = TRUE;
 
@@ -5844,7 +5855,7 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 						object_type *o_ptr = &o_list[o_list[ammo].next_o_idx];
 						object_type *j_ptr = &o_list[ammo];
 
-						int this_o_idx, next_o_idx;
+						//int this_o_idx, next_o_idx;
 
 						if (cheat_xtra) msg_format("Debug before swap: ammo %d, ammo next %d, temp %d, m_ptr->held %d, n_ptr->held %d", ammo, o_list[ammo].next_o_idx, temp_o_idx, m_ptr->hold_o_idx, n_ptr->hold_o_idx);
 
@@ -5941,9 +5952,10 @@ static void process_move(int m_idx, int ty, int tx, bool bash)
 			/* Get the monster name */
 			monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-			msg_format("%^s emerges from %s%s.",m_name,
-			((f_info[cave_feat[oy][ox]].flags2 & (FF2_FILLED))?"":"the "),
-			f_name+f_info[cave_feat[oy][ox]].name);
+			//msg_format("%^s emerges from %s%s.",m_name,
+			//((f_info[cave_feat[oy][ox]].flags2 & (FF2_FILLED))?"":"the "),
+			//f_name+f_info[cave_feat[oy][ox]].name);
+			add_monster_speech(m_ptr, "*emerges*");
 
 			/* If flying or climbing, start over */
 			if ((mmove == MM_CLIMB) || (mmove == MM_FLY)) m_ptr->mflag |= (MFLAG_OVER);
@@ -6273,16 +6285,40 @@ void feed_monster(int m_idx)
 	   will eat more than other monsters. */
 	switch(rand_int(5))
 	{
-		case 0: if ((m_ptr->mflag & (MFLAG_WEAK)) != 0) {  m_ptr->mflag &= ~(MFLAG_WEAK); break; }
-		case 1: if ((m_ptr->mflag & (MFLAG_SICK)) != 0)
-			{
+		case 0: 
+			if ((m_ptr->mflag & (MFLAG_WEAK)) != 0) { 
+				m_ptr->mflag &= ~(MFLAG_WEAK); 
+				break; 
+			}
+			
+			__attribute__ ((fallthrough));
+		case 1: 
+			if ((m_ptr->mflag & (MFLAG_SICK)) != 0) {
 				m_ptr->mflag &= ~(MFLAG_SICK);
 				hp = calc_monster_hp(m_idx);
 				if (m_ptr->maxhp < hp) { m_ptr->maxhp = hp; break; }
 			}
-		case 2: if ((m_ptr->mflag & (MFLAG_CLUMSY)) != 0) {  m_ptr->mflag &= ~(MFLAG_CLUMSY); break; }
-		case 3: if ((m_ptr->mflag & (MFLAG_STUPID)) != 0) {  m_ptr->mflag &= ~(MFLAG_STUPID); break; }
-		case 4: if ((m_ptr->mflag & (MFLAG_NAIVE)) != 0) {  m_ptr->mflag &= ~(MFLAG_NAIVE); break; }
+			
+			__attribute__ ((fallthrough));
+		case 2: 
+			if ((m_ptr->mflag & (MFLAG_CLUMSY)) != 0) { 
+				m_ptr->mflag &= ~(MFLAG_CLUMSY); 
+				break; 
+			}
+			
+			__attribute__ ((fallthrough));
+		case 3: 
+			if ((m_ptr->mflag & (MFLAG_STUPID)) != 0) { 
+				m_ptr->mflag &= ~(MFLAG_STUPID); 
+				break; 
+			}
+			
+			__attribute__ ((fallthrough));
+		case 4: 
+			if ((m_ptr->mflag & (MFLAG_NAIVE)) != 0) {  
+				m_ptr->mflag &= ~(MFLAG_NAIVE); 
+				break; 
+			}
 	}
 
 	/* All monsters recover hit points */
@@ -6706,7 +6742,8 @@ static void process_monster(int m_idx)
 					/* Get the monster name */
 					monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-					msg_format("%^s emerges from the %s.", m_name, f_name + f_info[cave_feat[m_ptr->fy][m_ptr->fx]].name);
+					//msg_format("%^s emerges from the %s.", m_name, f_name + f_info[cave_feat[m_ptr->fy][m_ptr->fx]].name);
+					add_monster_speech(m_ptr, "*emerges*");
 				}
 
 				/* Disturb on "move" */
@@ -6922,10 +6959,12 @@ static void process_monster(int m_idx)
 					case SV_BODY_CORPSE:
 					{
 						if (part < 90) o_ptr->sval = SV_BODY_HEADLESS;
+						__attribute__ ((fallthrough));
 					}
 					case SV_BODY_HEADLESS:
 					{
 						if (part < 80) o_ptr->sval = SV_BODY_BUTCHERED;
+						__attribute__ ((fallthrough));
 					}
 					case SV_BODY_BUTCHERED:
 					{
@@ -6968,7 +7007,7 @@ static void process_monster(int m_idx)
 	{
 		int chance = 0;
 
-		int i;
+		//int i;
 
 		/* RAND_25 and RAND_50 are cumulative */
 		if (r_ptr->flags1 & (RF1_RAND_25))
@@ -7075,7 +7114,7 @@ static void process_monster(int m_idx)
 		/* Town monster been attacked */
 		if (m_ptr->mflag & (MFLAG_AGGR))
 		{
-			int i, dam = 0;
+			int dam = 0;
 
 			/* Check blows for any ability to hurt the player */
 			for (i = 0; i < 4; i++)
@@ -7143,7 +7182,7 @@ static void process_monster(int m_idx)
 		/* k is used to record the distance of the closest enemy */
 		/* Note we scale this up, and use a pseudo-random hack to try to get multiple monsters
 		 * to favour different equi-distant enemies */
-		int k = (ally ? MAX_SIGHT : m_ptr->cdis) * 16 + 15;
+		k = (ally ? MAX_SIGHT : m_ptr->cdis) * 16 + 15;
 
 		/* And sometimes we artificially manipulate k to prefer enemies at a distance.
 		 * We need the real distance later on, so have to fix it.*/
@@ -7767,7 +7806,7 @@ static void recover_monster(int m_idx, bool regen)
 		{
 			/* Note loss of patience. */
 			//monster_speech(m_idx, (m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)], FALSE);
-			add_monster_speech(m_ptr, (m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)]);
+			add_monster_speech(m_ptr, (char *) ((m_ptr->mflag & (MFLAG_ALLY))? comment_1a[rand_int(MAX_COMMENT_1a)] : comment_1b[rand_int(MAX_COMMENT_1b)]));
 		}
 
 		/* No longer summoned */
@@ -7808,7 +7847,7 @@ static void recover_monster(int m_idx, bool regen)
 				{
 					/* Note loss of allegiance. */
 					//monster_speech(m_idx, comment_2a[rand_int(MAX_COMMENT_2a)], FALSE);
-					add_monster_speech(m_ptr, comment_2a[rand_int(MAX_COMMENT_2a)]);
+					add_monster_speech(m_ptr, (char *) comment_2a[rand_int(MAX_COMMENT_2a)]);
 				}
 				/* Only betray when the monster has support except rarely */
 				else if ((tell_allies_not_mflag(m_ptr->fy, m_ptr->fx, (MFLAG_TOWN), comment_2b[rand_int(MAX_COMMENT_2b)]))
@@ -7819,7 +7858,7 @@ static void recover_monster(int m_idx, bool regen)
 
 					/* Warn the player */
 					//msg_format("%^s turns to fight.",m_name);
-					add_monster_speech(m_ptr, comment_2b[rand_int(MAX_COMMENT_2b)]);
+					add_monster_speech(m_ptr, (char *) comment_2b[rand_int(MAX_COMMENT_2b)]);
 
 					/* Become an enemy */
 					m_ptr->mflag &= ~(MFLAG_TOWN);
@@ -7959,9 +7998,10 @@ static void recover_monster(int m_idx, bool regen)
 				/* Get the monster name */
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-				msg_format("%^s emerges from %s%s.",m_name,
-					((f_info[cave_feat[m_ptr->fy][m_ptr->fx]].flags2 & (FF2_FILLED))?"":"the "),
-					f_name+f_info[cave_feat[m_ptr->fy][m_ptr->fx]].name);
+				//msg_format("%^s emerges from %s%s.",m_name,
+				//	((f_info[cave_feat[m_ptr->fy][m_ptr->fx]].flags2 & (FF2_FILLED))?"":"the "),
+				//	f_name+f_info[cave_feat[m_ptr->fy][m_ptr->fx]].name);
+				add_monster_speech(m_ptr, "*emerges*");
 			}
 			
 			/* Disturb on "move" */
@@ -8030,7 +8070,7 @@ static void recover_monster(int m_idx, bool regen)
 
 
 		/* Monster is a town monster - do some interesting stuff */
-		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && /*!(m_ptr->csleep) &&*/ !(m_ptr->summoned) && !(rand_int(2)))
+		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && /*!(m_ptr->csleep) &&*/ !(m_ptr->summoned) && !(rand_int(5)))
 		{
 			/* We don't care about the player */
 			if ((m_ptr->mflag & (MFLAG_AGGR | MFLAG_ALLY)) == 0)
@@ -8516,7 +8556,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s expires from poisoning.", m_name);
+				//msg_format("%^s expires from poisoning.", m_name);
+				add_monster_speech(m_ptr, "The poison weakens");
 			}
 
 			/* Take damage - only players can poison monsters */
@@ -8672,7 +8713,8 @@ static void recover_monster(int m_idx, bool regen)
 					/* Get the monster name */
 					monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-					msg_format("%^s appears from nowhere.",m_name);
+					//msg_format("%^s appears from nowhere.",m_name);
+					add_monster_speech(m_ptr, "*appears from nowhere*");
 
 					/* Learn about ability -- can be cast on others */
 					if ((r_ptr->flags6 & (RF6_INVIS)) != 0) l_ptr->flags6 |= (RF6_INVIS);
@@ -8726,8 +8768,9 @@ static void recover_monster(int m_idx, bool regen)
 					/* Get the monster name */
 					monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
-					msg_format("%^s emerges from %s%s.",m_name,
-						((f_ptr->flags2 & (FF2_FILLED))?"":"the "), f_name+f_ptr->name);
+					//msg_format("%^s emerges from %s%s.",m_name,
+					//	((f_ptr->flags2 & (FF2_FILLED))?"":"the "), f_name+f_ptr->name);
+					add_monster_speech(m_ptr, "*emerges*");
 				}
 			}
 
@@ -8792,7 +8835,8 @@ static void recover_monster(int m_idx, bool regen)
 				monster_desc(m_name, sizeof(m_name), m_idx, 0);
 
 				/* Dump a message */
-				msg_format("%^s is no longer berserk.", m_name);
+				//msg_format("%^s is no longer berserk.", m_name);
+				add_monster_speech(m_ptr, "*no longer berserk*");
 			}
 		}
 	}

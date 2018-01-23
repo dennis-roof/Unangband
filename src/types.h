@@ -2038,16 +2038,16 @@ struct high_score
 	char uid[8];    /* Player UID (number) */
 
 	char sex[2];    /* Player Sex (string) */
-	char p_r[3];    /* Player Race (number) */
-	char p_c[3];    /* Player Class (number) */
-	char p_s[3];    /* Player Style (number) */
-	char p_p[3];    /* Player Pvalstyle (number) */
+	char p_r[4];    /* Player Race (number) */
+	char p_c[4];    /* Player Class (number) */
+	char p_s[4];    /* Player Style (number) */
+	char p_p[4];    /* Player Pvalstyle (number) */
 
-	char cur_lev[4];/* Current Player Level (number) */
-	char cur_dep[4];/* Current Player Depth (number) */
-	char cur_dun[4];/* Current Dungeon (number) */
-	char max_lev[4];/* Max Player Level (number) */
-	char max_dep[4];/* Max Dungeon Level (number) */
+	char cur_lev[7];/* Current Player Level (number) */
+	char cur_dep[7];/* Current Player Depth (number) */
+	char cur_dun[7];/* Current Dungeon (number) */
+	char max_lev[7];/* Max Player Level (number) */
+	char max_dep[7];/* Max Dungeon Level (number) */
 
 	char how[32];   /* Method of death (string) */
 };

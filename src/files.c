@@ -3482,7 +3482,7 @@ static void display_home_equipment_info(int mode)
 			/* Check equipment */
 			for (n = 7, i = 0; i < MAX_INVENTORY_HOME; ++i, ++n)
 			{
-				object_type *o_ptr;
+				//object_type *o_ptr;
 
 				/* Object */
 				o_ptr = &st_ptr->stock[i];
@@ -3679,9 +3679,9 @@ static void dump_player_stat_info(FILE *fff)
 		/* Process equipment, show stat modifiers */
 		for (x = 0, y = INVEN_WIELD; y < END_EQUIPMENT; ++y, ++x)
 		{
-			char c = '.';
+			c = '.';
 
-			object_type *o_ptr;
+			//object_type *o_ptr;
 
 			/* Get the object */
 			o_ptr = &inventory[y];
@@ -3729,7 +3729,7 @@ static void dump_player_stat_info(FILE *fff)
 		for (y = INVEN_WIELD; y < END_EQUIPMENT; ++y)
 		{
 
-			object_type *o_ptr;
+			//object_type *o_ptr;
 
 			/* Get the object */
 			o_ptr = &inventory[y];
@@ -4084,7 +4084,7 @@ errr file_character(cptr name, bool full)
 	/* Print other storages */
 	for (j = 0; j < total_store_count; j++)
 	{
-		store_type *st_ptr = store[j];
+		st_ptr = store[j];
 
 		if ((st_ptr->base != 1 && st_ptr->base != 2) || !st_ptr->stock_num)
 			continue;
@@ -4125,7 +4125,7 @@ errr file_character(cptr name, bool full)
 		for (i = 0; i < z_info->t_max; i++)
 		{
 			char str[46];
-			int j;
+			//int j;
 			bool victory = FALSE;
 			bool havoc = FALSE;
 			bool please_print_depths = TRUE;
@@ -4413,7 +4413,8 @@ bool show_file(cptr name, cptr what, int line, int mode)
 	bool color = (strcmp(name, "memap.txt") == 0);
 	char current_char[] = " ";
 	
-	int i, k, n, p;
+	int i, k, n;
+	unsigned int p;
 
 	key_event ke;
 
@@ -6270,17 +6271,17 @@ static errr enter_score(void)
 	/* Save the player info XXX XXX XXX */
 	sprintf(the_score.uid, "%7u", player_uid);
 	sprintf(the_score.sex, "%c", (p_ptr->psex ? 'm' : 'f'));
-	sprintf(the_score.p_r, "%2d", p_ptr->prace);
-	sprintf(the_score.p_c, "%2d", p_ptr->pclass);
-	sprintf(the_score.p_s, "%2d", p_ptr->pstyle);
-	sprintf(the_score.p_p, "%2d", p_ptr->psval);
+	sprintf(the_score.p_r, "%d", p_ptr->prace);
+	sprintf(the_score.p_c, "%d", p_ptr->pclass);
+	sprintf(the_score.p_s, "%d", p_ptr->pstyle);
+	sprintf(the_score.p_p, "%d", p_ptr->psval);
 
 	/* Save the level and such */
-	sprintf(the_score.cur_lev, "%3d", p_ptr->lev);
-	sprintf(the_score.cur_dep, "%3d", p_ptr->depth);
-	sprintf(the_score.max_lev, "%3d", p_ptr->max_lev);
-	sprintf(the_score.max_dep, "%3d", p_ptr->max_depth);
-	sprintf(the_score.cur_dun, "%3d", p_ptr->dungeon);
+	sprintf(the_score.cur_lev, "%d", p_ptr->lev);
+	sprintf(the_score.cur_dep, "%d", p_ptr->depth);
+	sprintf(the_score.max_lev, "%d", p_ptr->max_lev);
+	sprintf(the_score.max_dep, "%d", p_ptr->max_depth);
+	sprintf(the_score.cur_dun, "%d", p_ptr->dungeon);
 
 	/* Save the cause of death (31 chars) */
 	sprintf(the_score.how, "%-.31s", p_ptr->died_from);
@@ -6397,18 +6398,18 @@ errr predict_score(void)
 	/* Save the player info XXX XXX XXX */
 	sprintf(the_score.uid, "%7u", player_uid);
 	sprintf(the_score.sex, "%c", (p_ptr->psex ? 'm' : 'f'));
-	sprintf(the_score.p_r, "%2d", p_ptr->prace);
-	sprintf(the_score.p_c, "%2d", p_ptr->pclass);
-	sprintf(the_score.p_s, "%2d", p_ptr->pstyle);
-	sprintf(the_score.p_p, "%2d", p_ptr->psval);
+	sprintf(the_score.p_r, "%d", p_ptr->prace);
+	sprintf(the_score.p_c, "%d", p_ptr->pclass);
+	sprintf(the_score.p_s, "%d", p_ptr->pstyle);
+	sprintf(the_score.p_p, "%d", p_ptr->psval);
 
 
 	/* Save the level and such */
-	sprintf(the_score.cur_lev, "%3d", p_ptr->lev);
-	sprintf(the_score.cur_dep, "%3d", p_ptr->depth);
-	sprintf(the_score.max_lev, "%3d", p_ptr->max_lev);
-	sprintf(the_score.max_dep, "%3d", p_ptr->max_depth);
-	sprintf(the_score.cur_dun, "%3d", p_ptr->dungeon);
+	sprintf(the_score.cur_lev, "%d", p_ptr->lev);
+	sprintf(the_score.cur_dep, "%d", p_ptr->depth);
+	sprintf(the_score.max_lev, "%d", p_ptr->max_lev);
+	sprintf(the_score.max_dep, "%d", p_ptr->max_depth);
+	sprintf(the_score.cur_dun, "%d", p_ptr->dungeon);
 
 	/* Hack -- no cause of death */
 	my_strcpy(the_score.how, "nobody (yet!)", sizeof(the_score.how));

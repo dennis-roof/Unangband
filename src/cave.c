@@ -565,9 +565,14 @@ byte get_color(byte a, int attr, int n)
 loop_hack:
 		switch(n)
 		{
-		case 2: a = color_table[a].color_translate[attr];
-		case 1: a = color_table[a].color_translate[attr];
-		case 0: break;
+		case 2: 
+			a = color_table[a].color_translate[attr];
+			__attribute__ ((fallthrough));
+		case 1: 
+			a = color_table[a].color_translate[attr];
+			__attribute__ ((fallthrough));
+		case 0: 
+			break;
 		default: a = color_table[a].color_translate[attr];
 				 a = color_table[a].color_translate[attr];
 				 a = color_table[a].color_translate[attr];
@@ -1304,11 +1309,11 @@ void map_info(int y, int x, byte *ap, char *cp, byte *tap, char *tcp)
 
 		for (this_region_piece = cave_region_piece[y][x]; this_region_piece; this_region_piece = next_region_piece)
 		{
-			region_piece_type *rp_ptr = &region_piece_list[this_region_piece];
-			region_type *r_ptr = &region_list[rp_ptr->region];
+			region_piece_type *region_p_ptr = &region_piece_list[this_region_piece];
+			region_type *r_ptr = &region_list[region_p_ptr->region];
 
 			/* Get the next region */
-			next_region_piece = rp_ptr->next_in_grid;
+			next_region_piece = region_p_ptr->next_in_grid;
 
 			/* Skip dead regions */
 			if (!r_ptr->type) continue;
@@ -4213,7 +4218,7 @@ void update_dyna(void)
 	/* Actually apply the attacks */
 	for (i = 0; i < temp_dyna_n; i++)
 	{
-		feature_type *f_ptr;
+		//feature_type *f_ptr;
 
 		/* Grid */
 		g = temp_dyna_g[i];
@@ -5934,16 +5939,16 @@ void cave_set_feat(const int y, const int x, int feat)
 		for (this_region_piece = cave_region_piece[y][x]; this_region_piece; this_region_piece = next_region_piece)
 		{
 			/* Get the region piece */
-			region_piece_type *rp_ptr = &region_piece_list[this_region_piece];
+			region_piece_type *region_p_ptr = &region_piece_list[this_region_piece];
 
 			/* Get the region */
-			region_type *r_ptr = &region_list[rp_ptr->region];
+			region_type *r_ptr = &region_list[region_p_ptr->region];
 
 			/* Get the method */
 			method_type *method_ptr = &method_info[r_ptr->method];
 
 			/* Get the next object */
-			next_region_piece = rp_ptr->next_in_grid;
+			next_region_piece = region_p_ptr->next_in_grid;
 
 			/* Skip regions that don't need updating */
 			if (((r_ptr->flags1 & (RE1_PROJECTION)) == 0) || ((r_ptr->flags1 & (RE1_LINGER)) != 0)) continue;
@@ -5952,13 +5957,13 @@ void cave_set_feat(const int y, const int x, int feat)
 			if ((project != project2) && ((method_ptr->flags1 & (PROJECT_LOS | PROJECT_PASS)) == 0))
 			{
 				/* Update the region */
-				region_update(rp_ptr->region);
+				region_update(region_p_ptr->region);
 			}
 			/* Use line of sight instead */
 			else if ((los != los2) && ((method_ptr->flags1 & (PROJECT_LOS)) != 0))
 			{
 				/* Update the region */
-				region_update(rp_ptr->region);
+				region_update(region_p_ptr->region);
 			}
 		}
 	}
