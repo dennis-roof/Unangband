@@ -500,6 +500,8 @@ static void do_cmd_travel(void)
 	
 	int selection = p_ptr->dungeon;
 	
+	char no_return_message[] = "As you set foot upon the path, you have the sudden feeling you might not be able to get back this way for a long while.\n\n ";
+	
 	int travel_direction = 0;
 	if (head_north) travel_direction = 0;
 	if (head_east) travel_direction = 1;
@@ -575,10 +577,8 @@ static void do_cmd_travel(void)
 			//if (get_list(print_routes, routes, num, "Routes", "Travel to where", ", L=locations, M=map", 1, 22, route_commands, &selection))
 			
 			
-			sprintf(travel_confirm_message, "Do you want to travel to %s (difficulty level %d)? [y/n]", destination_name, next_zone->level);
-			keypress = get_dialog(travel_confirm_message, TRUE, "yn");
 			
-			if (keypress == 'y')
+			if (TRUE /*keypress == 'y'*/)
 			{
 				int found = 0;
 				
@@ -619,14 +619,20 @@ static void do_cmd_travel(void)
 				if (found == 0
 					&& count_routes(selection, p_ptr->dungeon) <= 0)
 				{
-					msg_print("As you set foot upon the path, you have the sudden feeling you might not be able to get back this way for a long while.");
+					//msg_print("As you set foot upon the path, you have the sudden feeling you might not be able to get back this way for a long while.");
 					found = 1;
 				}
 
-				if (found != 0
-					&& !get_check("Are you sure you want to travel? "))
+				//if (found != 0
+				//	&& !get_check("Are you sure you want to travel? "))
 					/* Bail out */
-					return;
+				//	return;
+				
+				sprintf(travel_confirm_message, "%sDo you want to travel to %s (difficulty level %d)? [y/n]", (found != 0 ? no_return_message : ""), destination_name, next_zone->level);
+				keypress = get_dialog(travel_confirm_message, TRUE, "yn");
+				
+				/* if not confirmed, bail out */
+				if (keypress == 'n') return;
 
 				/* Save the old dungeon in case something goes wrong */
 				if (autosave_backup)
