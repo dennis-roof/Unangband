@@ -844,14 +844,14 @@ static errr Infowin_impell(int x, int y)
 /*
  * Resize an infowin
  */
-static errr Infowin_resize(int w, int h)
-{
+//static errr Infowin_resize(int w, int h)
+//{
 	/* Execute the request */
-	XResizeWindow(Metadpy->dpy, Infowin->win, w, h);
+//	XResizeWindow(Metadpy->dpy, Infowin->win, w, h);
 
 	/* Success */
-	return (0);
-}
+//	return (0);
+//}
 
 
 #ifndef IGNORE_UNUSED_FUNCTIONS
@@ -2007,8 +2007,8 @@ static errr CheckEvent(bool wait)
 			if ((Infowin->w != wid) || (Infowin->h != hgt))
 			{
 				/* Resize window */
-				Infowin_set(td->win);
-				Infowin_resize(wid, hgt);
+				//Infowin_set(td->win);
+				//Infowin_resize(wid, hgt);
 			}
 
 			break;
