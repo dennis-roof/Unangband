@@ -3711,6 +3711,16 @@ bool get_check(cptr prompt)
 	return (TRUE);
 }
 
+void add_player_speech(char* speech)
+{
+	printf("DEBUG add player speech\n");
+	memset(p_ptr->speech, '\0', sizeof(p_ptr->speech));
+	
+	strncpy(p_ptr->speech, speech, (strlen(speech) > 50 ? 50 : strlen(speech)));
+	
+	p_ptr->show_speech = 5;
+}
+
 void add_monster_speech(monster_type *monster, char* speech)
 {
 	memset(monster->speech, '\0', sizeof(monster->speech));
@@ -3741,26 +3751,50 @@ void process_monster_speech()
 	
 	/* Loop over monsters to display new speech bubbles */
 	if (p_ptr->show_speech > 0) {
+		printf("DEBUG show player speech\n");
+		if (strlen(p_ptr->speech) > 0) {
+			speech_row = (p_ptr->py < area_height/2 ? p_ptr->py + 3 : p_ptr->py - 1);
+			
+			if (reserved_rows[speech_row] == 0) {
+				reserved_rows[speech_row] = 1;
+				
+				if (p_ptr->py < area_height/2) {
+					c_put_str(TERM_ORANGE, "\\", p_ptr->py+2, p_ptr->px+1+SIDEBAR_WID);
+				} else {
+					c_put_str(TERM_ORANGE, "/", p_ptr->py, p_ptr->px+1+SIDEBAR_WID);
+				}
+				
+				speech_col = (p_ptr->px+1+SIDEBAR_WID) - (strlen(p_ptr->speech) / 2);
+				if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
+				if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
+				
+				c_put_str(TERM_L_YELLOW, p_ptr->speech, speech_row, speech_col);
+				
+				if (p_ptr->show_speech == 1)
+					memset(p_ptr->speech, '\0', strlen(p_ptr->speech));
+			}
+		}
+		
 		for (index = 1; index < z_info->m_max; index++) {
 			monster = &m_list[index];
 			
 			/* Only visible monsters */
 			if (!monster->ml) continue;
-			if (!player_can_see_bold(monster->fy, monster->fx)) continue;
+			if (!player_can_see_bold(monster->ty, monster->tx)) continue;
 			
 			if (strlen(monster->speech) > 0) {
-				speech_row = (monster->fy < area_height/2 ? monster->fy + 3 : monster->fy - 1);
+				speech_row = (monster->ty < area_height/2 ? monster->ty + 3 : monster->ty - 1);
 				
 				if (reserved_rows[speech_row] == 0) {
 					reserved_rows[speech_row] = 1;
 					
-					if (monster->fy < area_height/2) {
-						c_put_str(TERM_ORANGE, "\\", monster->fy+2, monster->fx+1+SIDEBAR_WID);
+					if (monster->ty < area_height/2) {
+						c_put_str(TERM_ORANGE, "\\", monster->ty+2, monster->tx+1+SIDEBAR_WID);
 					} else {
-						c_put_str(TERM_ORANGE, "/", monster->fy, monster->fx+1+SIDEBAR_WID);
+						c_put_str(TERM_ORANGE, "/", monster->ty, monster->tx+1+SIDEBAR_WID);
 					}
 					
-					speech_col = (monster->fx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
+					speech_col = (monster->tx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
 					if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
 					if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
 					

@@ -1126,6 +1126,7 @@ extern bool get_string(cptr prompt, char *buf, int len);
 extern int get_quantity_aux(cptr prompt, int max, int amt);
 extern s16b get_quantity(cptr prompt, int max);
 extern bool get_check(cptr prompt);
+extern void add_player_speech(char* speech);
 extern void add_monster_speech(monster_type *monster, char* speech);
 extern void process_monster_speech(void);
 extern char get_dialog(char* text, bool is_confirmation, char* valid_keys);

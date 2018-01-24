@@ -1437,6 +1437,7 @@ void set_stat(int stat, int value) {
  */
 static void improve_stat(void)
 {
+	char player_level_speech[51];
 	//char keypress;
 	//bool valid_choice = FALSE;
 	
@@ -1585,6 +1586,9 @@ static void improve_stat(void)
 		}
 		
 		/* end adult_rand_stats */
+		sprintf(player_level_speech, "I feel stronger, I'm now level %d", p_ptr->lev);
+		add_player_speech(player_level_speech);
+		
 		return;
 	//}
 	

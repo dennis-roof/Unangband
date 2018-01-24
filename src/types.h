@@ -2004,6 +2004,7 @@ struct player_type
 	byte outside;	/* Player is outside? */
 	bool cursed_quiver;	/* The quiver is cursed */
 
+	char speech[51];    /* Player is speaking */
 	int show_speech; /* Show speech for these number of turns, usually 3 */
 };
 
