@@ -849,7 +849,7 @@ void do_cmd_go_up(void)
 	else
 	{
 		/* Success */
-		message(MSG_STAIRS_UP, 0, "You enter a maze of up staircases.");
+		//message(MSG_STAIRS_UP, 0, "You enter a maze of up staircases.");
 
 		/* Hack -- take a turn */
 		p_ptr->energy_use = 100;
@@ -961,7 +961,7 @@ void do_cmd_go_down(void)
 	else
 	{
 		/* Success */
-		message(MSG_STAIRS_DOWN, 0, "You enter a maze of down staircases.");
+		//message(MSG_STAIRS_DOWN, 0, "You enter a maze of down staircases.");
 
 		/* Hack -- take a turn */
 		p_ptr->energy_use = 100;

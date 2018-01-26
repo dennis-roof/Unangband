@@ -9753,6 +9753,10 @@ bool book_sort_comp_hook(vptr u, vptr v, int a, int b)
 
 	spell_type *s1_ptr = &s_info[w1];
 	spell_type *s2_ptr = &s_info[w2];
+	
+	//printf("DEBUG strlen %d\n", strlen(s1_ptr->cast));
+	//printf("DEBUG | w1 %d | w2 %d\n", w1, w2);
+	//printf("DEBUG class 0 %d\n", s1_ptr->lasts_dice);
 
 	for (i = 0; i < MAX_SPELL_CASTERS; i++)
 	{

@@ -2294,11 +2294,11 @@ static void process_command(void)
 		}*/
 
 		/* Drop an item */
-		/*case 'd':
+		case 'd':
 		{
 			do_cmd_item(COMMAND_ITEM_DROP);
 			break;
-		}*/
+		}
 
 		/* Destroy an item */
 		/*case 'k':
@@ -2491,11 +2491,11 @@ static void process_command(void)
 		}*/
 
 		/* Cast a spell */
-		case 'm':
+		/*case 'm':
 		{
 			do_cmd_item(COMMAND_ITEM_CAST_SPELL);
 			break;
-		}
+		}*/
 
 		/*** Use various objects ***/
 
@@ -2777,7 +2777,7 @@ static void process_command(void)
 #endif
 
 		/* Save and quit */
-		case ESCAPE:
+		case 'X':
 		{
 			/* Stop playing */
 			p_ptr->playing = FALSE;

@@ -3177,7 +3177,7 @@ static void store_examine(int store_index)
 
 
 	/* Prompt */
-	if (rogue_like_commands)
+	if (FALSE && rogue_like_commands)
 		sprintf(out_val, "Which item do you want to examine? ");
 	else
 		sprintf(out_val, "Which item do you want to look at? ");
@@ -3801,7 +3801,7 @@ void do_cmd_store(void)
 		if ((st_ptr->base < STORE_MIN_BUY_SELL) || ((adult_no_selling) == 0)) c_prt(choice == 'd' ? TERM_L_BLUE : TERM_WHITE, " d) Drop/Sell an item.", 11 + store_size, 31);
 
 		/* Add in the eXamine option */
-		if (rogue_like_commands)
+		if (FALSE && rogue_like_commands)
 			c_prt(choice == 'l' ? TERM_L_BLUE : TERM_WHITE, " x) eXamine an item.", 10 + store_size, 56);
 		else
 			c_prt(choice == 'l' ? TERM_L_BLUE : TERM_WHITE, " l) Look at an item.", 10 + store_size, 56);

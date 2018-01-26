@@ -3736,6 +3736,7 @@ void process_monster_speech()
 	int reserved_rows[300];
 	int speech_row;
 	int speech_col;
+	int player_y, player_x, monster_y, monster_x;
 	
 	int area_height = ((level_flag & (LF1_TOWN)) != 0 ? TOWN_HGT : Term->hgt);
 	
@@ -3751,20 +3752,22 @@ void process_monster_speech()
 	
 	/* Loop over monsters to display new speech bubbles */
 	if (p_ptr->show_speech > 0) {
-		printf("DEBUG show player speech\n");
 		if (strlen(p_ptr->speech) > 0) {
-			speech_row = (p_ptr->py < area_height/2 ? p_ptr->py + 3 : p_ptr->py - 1);
+		    player_y = p_ptr->py - p_ptr->wy;
+		    player_x = p_ptr->px - p_ptr->wx;
+		    
+			speech_row = (player_y < area_height/2 ? player_y + 3 : player_y - 1);
 			
 			if (reserved_rows[speech_row] == 0) {
 				reserved_rows[speech_row] = 1;
 				
-				if (p_ptr->py < area_height/2) {
-					c_put_str(TERM_ORANGE, "\\", p_ptr->py+2, p_ptr->px+1+SIDEBAR_WID);
+				if (player_y < area_height/2) {
+					c_put_str(TERM_ORANGE, "\\", player_y+2, player_x+1+SIDEBAR_WID);
 				} else {
-					c_put_str(TERM_ORANGE, "/", p_ptr->py, p_ptr->px+1+SIDEBAR_WID);
+					c_put_str(TERM_ORANGE, "/", player_y, player_x+1+SIDEBAR_WID);
 				}
 				
-				speech_col = (p_ptr->px+1+SIDEBAR_WID) - (strlen(p_ptr->speech) / 2);
+				speech_col = (player_x+1+SIDEBAR_WID) - (strlen(p_ptr->speech) / 2);
 				if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
 				if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
 				
@@ -3780,21 +3783,24 @@ void process_monster_speech()
 			
 			/* Only visible monsters */
 			if (!monster->ml) continue;
-			if (!player_can_see_bold(monster->ty, monster->tx)) continue;
+			if (!player_can_see_bold(monster->fy, monster->fx)) continue;
 			
 			if (strlen(monster->speech) > 0) {
-				speech_row = (monster->ty < area_height/2 ? monster->ty + 3 : monster->ty - 1);
+			    monster_y = monster->fy - p_ptr->wy; // relative Y pos
+			    monster_x = monster->fx - p_ptr->wx; // relative X pos
+			    
+				speech_row = (monster_y < area_height/2 ? monster_y + 3 : monster_y - 1);
 				
 				if (reserved_rows[speech_row] == 0) {
 					reserved_rows[speech_row] = 1;
 					
-					if (monster->ty < area_height/2) {
-						c_put_str(TERM_ORANGE, "\\", monster->ty+2, monster->tx+1+SIDEBAR_WID);
+					if (monster_y < area_height/2) {
+						c_put_str(TERM_ORANGE, "\\", monster_y+2, monster_x+1+SIDEBAR_WID);
 					} else {
-						c_put_str(TERM_ORANGE, "/", monster->ty, monster->tx+1+SIDEBAR_WID);
+						c_put_str(TERM_ORANGE, "/", monster_y, monster_x+1+SIDEBAR_WID);
 					}
 					
-					speech_col = (monster->tx+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
+					speech_col = (monster_x+1+SIDEBAR_WID) - (strlen(monster->speech) / 2);
 					if (speech_col < SIDEBAR_WID) speech_col = SIDEBAR_WID;
 					if (speech_col > Term->wid) speech_col = Term->wid - strlen(speech);
 					
@@ -3805,6 +3811,18 @@ void process_monster_speech()
 				}
 			}
 		}
+		
+		for (index = 1; index < z_info->m_max; index++) {
+			monster = &m_list[index];
+			
+			/* Only visible monsters */
+			if (!monster->ml) continue;
+			if (!player_can_see_bold(monster->fy, monster->fx)) continue;
+			
+			lite_spot(monster->fy, monster->fx);
+	    }
+	    
+	    lite_spot(p_ptr->py, p_ptr->px);
 	}
 	
 	if (p_ptr->show_speech > -1) p_ptr->show_speech--;
@@ -4189,7 +4207,7 @@ void request_command(bool shopping)
 		act = keymap_act[mode][(byte)(ke.key)];
 
 		/* Apply keymap if not inside a keymap already */
-		if (act && !inkey_next)
+		if (!shopping && act && !inkey_next)
 		{
 			/* Install the keymap (limited buffer size) */
 			strnfmt(request_command_buffer, 256, "%s", act);

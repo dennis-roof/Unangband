@@ -146,21 +146,21 @@ A:.9
 C:1:U
 
 # Running (WSAD keys)
-A:;1
+A:.1
 C:1:Z
-A:;2
+A:.2
 C:1:S
-A:;3
-C:1:C
-A:;4
+#A:.3
+#C:1:C
+A:.4
 C:1:A
-A:;6
+A:.6
 C:1:D
-A:;7
+A:.7
 C:1:Q
-A:;8
+A:.8
 C:1:W
-A:;9
+A:.9
 C:1:E
 
 # Altering (control + rogue keys)
@@ -182,21 +182,21 @@ A:+9
 C:1:^U
 
 # Altering (WSAD keys)
-A:;1
+A:+1
 C:1:^Z
-A:;2
+A:+2
 C:1:^S
-A:;3
+A:+3
 C:1:^C
-A:;4
+A:+4
 C:1:^A
-A:;6
+A:+6
 C:1:^D
-A:;7
+A:+7
 C:1:^Q
-A:;8
+A:+8
 C:1:^W
-A:;9
+A:+9
 C:1:^E
 
 # Allow use of the "tunnel" command
@@ -272,8 +272,8 @@ A:^T
 C:1:'
 
 # Center screen on player
-A:^L
-C:1:X
+#A:^L
+#C:1:X
 
 # Handle an item
 A:h
