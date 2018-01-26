@@ -2676,11 +2676,11 @@ static void process_command(void)
 		}
 
 		/* Character description */
-		case 'C':
+		/*case 'C':
 		{
 			do_cmd_change_name();
 			break;
-		}
+		}*/
 
 
 		/*** System Commands ***/
