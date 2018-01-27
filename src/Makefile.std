@@ -59,7 +59,7 @@ LIBS =
 
 
 # Version info
-EXE = unangband
+EXE = friendband_linux_64
 
 
 

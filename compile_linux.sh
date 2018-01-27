@@ -1,8 +1,8 @@
 #!/bin/sh
-rm unangband
+rm friendband_linux_64
 cd src
 make -f Makefile.std clean
 make -f Makefile.std
-cp unangband ../
+cp friendband_linux_64 ../
 cd ..
-ddd unangband
+ddd friendband_linux_64
