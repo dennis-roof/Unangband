@@ -1310,7 +1310,7 @@ static void init_level_name(void)
 			sprintf(
 				level_depth_str, 
 				"  depth:%2d/%-2d", 
-				(p_ptr->depth - min_depth(p_ptr->dungeon) + 1),
+				(p_ptr->depth - min_depth(p_ptr->dungeon)),
 				(max_depth(p_ptr->dungeon) - min_depth(p_ptr->dungeon)));
 		}
     else

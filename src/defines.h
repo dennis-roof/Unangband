@@ -178,7 +178,7 @@
 /*
  * Maximum number of rumours townfolk can talk about
  */
-#define MAX_TOWN_RUMOURS	4
+#define MAX_TOWN_RUMOURS	5
 
 /*
  * Total number of items in home (see "store.c", etc)
