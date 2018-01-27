@@ -6,8 +6,8 @@
 # Standard defines
 #
 
-CC = gcc
-WRES = windres
+CC = i686-w64-mingw32-gcc
+WRES = i686-w64-mingw32-windres
 LIBS = -s -mwindows -e _mainCRTStartup -lwinmm
 CFLAGS = -Wall -W -pedantic -O2 -fno-strength-reduce -DWINDOWS
 OBJEXT=.o

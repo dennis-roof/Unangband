@@ -243,7 +243,9 @@ static void prt_level(void)
  */
 static void prt_exp(void)
 {
-	char out_val[32];
+	//char out_val[32]; // 17 for normal XP bar
+	int xp_bar_size = (Term->wid - COL_EXP - 1);
+	char out_val[ xp_bar_size ];
 	s32b exp_display;
 	byte attr;
 	int max_number;
@@ -290,22 +292,27 @@ static void prt_exp(void)
 	  sprintf(out_val, "%8ld", exp_display);
 	}
 	else {
-	  if (exp_display > max_number) {
-	    exp_display = exp_display / 1000;
-	    sprintf(out_val, "%5ldK", exp_display);
-	  }
-	  else {
-	    //sprintf(out_val, "%6ld", exp_display);
-	    
-	    sprintf(out_val, "[               ]");
-	    exp_bar = (int) ((p_ptr->exp - xp_offset) / (float) (xp_required - xp_offset) * 15);
-	    
-	    for (i = 1; i < 16; i++)
-		if (i-1 < exp_bar)
-	    		out_val[i] = '*';
-	    
-	    //sprintf(out_val, "%6ld/%-6ld", p_ptr->exp, xp_required);
-	  }
+		if (exp_display > max_number) {
+			exp_display = exp_display / 1000;
+			sprintf(out_val, "%5ldK", exp_display);
+		}
+		else {
+			//sprintf(out_val, "%6ld", exp_display);
+
+			for (i = 0; i < xp_bar_size; i++)
+				out_val[i] = ' ';
+
+			out_val[0] = '[';
+			out_val[xp_bar_size-1] = ']';
+
+			exp_bar = (int) ((p_ptr->exp - xp_offset) / (float) (xp_required - xp_offset) * (xp_bar_size - 1));
+
+			for (i = 1; i < (xp_bar_size - 1); i++)
+				if (i-1 < exp_bar)
+					out_val[i] = '*';
+
+			//sprintf(out_val, "%6ld/%-6ld", p_ptr->exp, xp_required);
+		}
 	}
 
 	c_put_str(attr, out_val, ROW_EXP, COL_EXP - 1);
