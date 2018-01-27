@@ -682,7 +682,7 @@ int print_room_narrative(int line_number, char* title, char* text, int max_line_
 /*
  * Get direction name from NESW direction and set to name
  */
-void get_destination_name(char *name, town_type *t_ptr, int direction)
+/*void get_destination_name(char *name, town_type *t_ptr, int direction)
 {
 	int destination_trim_size;
 	char destination_name[43];
@@ -696,7 +696,7 @@ void get_destination_name(char *name, town_type *t_ptr, int direction)
 		if (destination_trim_size > 11) destination_trim_size = 14;
 		snprintf(name, destination_trim_size, "%c %s", directionArrow[direction], destination_name);
 	}
-}
+}*/
 
 /*
  * Print emergent narrative using:
@@ -721,19 +721,28 @@ int print_emergent_narrative(void)
 	char text_always[1024];
 	char text_empty[] = "";
 	
-	char north[MAX_DESTINATION_NAME_LENGTH];
-	char east[MAX_DESTINATION_NAME_LENGTH];
-	char south[MAX_DESTINATION_NAME_LENGTH];
-	char west[MAX_DESTINATION_NAME_LENGTH];
+	char north[15] = "";
+	char east[15] = "";
+	char south[15] = "";
+	char west[15] = "";
 	
 	bool has_directions = FALSE;
 	
 	town_type *t_ptr = &t_info[p_ptr->dungeon];
 	
-	get_destination_name(&north[0], t_ptr, 0);
-	get_destination_name(&east[0], t_ptr, 1);
-	get_destination_name(&south[0], t_ptr, 2);
-	get_destination_name(&west[0], t_ptr, 3);
+	//get_destination_name(&north[0], t_ptr, 0);
+	//get_destination_name(&east[0], t_ptr, 1);
+	//get_destination_name(&south[0], t_ptr, 2);
+	//get_destination_name(&west[0], t_ptr, 3);
+	
+	if (t_ptr->nearby[0] != 0)
+		snprintf(north, 14, "^ %s", (t_info[ t_ptr->nearby[0] ].name + t_name));
+	if (t_ptr->nearby[1] != 0)
+		snprintf(east, 14, "> %s", (t_info[ t_ptr->nearby[1] ].name + t_name));
+	if (t_ptr->nearby[2] != 0)
+		snprintf(south, 14, "v %s", (t_info[ t_ptr->nearby[2] ].name + t_name));
+	if (t_ptr->nearby[3] != 0)
+		snprintf(west, 14, "< %s", (t_info[ t_ptr->nearby[3] ].name + t_name));
 	
 	if (strlen(north) > 0 || strlen(east) > 0 || strlen(south) > 0 || strlen(west) > 0)
 		has_directions = TRUE;
