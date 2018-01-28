@@ -3095,7 +3095,7 @@ void player_birth(void)
 	}
 
 	/* Use quickstart as a proxy for played this class/race before */
-	if (!birth_quickstart)
+	if (FALSE && !birth_quickstart)
 	{
 		/* Race tips */
 		queue_tip(format("race%d.txt", p_ptr->prace));

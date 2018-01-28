@@ -818,16 +818,16 @@ int print_emergent_narrative(void)
 			c_put_str(TERM_SLATE, "Directions:", line_number++, 0);
 	if (line_number < max_line_number)
 		if (strlen(north) > 0)
-			c_put_str(TERM_SLATE, north, line_number++, 0);
+			c_put_str(TERM_TEAL, north, line_number++, 0);
 	if (line_number < max_line_number)
 		if (strlen(east) > 0)
-			c_put_str(TERM_SLATE, east, line_number++, 0);
+			c_put_str(TERM_TEAL, east, line_number++, 0);
 	if (line_number < max_line_number)
 		if (strlen(south) > 0)
-			c_put_str(TERM_SLATE, south, line_number++, 0);
+			c_put_str(TERM_TEAL, south, line_number++, 0);
 	if (line_number < max_line_number)
 		if (strlen(west) > 0)
-			c_put_str(TERM_SLATE, west, line_number++, 0);
+			c_put_str(TERM_TEAL, west, line_number++, 0);
 	
 	if (has_directions) line_number++;
 
@@ -3465,7 +3465,7 @@ static void calc_torch(void)
 	
 	/* Assume player is always lit without light source */
 	if (p_ptr->wet && p_ptr->wet > 0) {
-		p_ptr->cur_lite = 0;
+		p_ptr->cur_lite = 1;
 		p_ptr->wet--;
 	} else {
 		p_ptr->cur_lite = 2;

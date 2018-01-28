@@ -8070,7 +8070,7 @@ static void recover_monster(int m_idx, bool regen)
 
 
 		/* Monster is a town monster - do some interesting stuff */
-		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && /*!(m_ptr->csleep) &&*/ !(m_ptr->summoned) && !(rand_int(6)))
+		if (((m_ptr->mflag & (MFLAG_TOWN)) != 0) && /*!(m_ptr->csleep) &&*/ !(m_ptr->summoned) && !(rand_int(5)))
 		{
 			/* We don't care about the player */
 			if ((m_ptr->mflag & (MFLAG_AGGR | MFLAG_ALLY)) == 0)

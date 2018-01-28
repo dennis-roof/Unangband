@@ -2053,7 +2053,7 @@ void check_experience(void)
 			p_ptr->max_lev = p_ptr->lev;
 		
 			/* Queue level tips for beginners */
-			if (adult_beginner)
+			if (FALSE && adult_beginner)
 			{
 				/* Assume the player is no longer a beginner after reaching level 10 */
 				if (p_ptr->max_lev >= 10)

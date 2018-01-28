@@ -922,13 +922,13 @@ void object_aware_tips(object_type *o_ptr, bool seen)
 		if (!count)
 		{
 			/* Show tval based tip */
-			queue_tip(format("tval%d.txt", k_ptr->tval));
+			//queue_tip(format("tval%d.txt", k_ptr->tval));
 		}
 		/* Show tval tips if 'count' svals of this type known */
 		else
 		{
 			/* Show tval based tip */
-			queue_tip(format("tval%d-%d.txt", k_ptr->tval, count));
+			//queue_tip(format("tval%d-%d.txt", k_ptr->tval, count));
 		}
 	}
 	
@@ -937,7 +937,7 @@ void object_aware_tips(object_type *o_ptr, bool seen)
 	{
 		l_list[o_ptr->name3].sights++;
 
-		queue_tip(format("look%d.txt", o_ptr->name3));
+		//queue_tip(format("look%d.txt", o_ptr->name3));
 	}
 
 	/* We didn't note the object */
@@ -947,7 +947,7 @@ void object_aware_tips(object_type *o_ptr, bool seen)
 		k_ptr->aware |= (AWARE_EXISTS);
 
 		/* Show tip for kind of object */
-		queue_tip(format("kind%d.txt", o_ptr->k_idx));
+		//queue_tip(format("kind%d.txt", o_ptr->k_idx));
 	}
 }
 
