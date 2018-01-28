@@ -6,7 +6,7 @@
 Hobbiton*       |  / Marshes |     |            /      ##   House \   /      | 
  | \            | /  (lvl 17)|     |           /      ##          Mirkwood   |
  |  \          Bree*         |     |  Rivendell*      ##        Road (lvl 13)|
- | East Road->(lvl 4)   Weathertop |   /|    \         ##        |           |
+ | East Road->(lvl 1)   Weathertop |   /|    \         ##        |           |
  |                  \    (lvl 17)  |  / |     Redhorn ###    Woodmen*        |
  |  Brandywine       \       |  \  | /  |     Pass(lvl 7)<---Village (lvl 10)|
  |  | Ferry  |        \      |   Ford   |         /   ##        /            |
