@@ -16182,7 +16182,7 @@ void generate_cave(void)
 		/* Show tip */
 		if (p_ptr->dungeon == 1) {
 			memset(p_ptr->dialog_text, '\0', sizeof(p_ptr->dialog_text));
-			strcpy(p_ptr->dialog_text, "Your adventure begins here in Hobbiton.\n\n Acquire weapons, armor, and magical devices by bartering with shop owners. Then travel through the world of Unangband, explore dungeons, gain experience by killing fierce creatures and collect treasures.\n\nPress ? for help");
+			strcpy(p_ptr->dialog_text, "Your adventure begins here in Hobbiton.\n\n Acquire weapons, armor, and magical devices by bartering with shop owners. Then travel through the world of Unangband, explore dungeons, gain experience by killing fierce creatures and collect treasures.\n\n Press ? for help");
 		}
 		
 		if (p_ptr->dungeon == 5) {
