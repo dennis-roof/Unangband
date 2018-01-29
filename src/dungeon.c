@@ -2609,7 +2609,7 @@ static void process_command(void)
 		/*** Looking at Things (nearby or on map) ***/
 
 		/* Full dungeon map */
-		case 'M':
+		case 'm':
 		{
 			do_cmd_view_map();
 			break;
@@ -2777,13 +2777,20 @@ static void process_command(void)
 #endif
 
 		/* Save and quit */
-		case 'X':
+		case ESCAPE:
 		{
-			/* Stop playing */
-			p_ptr->playing = FALSE;
+			char keypress;
+			char save_quit_message[] = "You pressed the escape button.\n\n Do you want to save and quit? (y/n)";
+			
+			keypress = get_dialog(save_quit_message, TRUE, "yn");
+			
+			if (keypress == 'y') {
+				/* Stop playing */
+				p_ptr->playing = FALSE;
 
-			/* Leaving */
-			p_ptr->leaving = TRUE;
+				/* Leaving */
+				p_ptr->leaving = TRUE;
+			}
 
 			break;
 		}

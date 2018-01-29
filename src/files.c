@@ -4944,7 +4944,7 @@ bool show_file(cptr name, cptr what, int line, int mode)
 
 void show_help_dialog(void)
 {
-	char help[] = "Movement keys (hold SHIFT to run):\n\n q w e y k u 7 8 9\n `\\|/ ``\\|/ ``\\|/\n a- -d h- -l 4- -6\n `/|\\ ``/|\\ ``/|\\\n z s c b j n 1 2 3\n\n i = inventory (press / inside menu for equipment)\n o = open chest\n M = world map in towns\n\n space, f, t = select target, press again to shoot\n\n X = save and quit\n R = reset game";
+	char help[] = "Movement keys (arrow keys, hold SHIFT to run):\n\n q w e y k u 7 8 9\n `\\|/ ``\\|/ ``\\|/\n a- -d h- -l 4- -6\n `/|\\ ``/|\\ ``/|\\\n z s c b j n 1 2 3\n\n Walk against an enemy for melee attacks.\n Read a spellbook to study and cast spells.\n\n space = select target, press again to shoot\n\n i = inventory (press / inside menu for equipment)\n m = world map in towns\n\n ESCAPE button = save and quit\n R = reset game";
 	
 	get_dialog(help, FALSE, "");
 }

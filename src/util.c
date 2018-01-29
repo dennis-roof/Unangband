@@ -3840,7 +3840,7 @@ char get_dialog(char* text, bool is_confirmation, char* valid_keys)
 	unsigned int i;
 	unsigned int newlines;
 	unsigned int max_text_width = 56; // 40 dialog - 2x padding (left and right)
-	int starting_line_number = 3;
+	int starting_line_number = 1;
 	int line_number = starting_line_number;
 	int starting_line_column = (Term->wid / 2 - (max_text_width+4) / 2 + SIDEBAR_WID/2);
 	int line_column = starting_line_column;
