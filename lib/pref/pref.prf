@@ -212,16 +212,16 @@ A:b
 C:1:P
 
 # Jam a door (Spike)
-A:j
-C:1:J
+#A:j
+#C:1:T
 
 # Use a staff (Zap)
-A:u
-C:1:Z
+#A:u
+#C:1:Z
 
 # Take off equipment
-A:t
-C:1:T
+#A:t
+#C:1:T
 
 # Fire an item
 #A:f
