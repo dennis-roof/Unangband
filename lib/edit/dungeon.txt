@@ -127,7 +127,7 @@
 # R: generate monsters with this flag
 # S: store1 : store2 : store3 : store4 : store5 : store6 : store7 : store8
 # D: description, the shorter the better
-# T: Town rumour, up to a maximum of 4 rumours per town
+# T: Town rumour, up to a maximum of 5 rumours per town
 # F: flags
 # A: generate allies with this char: generate allies with this flag
 

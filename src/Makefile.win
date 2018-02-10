@@ -28,22 +28,27 @@ else
   RM = -rm
 endif
 
+CROSS=i686-w64-mingw32-
+CONSOLE=yes
 
-ifndef MINGW
-  CYGWIN=yes
-endif
+#ifndef MINGW
+#  CYGWIN=yes
+#endif
 
 # Include list of object files and add system-specific ones
 OBJEXT=.o
 include commondefs.inc
 
 ifdef CONSOLE
+  #CFLAGS = -DUSE_GCU -DWIN32_CONSOLE_MODE -fPIC -I$(PDCURSES_INC)
   CFLAGS = -DUSE_GCU -DWIN32_CONSOLE_MODE -I$(PDCURSES_INC)
+  #LIBS = -s $(PDCURSES_LIB) -L/usr/lib -lmingw32 -lSDL2main -lSDL2 -mwindows
   LIBS = -s $(PDCURSES_LIB)
   IOBJS = $(COMMONOBJS) main-gcu.o main.o
 
-  #PDCURSES_INC = ../../pdcurses/include
-  #PDCURSES_LIB = ../../pdcurses/lib/pdcurses.a
+  PDCURSES_INC = ../lib/PDCurses-3.5
+  #PDCURSES_LIB = ../lib/PDCurses-3.5/sdl2/libpdcurses.a
+  PDCURSES_LIB = ../lib/PDCurses-3.5/win32/pdcurses.a
 else
   CFLAGS = -DWINDOWS
   IOBJS = $(COMMONOBJS) angband.res main-win.o readdib.o
@@ -52,8 +57,8 @@ endif
 
 CC = $(CROSS)gcc
 WRES = $(CROSS)windres
-CFLAGS += -Wall -W -std=iso9899:199409 -pedantic -O2
-LIBS += -s
+CFLAGS += -Wall -W -pedantic -O2
+#LIBS += -s
 
 ifdef CYGWIN
 

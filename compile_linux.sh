@@ -6,3 +6,4 @@ make -f Makefile.std
 cp friendband_linux_64 ../
 cd ..
 ./friendband_linux_64
+

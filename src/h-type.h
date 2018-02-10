@@ -93,7 +93,7 @@ typedef unsigned char byte;
 
 /* Note that a bool is smaller than a full "int" */
 /* Simple True/False type */
-typedef char bool;
+typedef unsigned char bool;
 
 
 /* A signed, standard integer (at least 2 bytes) */

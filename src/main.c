@@ -17,7 +17,7 @@
  */
 
 
-#if !defined(MACINTOSH) && !defined(WINDOWS) && !defined(RISCOS)
+#if !defined(MACINTOSH) && !defined(RISCOS)
 
 #include "main.h"
 

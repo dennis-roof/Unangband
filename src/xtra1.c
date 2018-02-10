@@ -736,13 +736,13 @@ int print_emergent_narrative(void)
 	//get_destination_name(&west[0], t_ptr, 3);
 	
 	if (t_ptr->nearby[0] != 0)
-		snprintf(north, 14, "^ %s", (t_info[ t_ptr->nearby[0] ].name + t_name));
+		snprintf(north, 13, "^ %s", (t_info[ t_ptr->nearby[0] ].name + t_name));
 	if (t_ptr->nearby[1] != 0)
-		snprintf(east, 14, "> %s", (t_info[ t_ptr->nearby[1] ].name + t_name));
+		snprintf(east, 13, "> %s", (t_info[ t_ptr->nearby[1] ].name + t_name));
 	if (t_ptr->nearby[2] != 0)
-		snprintf(south, 14, "v %s", (t_info[ t_ptr->nearby[2] ].name + t_name));
+		snprintf(south, 13, "v %s", (t_info[ t_ptr->nearby[2] ].name + t_name));
 	if (t_ptr->nearby[3] != 0)
-		snprintf(west, 14, "< %s", (t_info[ t_ptr->nearby[3] ].name + t_name));
+		snprintf(west, 13, "< %s", (t_info[ t_ptr->nearby[3] ].name + t_name));
 	
 	if (strlen(north) > 0 || strlen(east) > 0 || strlen(south) > 0 || strlen(west) > 0)
 		has_directions = TRUE;

@@ -519,7 +519,7 @@ D:The door appears broken.
 # 0x06 --> up stairs (perm)
 
 N:6:up staircase
-G:<:w
+G:<:o
 U:56
 #$ granite wall
 O:0
@@ -537,7 +537,7 @@ F:ATTR_LITE |
 # 0x07 --> down stairs (perm)
 
 N:7:down staircase
-G:>:w
+G:>:o
 U:56
 #$ granite wall
 O:0
