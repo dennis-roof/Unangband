@@ -12,7 +12,6 @@
 
 #### Things you should, or could, change ####
 
-
 # What systems to try.
 #
 # By default, this tries to compile both the X11 and "curses" terminal mode
@@ -25,11 +24,11 @@
 # You may have to add various X11 include/library directories to the
 # "CFLAGS", if your machine places files in a weird location, for example
 # " -I/usr/X11R6/include", or "-L/usr/X11R6/lib" to LIBS.
-SYS_x11 = -DUSE_X11 -lX11
+#SYS_x11 = -DUSE_X11 -lX11
 
 # Support curses console mode (main-gcu.c)
 # If this fails, try the alternate below
-SYS_gcu = -DUSE_GCU -DUSE_NCURSES -lncurses
+SYS_gcu = -DUSE_GCU 
 #SYS_gcu = -DUSE_GCU -lcurses -ltermcap
 
 # Support the GTK2 graphical tookit (main-gtk.c)
@@ -45,21 +44,40 @@ SYS_gcu = -DUSE_GCU -DUSE_NCURSES -lncurses
 #SOUND_sdl = -DSOUND_SDL $(shell sdl-config --cflags) $(shell sdl-config --libs) -lSDL_mixer
 
 
+# Cross-compiler stuff
+
+# Linux
+ifndef MINGW
+CC = gcc
+EXTRA_CFLAGS = -DUSE_NCURSES -DHAVE_MKSTEMP
+EXE = friendband_linux_64
+LIBS = -lncurses
+endif
+
+# Windows
+ifdef MINGW
+CC = i686-w64-mingw32-gcc
+EXTRA_CFLAGS = -DWIN32_CONSOLE_MODE
+EXE = friendband_windows_64.exe
+LIBS = ../pdcurses.a
+endif
+
+
 
 # Basic compiler stuff
-CC = gcc
-CFLAGS = -Wall -Wextra -Wshadow -O2 -Wno-unused-parameter -DHAVE_MKSTEMP
+CFLAGS = -Wall -Wextra -Wshadow -O2 -Wno-unused-parameter $(EXTRA_CFLAGS)
+#CFLAGS = -DHAVE_MKSTEMP -DWIN32_CONSOLE_MODE -D_XOPEN_SOURCE=500 -D_POSIX_C_SOURCE=199506L -I../lib/ncurses_w64/include/ncursesw -I../lib/ncurses_w64/include
 
 
 # Add additional search directives here
 # Example: -I/usr/X11R6/include -I/usr/include/ncurses
-INCLUDES = -I.
+INCLUDES = -I. 
 # Example: -L/usr/X11R6/lib 
-LIBS =
-
+#LIBS = -lncurses
+#LIBS = -L../lib/ncurses_w64/lib -Wl,--enable-auto-import -lncursesw -lpsapi
 
 # Version info
-EXE = friendband_linux_64
+#EXE = friendband_linux_64
 
 
 
@@ -78,7 +96,7 @@ LIBS += $(patsubst -D%,,$(patsubst -I%,, $(MODULES)))
 
 
 # Object definitions
-X11OBJS = maid-x11.o main-x11.o
+#X11OBJS = maid-x11.o main-x11.o
 GTKOBJS = gtk/main-gtk.o gtk/cairo-utils.o
 #MAINOBJS = main.o main-gcu.o main-sdl.o snd-sdl.o $(X11OBJS) $(GTKOBJS)
 MAINOBJS = main.o main-gcu.o $(X11OBJS)
